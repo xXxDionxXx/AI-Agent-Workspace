@@ -1,0 +1,218 @@
+{
+  "main": {
+    "id": "ae7da5df303ac5fd",
+    "type": "split",
+    "children": [
+      {
+        "id": "e22b79da065b2130",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "28c6cc6e9bb75109",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "14baee5e3e0e78da",
+    "type": "split",
+    "children": [
+      {
+        "id": "d4d7b5bbeb96e88c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0861d63d8e3ad774",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "97c095093175e7ea",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "e4207e78e84f467e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "49212037c9b7de03",
+    "type": "split",
+    "children": [
+      {
+        "id": "61841a143dee3b44",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5f61b0cd0facd04c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "ef5dca20b100007c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "f0f8cfadf35f1465",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "4e3b1e5eed2599ed",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "38a2a9ffb363f66e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "28c6cc6e9bb75109",
+  "lastOpenFiles": [
+    "Antigravity/Antigravity",
+    "Antigravity",
+    "Antigravity/wiki/entities/AIA-เอไอเอ.md",
+    "wiki/synthesis",
+    "wiki/sources/เพิ่มเติม-WPCI.md",
+    "wiki/sources/เพิ่มเติม-UDR.md",
+    "wiki/sources/เพิ่มเติม-PA.md",
+    "wiki/sources/เพิ่มเติม-Multi-Pay-CI-Plus.md",
+    "wiki/sources/เพิ่มเติม-Health-Saver.md",
+    "wiki/sources/เพิ่มเติม-Health-Happy.md",
+    "wiki/sources/เพิ่มเติม-HB-Extra.md",
+    "wiki/sources/เพิ่มเติม-H&S-New-Standard.md",
+    "wiki/sources/เพิ่มเติม-CI-Plus.md",
+    "wiki/sources/เพิ่มเติม-Care-for-Cancer.md",
+    "wiki/sources/หลักชีวิต-สะสมทรัพย์-15-25.md",
+    "wiki/sources/หลักชีวิต-ชั่วระยะเวลา.md",
+    "wiki/sources/หลักชีวิต-Issara-Plus.md",
+    "wiki/sources/หลักชีวิต-CI-ProCare.md",
+    "wiki/sources/หลักชีวิต-20-Pay-Life.md",
+    "wiki/sources/หลักชีวิต-10-15-Pay-Life.md",
+    "wiki/sources/สวัสดิการข้าราชการไทย.md",
+    "wiki/sources/aia-ci-procare-brochure.md",
+    "wiki/raw/AIA _ Product/หลักชีวิต Unit Linked/Issara_Plus.pdf",
+    "wiki/raw/AIA _ Product/หลักชีวิต Unit Linked/Issara Plus Sales Sheet.pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม โรคร้ายแรง Muti-Pay CI Plus.pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม โรคร้ายแรง CI Plus.pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม อุบัติเหตุ (PA).pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม ทุพพลภาพเว้นจ่ายเบี้ย WPCI.pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม ชดเชยรายได้ โรคร้ายแรง Care for Cancer.pdf",
+    "wiki/raw/AIA _ Product/เพิ่มเติม ชดเชยรายได้ HB Extra.pdf",
+    "wiki/raw/สวัสดิการข้าราชการไทย.md",
+    "wiki/entities/สำนักงาน-กพ.md",
+    "wiki/entities/กรมบัญชีกลาง.md",
+    "wiki/entities/กบข-กองทุน.md",
+    "wiki/entities/AIA-เอไอเอ.md",
+    "wiki/concepts/โรคที่คุ้มครอง-62-โรค.md"
+  ]
+}
