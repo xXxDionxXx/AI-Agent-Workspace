@@ -15,8 +15,7 @@ function nextSlide(){if(typeof onSlideSave==='function')onSlideSave(currentSlide
 function prevSlide(){if(currentSlide>0)goToSlide(currentSlide-1)}
 
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide()}if(e.key==='ArrowLeft'){e.preventDefault();prevSlide()}});
-let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
-document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?nextSlide():prevSlide()}},{passive:true});
+// Touch swipe gestures removed as requested
 
 // Platform toggle
 document.querySelectorAll('.plat-btn').forEach(b=>{b.addEventListener('click',()=>{
