@@ -33,10 +33,224 @@ container.appendChild(createSlide(0, `
   </div>
 `));
 
-// ===== SLIDE 1: PERSONAL PROFILE =====
+// ===== SLIDE 1: FINANCIAL PLANS (PYRAMID) =====
 container.appendChild(createSlide(1, `
+  <div class="glass-card" style="width:100%; max-width:1200px; padding:32px;">
+    <div style="text-align:center; margin-bottom:32px;">
+      <div class="browser-badge" style="display:inline-flex; background:var(--aia-blue);"><span class="browser-badge-num" style="color:var(--aia-blue);">1</span> Financial Plans - การจัดลำดับความสำคัญทางการเงิน</div>
+    </div>
+    
+    <div class="pyramid-container">
+      <div class="pyramid-stack-wrapper">
+        <div class="pyramid-tax-arrow">
+          <div class="tax-arrow-line"></div>
+          <div class="tax-arrow-head-top"></div>
+          <div class="tax-arrow-label">
+            <div class="tax-heading">Tax Planning</div>
+            <div class="tax-sub">วางแผนภาษี</div>
+          </div>
+          <div class="tax-arrow-head-bottom"></div>
+        </div>
+        <div class="pyramid-stack">
+          <div class="pyramid-layer layer-a">
+            <div class="pyramid-heading">Investment</div>
+            <div class="pyramid-sub">ลงทุน/ต่อยอด</div>
+          </div>
+          <div class="pyramid-layer layer-b">
+            <div class="pyramid-heading">Saving</div>
+            <div class="pyramid-sub">ออมเพื่อเป้าหมาย</div>
+          </div>
+          <div class="pyramid-layer layer-c">
+            <div class="pyramid-heading">Protection</div>
+            <div class="pyramid-sub">ปกป้อง</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="pyramid-details">
+        <!-- Layer A Details -->
+        <div class="detail-group">
+          <div class="detail-connector"></div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="inv_all">
+            <div class="detail-text">ทอง / กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div>
+            <div class="detail-checkbox"></div>
+          </div>
+        </div>
+        
+        <!-- Layer B Details -->
+        <div class="detail-group">
+          <div class="detail-connector"></div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_edu">
+            <div class="detail-text">กองทุนการศึกษาลูก</div>
+            <div class="detail-checkbox"></div>
+          </div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_ret">
+            <div class="detail-text">กองทุนเพื่อการเกษียณ</div>
+            <div class="detail-checkbox"></div>
+          </div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_legacy">
+            <div class="detail-text">กองทุนมรดก (บ้าน, รถ, ที่ดิน, อื่นๆ)</div>
+            <div class="detail-checkbox"></div>
+          </div>
+        </div>
+        
+        <!-- Layer C Details -->
+        <div class="detail-group">
+          <div class="detail-connector"></div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_short">
+            <div class="detail-text">ปกป้องรายได้ระยะสั้น/เงินสำรองฉุกเฉิน (3-6 เดือน)</div>
+            <div class="detail-checkbox"></div>
+          </div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_long">
+            <div class="detail-text">ปกป้องรายได้ระยะยาว/ประกันโรคร้ายแรง (3-5 ปี)</div>
+            <div class="detail-checkbox"></div>
+          </div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_health">
+            <div class="detail-text">ปกป้องเงินออม/ประกันสุขภาพ (สวัสดิการรักษาพยาบาล)</div>
+            <div class="detail-checkbox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`));
+
+// ===== SLIDE 2: INVESTMENT =====
+container.appendChild(createSlide(2, `
   <div class="glass-card">
-    ${secHdr('1', 'PERSONAL PROFILE')}
+    ${secHdr('2', 'INVESTMENT')}
+    <p class="slide-subtitle">เงินลงทุนรวมทั้งหมด</p>
+    ${inp('investTotal', 'เงินลงทุนรวม (บาท)', 'เช่น 1,500,000', 'number')}
+  </div>
+`));
+
+// ===== SLIDE 3: EDUCATION SELECTION =====
+container.appendChild(createSlide(3, `
+  <div class="glass-card">
+    ${secHdr('3', 'EDUCATION SELECTION')}
+    <p class="slide-subtitle">ระดับการศึกษาที่ต้องการวางแผนให้บุตร (ข้ามได้หากไม่มีบุตร)</p>
+    
+    <div class="form-label" style="color:var(--aia-blue); margin-top:8px;">🏫 ระดับโรงเรียน</div>
+    <div class="form-row" style="margin-bottom:8px;">
+      ${inp('eduSchoolYears', 'จำนวนปีที่ต้องเรียน (รวมลูกทุกคน)', 'เช่น 12', 'number')}
+    </div>
+    <div id="schoolTierCards" style="margin-bottom:16px;">
+      ${SCHOOL_TIERS.map((t, i) => `
+        <div class="tier-card tier-card-sch ${i === 1 ? 'selected' : ''}" data-tier="${t.id}" data-price="${t.priceNum}" onclick="selectTierGroup(this, 'sch'); calcEducation();">
+          <div class="tier-header">
+            <span class="tier-name">${t.name}</span>
+            <span class="tier-price">${t.price}</span>
+          </div>
+          <div class="tier-hospitals">${t.examples}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="form-label" style="color:var(--aia-blue); margin-top:16px;">🎓 ระดับมหาวิทยาลัย</div>
+    <div class="form-row" style="margin-bottom:8px;">
+      ${inp('eduUniYears', 'จำนวนปีที่ต้องเรียน (รวมลูกทุกคน)', 'เช่น 4', 'number')}
+    </div>
+    <div id="uniTierCards" style="margin-bottom:16px;">
+      ${UNI_TIERS.map((t, i) => `
+        <div class="tier-card tier-card-uni ${i === 1 ? 'selected' : ''}" data-tier="${t.id}" data-price="${t.priceNum}" onclick="selectTierGroup(this, 'uni'); calcEducation();">
+          <div class="tier-header">
+            <span class="tier-name">${t.name}</span>
+            <span class="tier-price">${t.price}</span>
+          </div>
+          <div class="tier-hospitals">${t.examples}</div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div class="gap-section" style="margin-top:16px; background:rgba(10,117,187,0.05); border-color:rgba(10,117,187,0.2);">
+      <h3 style="color:var(--aia-blue);">💡 สรุปทุนการศึกษาที่ต้องเตรียม</h3>
+      <div id="eduCalcResult" style="font-size:1.1rem; color:var(--text-primary); font-weight:700;">
+        กรุณากรอกจำนวนปีเพื่อคำนวณ
+      </div>
+    </div>
+  </div>
+`));
+
+// ===== SLIDE 4: RETIREMENT =====
+container.appendChild(createSlide(4, `
+  <div class="glass-card">
+    ${secHdr('4', 'RETIREMENT (เกษียณอายุ)')}
+    <p class="slide-subtitle">การวางแผนหลังเกษียณ</p>
+    <div class="form-row">
+      ${inp('retireAge', 'อายุเกษียณ', 'เช่น 60', 'number', 'should')}
+      ${inp('retireLifeExp', 'อายุขัย', 'เช่น 85', 'number', 'opt')}
+    </div>
+    ${inp('retireMonthly', 'เงินใช้จ่ายต่อเดือนหลังเกษียณ', 'เช่น 30,000', 'number', 'should')}
+    <div id="retireCalc" style="margin-top:8px;"></div>
+  </div>
+`));
+
+// ===== SLIDE 5: กองทุนมรดก =====
+container.appendChild(createSlide(5, `
+  <div class="glass-card">
+    ${secHdr('5', 'กองทุนมรดก')}
+    <p class="slide-subtitle">ทรัพย์สินและภาระที่ต้องการส่งมอบ</p>
+    
+    <div style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed rgba(0,0,0,0.1);">
+      ${inp('legacyHome', 'บ้าน (บาท)', 'เช่น 3,000,000', 'number')}
+      ${inp('legacyCondo', 'คอนโด (บาท)', 'เช่น 2,000,000', 'number')}
+      ${inp('legacyCar', 'รถยนต์ (บาท)', 'เช่น 500,000', 'number')}
+      ${inp('legacyOther', 'ทรัพย์สินอื่น ๆ', 'เช่น เงินฝาก หุ้น กองทุนรวม', 'text')}
+      ${inp('legacyOtherVal', 'มูลค่าทรัพย์สินอื่น ๆ (บาท)', 'เช่น 1,000,000', 'number')}
+    </div>
+    
+    <div class="form-label" style="color:var(--aia-red); font-weight:700; font-size:1.1rem;">มรดกหนี้สิน</div>
+    ${inp('legacyDebt', 'ยอดหนี้สินที่ยังคงค้าง (บาท)', 'เช่น 1,500,000', 'number')}
+  </div>
+`));
+
+// ===== SLIDE 6: PROTECTION & INCOME SUMMARY =====
+container.appendChild(createSlide(6, `
+  <div class="glass-card">
+    ${secHdr('6', 'PROTECTION & INCOME SUMMARY')}
+    <p class="slide-subtitle">สรุปรายได้และการปกป้องความเสี่ยง</p>
+    
+    <!-- INCOME -->
+    <div style="background:rgba(255,255,255,0.5); padding:16px; border-radius:12px; margin-bottom:24px; border:1px solid rgba(0,0,0,0.05);">
+      <div class="form-label" style="font-weight:700; color:var(--aia-blue);">รายได้หลักของคุณ</div>
+      ${inp('incomeMain', 'รายได้หลัก/เดือน (บาท)', 'เช่น 30,000', 'number', 'must')}
+      <div id="incomeTotalDisplay" style="margin-top:8px; font-weight:600; color:var(--aia-red);"></div>
+    </div>
+
+    <!-- PROTECTION -->
+    <div class="form-label" style="font-weight:700;">แผนปกป้อง (เป้าหมายที่ต้องการมี)</div>
+    
+    <div class="form-row" style="align-items:center;">
+      <div style="flex:1;">
+        ${inp('protShort', 'ปกป้องรายได้ระยะสั้น/เงินสำรองฉุกเฉิน (3-6 เดือน)', 'จำนวนเงิน', 'number')}
+      </div>
+      <div id="tipShort" style="flex:0.8; background:rgba(234,179,8,0.1); padding:12px; border-radius:12px; font-size:0.85rem; color:#b8860b;">
+        💡 แผนที่ปลอดภัย: กรุณากรอกรายได้
+      </div>
+    </div>
+
+    <div class="form-row" style="align-items:center; margin-top:12px;">
+      <div style="flex:1;">
+        ${inp('protLong', 'ปกป้องรายได้ระยะยาว/ประกันโรคร้ายแรง (3-5 ปี)', 'จำนวนเงิน', 'number')}
+      </div>
+      <div id="tipLong" style="flex:0.8; background:rgba(234,179,8,0.1); padding:12px; border-radius:12px; font-size:0.85rem; color:#b8860b;">
+        💡 แผนที่ปลอดภัย: กรุณากรอกรายได้
+      </div>
+    </div>
+
+    <div class="form-row" style="align-items:center; margin-top:12px;">
+      <div style="flex:1;">
+        ${inp('protHealth', 'ปกป้องเงินออม/ประกันสุขภาพ (สวัสดิการรักษาพยาบาล)', 'จำนวนเงิน', 'number')}
+      </div>
+    </div>
+
+  </div>
+`));
+
+// ===== SLIDE 7: PERSONAL PROFILE =====
+container.appendChild(createSlide(7, `
+  <div class="glass-card">
+    ${secHdr('7', 'PERSONAL PROFILE')}
     <p class="slide-subtitle">ข้อมูลส่วนตัวและสถานะครอบครัว</p>
     
     <div class="form-row">
@@ -63,115 +277,11 @@ container.appendChild(createSlide(1, `
   </div>
 `));
 
-// ===== SLIDE 2: FINANCIAL PLANS (PYRAMID) =====
-container.appendChild(createSlide(2, `
-  <div class="browser-ui" style="width:100%;">
-    <div class="browser-header">
-      <div class="browser-dots"><span></span><span></span><span></span></div>
-      <div class="browser-title">แบบประเมินสุขภาพทางการเงิน</div>
-    </div>
-    <div style="padding:12px 20px 0; text-align:center;">
-      <div class="browser-badge" style="display:inline-flex;"><span class="browser-badge-num">2</span> Financial Plans - การจัดลำดับความสำคัญทางการเงิน</div>
-    </div>
-    <div class="three-cols">
-      <div class="col-pyramid">
-        <div class="iso-pyramid">
-          <div class="diag-arrow"><span class="diag-text">วางแผนภาษี</span></div>
-          <div class="iso-layer iso-top">
-            <div class="layer-title">3. การลงทุน / ต่อยอด</div>
-            <div class="layer-sub">เงินไปลงทุน</div>
-            <div class="layer-icons">📈 🏢</div>
-          </div>
-          <div class="iso-layer iso-mid">
-            <div class="layer-title">2. การสะสม / ออม</div>
-            <div class="layer-sub">เป้าหมายระยะสั้น, กลาง, ยาว</div>
-            <div style="font-weight:700; margin-bottom:4px; font-size:1rem;">สะสม</div>
-            <div class="layer-icons">🎓 👵👴 🏠</div>
-          </div>
-          <div class="iso-layer iso-bot">
-            <div class="layer-title">1. การปกป้อง</div>
-            <div class="layer-sub">Protection & Risk Transfer</div>
-            <div style="font-weight:700; margin-bottom:4px; color:#f8d9df; font-size:1rem;">ปกป้องชีวิต ทรัพย์สิน สุขภาพ</div>
-            <div class="layer-icons">💵 🛡️ 🏥</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-panels">
-        <div class="c-panel">
-          <div class="connector-line" style="top:50%;"><div class="connector-dot"></div></div>
-          <div class="c-panel-icon">📊</div><div class="c-panel-text">กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div>
-        </div>
-        <div class="c-panel-cluster">
-          <div class="c-panel">
-            <div class="connector-line" style="top:50%;"><div class="connector-dot"></div></div>
-            <div class="c-panel-icon">🎓</div><div class="c-panel-text">กองทุนการศึกษาลูก</div>
-          </div>
-          <div class="c-panel">
-            <div class="c-panel-icon">👵👴</div><div class="c-panel-text">กองทุนเพื่อการเกษียณ</div>
-          </div>
-          <div class="c-panel">
-            <div class="c-panel-icon">🏠</div><div class="c-panel-text">กองทุนมรดก (บ้าน, รถ, ที่ดิน, เงินสด)</div>
-          </div>
-        </div>
-        <div class="c-panel-cluster">
-          <div class="c-panel">
-            <div class="connector-line" style="top:50%;"><div class="connector-dot"></div></div>
-            <div class="c-panel-icon">💵</div><div class="c-panel-text">ปกป้องรายได้ระยะสั้น (3-6 เดือน)</div>
-          </div>
-          <div class="c-panel">
-            <div class="c-panel-icon">🛡️</div><div class="c-panel-text">ปกป้องรายได้ระยะยาว (3-5 ปี)</div>
-          </div>
-          <div class="c-panel">
-            <div class="c-panel-icon">💖</div><div class="c-panel-text">ปกป้องเงินออม (อัปเกรดสวัสดิการรักษาพยาบาล/ประกันสุขภาพ)</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-checklist">
-        <div class="checklist-card">
-          <div class="checklist-hdr">สถานะการวางแผน</div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องรายได้ระยะสั้น</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องรายได้ระยะยาว (3-5 ปี)</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องเงินออม</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">กองทุนเพื่อการเกษียณ</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">กองทุนมรดก</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องรายได้ระยะสั้น (3-6 เดือน)</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องรายได้ระยะยาว (3-5 ปี)</div></div>
-          <div class="checklist-item" onclick="toggleCheck(this)"><div class="chk-box"></div><div class="chk-text">ปกป้องเงินออม</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-`));
-
-// ===== SLIDE 3: EXPENSES =====
-container.appendChild(createSlide(3, `
+// ===== SLIDE 8: SAVINGS & INVESTMENT (Legacy) =====
+container.appendChild(createSlide(8, `
   <div class="glass-card">
-    ${secHdr('3', 'EXPENSES (ภาระหนี้สิน)')}
-    <p class="slide-subtitle">ยอดภาระหนี้สินคงค้างทั้งหมด</p>
-    
-    <div style="margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed rgba(0,0,0,0.1);">
-      ${inp('debtHome', 'หนี้บ้าน / อสังหาริมทรัพย์ (บาท)', 'เช่น 3,000,000', 'number')}
-      ${inp('debtCar', 'หนี้รถยนต์ (บาท)', 'เช่น 500,000', 'number')}
-      ${inp('debtOther', 'สินเชื่อส่วนบุคคล / หนี้อื่นๆ (บาท)', 'เช่น 100,000', 'number')}
-    </div>
-    
-    <div class="form-label" style="color:var(--aia-red); font-weight:700; font-size:1.1rem;">ยอดภาระหนี้สินรวมทั้งหมด</div>
-    <div class="form-input" id="debtTotalDisplay" style="background:rgba(210,17,69,0.05); color:var(--aia-red); font-weight:700; font-size:1.2rem;">0</div>
-    
-    <div class="child-fields form-group" style="margin-top:16px; padding:12px; background:rgba(255,255,255,0.4); border-radius:12px;">
-      <div class="form-label">ค่าเทอมบุตร ${pri('should')}</div>
-      ${inp('expChildTerm', 'ค่าเทอม (ต่อ 1 เทอม)', 'กรอกยอดต่อเทอม', 'number')}
-      <div id="childTermCalc" style="font-size:0.75rem; color:var(--aia-blue); font-weight:600; margin-top:4px; min-height:16px;"></div>
-    </div>
-  </div>
-`));
-
-// ===== SLIDE 4: SAVINGS & INVESTMENT =====
-container.appendChild(createSlide(4, `
-  <div class="glass-card">
-    ${secHdr('4', 'SAVINGS & INVESTMENT')}
-    <p class="slide-subtitle">สินทรัพย์และเงินสำรอง</p>
+    ${secHdr('8', 'SAVINGS & INVESTMENT')}
+    <p class="slide-subtitle">สินทรัพย์และเงินสำรองอื่นๆ</p>
     
     ${inp('savCash', 'เงินเก็บ / เงินออมทั่วไป (บาท)', 'เช่น 200,000', 'number', 'must')}
     
@@ -181,15 +291,13 @@ container.appendChild(createSlide(4, `
       </div>
       <input class="form-input" type="text" id="savEmergency" placeholder="เช่น 60,000" autocomplete="off" oninput="formatNumberInput(this)">
     </div>
-
-    ${inp('savInvest', 'เงินลงทุน (หุ้น / กองทุน / อสังหาฯ)', 'เช่น 1,500,000', 'number', 'should')}
   </div>
 `));
 
-// ===== SLIDE 5: WELFARE SELECTION =====
-container.appendChild(createSlide(5, `
+// ===== SLIDE 9: WELFARE SELECTION =====
+container.appendChild(createSlide(9, `
   <div class="glass-card">
-    ${secHdr('5', 'WELFARE Selection')}
+    ${secHdr('9', 'WELFARE Selection')}
     <p class="slide-subtitle">ทบทวนสวัสดิการพื้นฐานของลูกค้า</p>
     <div class="select-cards" id="welfareCards">
       ${selCard('welfare', 'social33', '🔵', 'ประกันสังคม (ม.33)', 'สวัสดิการพนักงานเอกชน')}
@@ -199,19 +307,19 @@ container.appendChild(createSlide(5, `
   </div>
 `));
 
-// ===== SLIDE 6: WELFARE DETAILS =====
-container.appendChild(createSlide(6, `
+// ===== SLIDE 10: WELFARE DETAILS =====
+container.appendChild(createSlide(10, `
   <div class="glass-card" id="welfareResult">
-    ${secHdr('6', 'เปรียบเทียบสิทธิรักษาพยาบาล')}
-    <p class="slide-subtitle" id="welfareSub">เลือกสิทธิ์ในหน้า 5</p>
+    ${secHdr('10', 'เปรียบเทียบสิทธิรักษาพยาบาล')}
+    <p class="slide-subtitle" id="welfareSub">เลือกสิทธิ์ในหน้า 9</p>
     <div id="welfareItems"></div>
   </div>
 `));
 
-// ===== SLIDE 7: HOSPITAL SELECTION =====
-container.appendChild(createSlide(7, `
+// ===== SLIDE 11: HOSPITAL SELECTION =====
+container.appendChild(createSlide(11, `
   <div class="glass-card">
-    ${secHdr('7', 'HOSPITAL SELECTION')}
+    ${secHdr('11', 'HOSPITAL SELECTION')}
     <p class="slide-subtitle">เลือกระดับโรงพยาบาลที่เข้าใช้บริการเป็นประจำ</p>
     <div id="tierCards">
       ${HOSPITAL_TIERS.map((t, i) => `
@@ -227,77 +335,10 @@ container.appendChild(createSlide(7, `
   </div>
 `));
 
-// ===== SLIDE 8: EDUCATION SELECTION =====
-container.appendChild(createSlide(8, `
+// ===== SLIDE 12: TAX PLANNING =====
+container.appendChild(createSlide(12, `
   <div class="glass-card">
-    ${secHdr('8', 'EDUCATION SELECTION')}
-    <p class="slide-subtitle">ระดับการศึกษาที่ต้องการวางแผนให้บุตร (ข้ามได้หากไม่มีบุตร)</p>
-    
-    <div class="form-label" style="color:var(--aia-blue); margin-top:8px;">🏫 ระดับโรงเรียน</div>
-    <div id="schoolTierCards" style="margin-bottom:16px;">
-      ${SCHOOL_TIERS.map((t, i) => `
-        <div class="tier-card tier-card-sch ${i === 1 ? 'selected' : ''}" data-tier="${t.id}" onclick="selectTierGroup(this, 'sch')">
-          <div class="tier-header">
-            <span class="tier-name">${t.name}</span>
-            <span class="tier-price">${t.price}</span>
-          </div>
-          <div class="tier-hospitals">${t.examples}</div>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="form-label" style="color:var(--aia-blue);">🎓 ระดับมหาวิทยาลัย</div>
-    <div id="uniTierCards">
-      ${UNI_TIERS.map((t, i) => `
-        <div class="tier-card tier-card-uni ${i === 1 ? 'selected' : ''}" data-tier="${t.id}" onclick="selectTierGroup(this, 'uni')">
-          <div class="tier-header">
-            <span class="tier-name">${t.name}</span>
-            <span class="tier-price">${t.price}</span>
-          </div>
-          <div class="tier-hospitals">${t.examples}</div>
-        </div>
-      `).join('')}
-    </div>
-  </div>
-`));
-
-// ===== SLIDE 9: RETIREMENT =====
-container.appendChild(createSlide(9, `
-  <div class="glass-card">
-    ${secHdr('9', 'RETIREMENT (เกษียณอายุ)')}
-    <p class="slide-subtitle">การวางแผนหลังเกษียณ</p>
-    <div class="form-row">
-      ${inp('retireAge', 'อายุเกษียณ', 'เช่น 60', 'number', 'should')}
-      ${inp('retireLifeExp', 'อายุขัย', 'เช่น 85', 'number', 'opt')}
-    </div>
-    ${inp('retireMonthly', 'เงินใช้จ่ายต่อเดือนหลังเกษียณ', 'เช่น 30,000', 'number', 'should')}
-    <div id="retireCalc" style="margin-top:8px;"></div>
-  </div>
-`));
-
-// ===== SLIDE 10: INCOME =====
-container.appendChild(createSlide(10, `
-  <div class="glass-card">
-    ${secHdr('10', 'INCOME SUMMARY')}
-    <p class="slide-subtitle">สรุปรายได้และงบประมาณสำหรับความคุ้มครอง</p>
-    ${inp('incomeMain', 'รายได้หลัก/เดือน (เงินเดือน / ธุรกิจ)', 'เช่น 50,000', 'number', 'must')}
-    ${inp('incomeOT', 'OT / โบนัส / คอมมิชชั่น เฉลี่ยต่อเดือน', 'เช่น 10,000', 'number', 'should')}
-    ${inp('incomeInvest', 'รายได้จากการลงทุน / ปันผล / ค่าเช่า', 'ถ้ามี', 'number', 'opt')}
-    ${inp('incomeOther', 'รายได้พิเศษอื่น ๆ', '', 'number', 'opt')}
-    
-    <div class="gap-section" style="margin-top:16px; background:rgba(10,117,187,0.05); border-color:rgba(10,117,187,0.2);">
-      <h3 style="color:var(--aia-blue);">💡 สัดส่วนเงินสำหรับความคุ้มครอง (15% Rule)</h3>
-      <div id="incomeCalcResult" style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6;">
-        กรุณากรอกรายได้เพื่อคำนวณงบประมาณที่เหมาะสม
-      </div>
-    </div>
-  </div>
-`));
-
-// ===== SLIDE 11: TAX PLANNING =====
-container.appendChild(createSlide(11, `
-  <div class="glass-card">
-    ${secHdr('11', 'TAX PLANNING')}
+    ${secHdr('12', 'TAX PLANNING')}
     <p class="slide-subtitle">รายการลดหย่อนภาษีที่ใช้อยู่ (ต่อปี)</p>
     
     ${inp('taxLife', 'เบี้ยประกันชีวิต', 'สูงสุด 100,000', 'number', 'should')}
@@ -313,10 +354,10 @@ container.appendChild(createSlide(11, `
   </div>
 `));
 
-// ===== SLIDE 12: RISK MANAGEMENT =====
-container.appendChild(createSlide(12, `
+// ===== SLIDE 13: RISK MANAGEMENT =====
+container.appendChild(createSlide(13, `
   <div class="glass-card">
-    ${secHdr('12', 'RISK MANAGEMENT')}
+    ${secHdr('13', 'RISK MANAGEMENT')}
     <p class="slide-subtitle">ความคุ้มครองที่มีอยู่เดิม (ถ้ามี)</p>
     ${inp('riskLife', 'ทุนประกันชีวิตรวมทั้งหมด', 'เช่น 1,000,000', 'number', 'must')}
     ${inp('riskCI', 'วงเงินประกันโรคร้ายแรง', 'เช่น 500,000', 'number', 'must')}
@@ -325,11 +366,18 @@ container.appendChild(createSlide(12, `
   </div>
 `));
 
-// ===== SLIDE 13: PROPOSED SOLUTION (FINAL) =====
-container.appendChild(createSlide(13, `
+// ===== SLIDE 14: PROPOSED SOLUTION (FINAL) =====
+container.appendChild(createSlide(14, `
   <div class="glass-card" style="text-align:center; max-width:1400px; width:95%;">
     <div class="slide-title" style="margin-bottom:6px">แผนที่แนะนำสำหรับ <span class="aia-accent" id="finalName">ลูกค้า</span></div>
     <p class="slide-subtitle">เปรียบเทียบ 3 แผน เลือกแผนที่เหมาะกับไลฟ์สไตล์และงบประมาณ</p>
+    
+    <div class="gap-section" style="margin-top:16px; max-width:800px; margin-left:auto; margin-right:auto; background:rgba(10,117,187,0.05); border-color:rgba(10,117,187,0.2);">
+      <h3 style="color:var(--aia-blue);">💡 สัดส่วนเงินสำหรับความคุ้มครอง (15% Rule)</h3>
+      <div id="incomeRuleFinal" style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6;">
+        กรุณากรอกรายได้ในหน้า Protection & Income
+      </div>
+    </div>
   </div>
   <div class="plan-grid" id="planGrid" style="margin-top:12px;"></div>
   <div class="glass-card glass-card-sm" style="text-align:center; margin-top:12px;">
@@ -343,15 +391,14 @@ container.appendChild(createSlide(13, `
 
 // ============ LOGIC & EVENTS ============
 
-// --- Checklist toggle ---
-function toggleCheck(el) {
-  const chk = el.querySelector('.chk-box');
-  if (chk.classList.contains('checked')) {
-    chk.classList.remove('checked');
-    chk.innerHTML = '';
-  } else {
-    chk.classList.add('checked');
+// --- Pyramid Detail Check toggle ---
+function toggleDetailCheck(el) {
+  el.classList.toggle('checked');
+  const chk = el.querySelector('.detail-checkbox');
+  if (el.classList.contains('checked')) {
     chk.innerHTML = '✓';
+  } else {
+    chk.innerHTML = '';
   }
 }
 
@@ -368,45 +415,64 @@ document.querySelectorAll('#familyCards .select-card').forEach(card => {
   });
 });
 
-// Auto-calc child term to year
-document.getElementById('expChildTerm')?.addEventListener('input', (e) => {
-  const val = num('expChildTerm') || 0;
-  const el = document.getElementById('childTermCalc');
-  if (val > 0) {
-    el.innerHTML = '→ คิดเป็นค่าเทอมต่อปี = ' + fmt(val * 2) + ' บาท / ปี';
+// Education Calculation
+function calcEducation() {
+  const schYears = num('eduSchoolYears');
+  const uniYears = num('eduUniYears');
+  
+  const schTierEl = document.querySelector('.tier-card-sch.selected');
+  const uniTierEl = document.querySelector('.tier-card-uni.selected');
+  
+  const schPrice = schTierEl ? parseInt(schTierEl.dataset.price) : 0;
+  const uniPrice = uniTierEl ? parseInt(uniTierEl.dataset.price) : 0;
+  
+  const totalSch = schYears * schPrice;
+  const totalUni = uniYears * uniPrice;
+  const total = totalSch + totalUni;
+  
+  const el = document.getElementById('eduCalcResult');
+  if (total > 0) {
+    el.innerHTML = 'รวมทุนการศึกษาบุตรทั้งหมด: <span style="color:var(--aia-red);">' + fmt(total) + ' บาท</span><br>' +
+                   '<span style="font-size:0.85rem; font-weight:normal; color:var(--text-secondary);">(ระดับโรงเรียน ' + fmt(totalSch) + ' บาท + ระดับมหาวิทยาลัย ' + fmt(totalUni) + ' บาท)</span>';
   } else {
-    el.innerHTML = '';
+    el.innerHTML = 'กรุณากรอกจำนวนปีเพื่อคำนวณ';
   }
-});
+}
 
-// Debt calculations
-['debtHome', 'debtCar', 'debtOther'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', () => {
-    const total = num('debtHome') + num('debtCar') + num('debtOther');
-    document.getElementById('debtTotalDisplay').textContent = fmt(total);
-  });
-});
+document.getElementById('eduSchoolYears')?.addEventListener('input', calcEducation);
+document.getElementById('eduUniYears')?.addEventListener('input', calcEducation);
 
-// Income auto-calc 15% rule
-['incomeMain', 'incomeOT', 'incomeInvest', 'incomeOther'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', computeIncomeRule);
-});
+// Income & Protection TIP logic
+document.getElementById('incomeMain')?.addEventListener('input', computeProtectionTip);
 
-function computeIncomeRule() {
-  const main = num('incomeMain');
-  const ot = num('incomeOT');
-  const inv = num('incomeInvest');
-  const oth = num('incomeOther');
-  const totalMonth = main + ot + inv + oth;
-  const totalYear = totalMonth * 12;
-  const budgetYear = totalYear * 0.15;
-  const budgetMonth = budgetYear / 12;
-
-  const el = document.getElementById('incomeCalcResult');
-  if (totalMonth > 0) {
-    el.innerHTML = 'รายได้รวมต่อปีโดยประมาณ: <strong>' + fmt(totalYear) + '</strong> บาท<br>เงินที่นำมาวางแผนประกันและคุ้มครอง (ไม่ควรเกิน 15%):<br>👉 สูงสุดไม่เกิน <strong style="color:var(--aia-red); font-size:1rem;">' + fmt(budgetYear) + '</strong> บาท/ปี <span style="font-size:0.75rem;">(หรือ ' + fmt(budgetMonth) + ' บาท/เดือน)</span>';
+function computeProtectionTip() {
+  const inc = num('incomeMain');
+  const totalDisplay = document.getElementById('incomeTotalDisplay');
+  const tipShort = document.getElementById('tipShort');
+  const tipLong = document.getElementById('tipLong');
+  const tipRuleFinal = document.getElementById('incomeRuleFinal');
+  
+  if (inc > 0) {
+    totalDisplay.textContent = 'รายได้รวมต่อเดือน: ' + fmt(inc) + ' บาท';
+    
+    const shortMin = inc * 3;
+    const shortMax = inc * 6;
+    tipShort.innerHTML = '💡 แผนที่ปลอดภัย: ~ <strong>' + fmt(shortMin) + ' - ' + fmt(shortMax) + '</strong> บาท';
+    
+    const longMin = inc * 12 * 3;
+    const longMax = inc * 12 * 5;
+    tipLong.innerHTML = '💡 แผนที่ปลอดภัย: ~ <strong>' + fmt(longMin) + ' - ' + fmt(longMax) + '</strong> บาท';
+    
+    const budgetYear = (inc * 12) * 0.15;
+    tipRuleFinal.innerHTML = 'รายได้รวมต่อปีโดยประมาณ: <strong>' + fmt(inc * 12) + '</strong> บาท<br>' +
+                             'เงินที่นำมาวางแผนประกันและคุ้มครอง (ไม่ควรเกิน 15%):<br>' +
+                             '👉 สูงสุดไม่เกิน <strong style="color:var(--aia-red); font-size:1.1rem;">' + fmt(budgetYear) + '</strong> บาท/ปี ' +
+                             '<span style="font-size:0.8rem;">(หรือ ' + fmt(budgetYear / 12) + ' บาท/เดือน)</span>';
   } else {
-    el.innerHTML = 'กรุณากรอกรายได้เพื่อคำนวณงบประมาณที่เหมาะสม';
+    totalDisplay.textContent = '';
+    tipShort.innerHTML = '💡 แผนที่ปลอดภัย: กรุณากรอกรายได้';
+    tipLong.innerHTML = '💡 แผนที่ปลอดภัย: กรุณากรอกรายได้';
+    tipRuleFinal.innerHTML = 'กรุณากรอกรายได้ในหน้า Protection & Income';
   }
 }
 
@@ -426,9 +492,9 @@ function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
 
 // ============ ON SLIDE SAVE (CALCULATIONS) ============
 function onSlideSave(idx) {
-  if (idx === 5) computeWelfare();   // After Welfare Review
-  if (idx === 9) computeRetirement(); // After Retirement
-  if (idx === 12) computeSolution(); // Before Final Solution
+  if (idx === 4) computeRetirement(); 
+  if (idx === 10) computeWelfare(); 
+  if (idx === 14) computeSolution(); 
 }
 
 // Welfare Calc
@@ -468,7 +534,7 @@ function computeRetirement() {
   const futureMonthly = monthly * Math.pow(1.03, yearsToRetire);
   const totalNeeded = futureMonthly * 12 * yearsInRetire;
 
-  const cash = num('savInvest') + num('savCash');
+  const cash = num('investTotal') + num('savCash');
   const gap = Math.max(totalNeeded - cash, 0);
 
   document.getElementById('retireCalc').innerHTML = '<div class="benefit-row"><div class="status-dot dot-yellow">💡</div><div><div class="benefit-name">ประมาณการเงินเกษียณ (เงินเฟ้อ 3%)</div><div class="benefit-detail">ต้องใช้จริง/ด.: <strong>' + fmt(futureMonthly) + '</strong> บาท<br>ยอดรวม ' + yearsInRetire + ' ปี: <strong>' + fmt(totalNeeded) + '</strong> บาท<br><span style="color:var(--aia-red); font-weight:600;">ทุนเกษียณที่ขาด: ' + fmt(gap) + ' บาท</span></div></div></div>';
@@ -479,28 +545,25 @@ function computeSolution() {
   const name = document.getElementById('clientName')?.value || 'ลูกค้า';
   document.getElementById('finalName').textContent = name;
 
-  const expDebt = num('debtHome') + num('debtCar') + num('debtOther');
-  const childTerm = num('expChildTerm') * 2;
-
-  const familySel = document.querySelector('#familyCards input:checked');
-  const isChildren = familySel && familySel.value === 'children';
-
   const hospEl = document.querySelector('.tier-card-hosp.selected');
   const hospId = hospEl ? hospEl.dataset.tier : 'standard';
 
   const welfSel = document.querySelector('#welfareCards input[type="radio"]:checked');
   const welfareText = welfSel ? WELFARE[welfSel.value].label : 'ไม่ระบุสวัสดิการ';
 
-  let lifeNeed = expDebt > 0 ? "✓ มีกองทุนมรดก" : "—";
-  let childNeed = "—";
+  // Checking Pyramid Selection
+  const pSavEdu = document.querySelector('[data-plan="sav_edu"]')?.classList.contains('checked');
+  const pSavLegacy = document.querySelector('[data-plan="sav_legacy"]')?.classList.contains('checked');
+  const pSavRet = document.querySelector('[data-plan="sav_ret"]')?.classList.contains('checked');
+  const pProShort = document.querySelector('[data-plan="pro_short"]')?.classList.contains('checked');
+  const pProLong = document.querySelector('[data-plan="pro_long"]')?.classList.contains('checked');
+  const pProHealth = document.querySelector('[data-plan="pro_health"]')?.classList.contains('checked');
 
-  if (isChildren) {
-    const schEl = document.querySelector('.tier-card-sch.selected');
-    const uniEl = document.querySelector('.tier-card-uni.selected');
-    if (schEl || uniEl || childTerm > 0) {
-      childNeed = "✓ ทุนการศึกษา";
-    }
-  }
+  const cEdu = pSavEdu ? '✅' : '—';
+  const cLegacy = pSavLegacy ? '✅' : '—';
+  const cRet = pSavRet ? '✅' : '—';
+  const cShort = pProShort ? '✅' : '—';
+  const cLong = pProLong ? '✅' : '—';
 
   const tierMap = {
     gov: { eco: 'รพ.รัฐ ห้องพิเศษ', biz: 'Standard', first: 'High-End' },
@@ -510,58 +573,65 @@ function computeSolution() {
   };
   const htier = tierMap[hospId] || tierMap.standard;
 
+  const getHealthText = (tier, selected) => {
+    return selected ? '✅ (' + welfareText + ' / ' + tier + ')' : '—';
+  };
+
   const plans = [
     {
-      cls: 'plan-economy', label: 'ECONOMY CLASS', name: '✈️ เริ่มต้น', recommended: false,
+      cls: 'plan-economy', label: 'ECONOMY CLASS', name: '✈️ ECONOMY CLASS (3 ปี)', recommended: false,
       items: [
-        ['แผนปกป้องรายได้ (3 ปี)', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
-        ['กองทุนมรดก เช่น บ้าน รถ (ถ้ามี)', lifeNeed],
-        ['กองทุนการศึกษา (ถ้ามี)', childNeed],
-        ['ปกป้องเงินออม<br><span style="font-size:0.75rem;color:var(--text-muted);">' + welfareText + ' / ' + htier.eco + '</span>', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
+        ['<strong style="color:var(--aia-red);">Investment ลงทุน/ต่อยอด</strong>', '—'],
+        ['<strong style="color:var(--aia-blue);">Saving ออมเพื่อเป้าหมาย</strong>', ''],
+        ['&nbsp;&nbsp;• กองทุนการศึกษาลูก', cEdu],
+        ['&nbsp;&nbsp;• กองทุนมรดก', cLegacy],
+        ['&nbsp;&nbsp;• กองทุนเพื่อการเกษียณ', cRet],
+        ['<strong style="color:var(--text-secondary);">Protection ปกป้อง</strong>', ''],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะสั้น', cShort],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะยาว', cLong],
+        ['&nbsp;&nbsp;• ปกป้องเงินออม', getHealthText(htier.eco, pProHealth)],
       ]
     },
     {
-      cls: 'plan-business', label: 'BUSINESS CLASS', name: '🌟 แนะนำ', recommended: true,
+      cls: 'plan-business', label: 'BUSINESS CLASS', name: '🌟 BUSINESS CLASS (5 ปี)', recommended: true,
       items: [
-        ['แผนปกป้องรายได้ (5 ปี)', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
-        ['กองทุนมรดก เช่น บ้าน รถ (ถ้ามี)', lifeNeed],
-        ['กองทุนการศึกษา (ถ้ามี)', childNeed],
-        ['ปกป้องเงินออม<br><span style="font-size:0.75rem;color:var(--text-muted);">' + welfareText + ' / ' + htier.biz + '</span>', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
+        ['<strong style="color:var(--aia-red);">Investment ลงทุน/ต่อยอด</strong>', '—'],
+        ['<strong style="color:var(--aia-blue);">Saving ออมเพื่อเป้าหมาย</strong>', ''],
+        ['&nbsp;&nbsp;• กองทุนการศึกษาลูก', cEdu],
+        ['&nbsp;&nbsp;• กองทุนมรดก', cLegacy],
+        ['&nbsp;&nbsp;• กองทุนเพื่อการเกษียณ', cRet],
+        ['<strong style="color:var(--text-secondary);">Protection ปกป้อง</strong>', ''],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะสั้น', cShort],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะยาว', cLong],
+        ['&nbsp;&nbsp;• ปกป้องเงินออม', getHealthText(htier.biz, pProHealth)],
       ]
     },
     {
-      cls: 'plan-first', label: 'FIRST CLASS', name: '👑 ครบทุกด้าน', recommended: false,
+      cls: 'plan-first', label: 'FIRST CLASS', name: '👑 FIRST CLASS (7 ปี)', recommended: false,
       items: [
-        ['แผนปกป้องรายได้ (7 ปี)', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
-        ['กองทุนมรดก เช่น บ้าน รถ (ถ้ามี)', lifeNeed],
-        ['กองทุนการศึกษา (ถ้ามี)', childNeed],
-        ['ปกป้องเงินออม<br><span style="font-size:0.75rem;color:var(--text-muted);">' + welfareText + ' / ' + htier.first + '</span>', '<input type="text" class="manual-price-input" placeholder="กรอกเบี้ย">'],
+        ['<strong style="color:var(--aia-red);">Investment ลงทุน/ต่อยอด</strong>', '—'],
+        ['<strong style="color:var(--aia-blue);">Saving ออมเพื่อเป้าหมาย</strong>', ''],
+        ['&nbsp;&nbsp;• กองทุนการศึกษาลูก', cEdu],
+        ['&nbsp;&nbsp;• กองทุนมรดก', cLegacy],
+        ['&nbsp;&nbsp;• กองทุนเพื่อการเกษียณ', cRet],
+        ['<strong style="color:var(--text-secondary);">Protection ปกป้อง</strong>', ''],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะสั้น', cShort],
+        ['&nbsp;&nbsp;• ปกป้องรายได้ระยะยาว', cLong],
+        ['&nbsp;&nbsp;• ปกป้องเงินออม', getHealthText(htier.first, pProHealth)],
       ]
     },
   ];
 
-  document.getElementById('planGrid').innerHTML = plans.map(p => '<div class="plan-col ' + p.cls + ' ' + (p.recommended ? 'plan-recommended' : '') + '"><div class="plan-tier-label">' + p.label + '</div><div class="plan-tier-name">' + p.name + '</div>' + p.items.map(item => '<div class="plan-item"><span class="plan-item-label">' + item[0] + '</span><span class="plan-item-value" style="text-align:right;">' + item[1] + '</span></div>').join('') + '</div>').join('');
-
-  // Format manual inputs
-  document.querySelectorAll('.manual-price-input').forEach(inp => {
-    inp.addEventListener('input', () => formatNumberInput(inp));
-    inp.style.width = '100px';
-    inp.style.padding = '6px 10px';
-    inp.style.border = '1px solid #ccc';
-    inp.style.borderRadius = '8px';
-    inp.style.textAlign = 'right';
-    inp.style.fontSize = '1rem';
-  });
+  document.getElementById('planGrid').innerHTML = plans.map(p => '<div class="plan-col ' + p.cls + ' ' + (p.recommended ? 'plan-recommended' : '') + '"><div class="plan-tier-name" style="font-size:1.15rem;">' + p.name + '</div>' + p.items.map(item => '<div class="plan-item" style="padding:6px 0; border:none;"><span class="plan-item-label">' + item[0] + '</span><span class="plan-item-value" style="text-align:right;">' + item[1] + '</span></div>').join('') + '</div>').join('');
 }
 
 // Google Sheets Submit
 async function submitToGoogleSheets() {
-  // นำ URL ของ Apps Script ที่ได้จากข้อ 3 มาวางแทนข้อความด้านล่างนี้
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwX9t5bQV6g_lkPByenrO4FM6WUvlYsaBh-berudYri70wOEUtdIerdbMTnwI7QPL4FFw/exec";
 
   const statusEl = document.getElementById('submitStatus');
   if (SCRIPT_URL.includes('YOUR_SCRIPT_ID_HERE')) {
-    statusEl.innerHTML = '❌ กรุณานำลิงก์ Google Apps Script URL มาแปะในโค้ดไฟล์ <code>app.js</code> (บรรทัด 388) ก่อนครับ<br><span style="font-size:0.8rem; color:#666;">อ่านวิธีทำในไฟล์คู่มือ setup-google-sheets.md ครับ</span>';
+    statusEl.innerHTML = '❌ กรุณานำลิงก์ Google Apps Script URL มาแปะในโค้ดไฟล์ <code>app.js</code> ก่อนครับ';
     statusEl.style.color = 'red';
     return;
   }
@@ -573,33 +643,18 @@ async function submitToGoogleSheets() {
   const payload = {
     clientName: document.getElementById('clientName')?.value,
     clientAge: num('clientAge'),
-    gender: document.querySelector('input[name="gender"]:checked')?.value,
-    familyStatus: document.querySelector('input[name="family"]:checked')?.value,
-    childCount: num('childCount'),
-    debtHome: num('debtHome'),
-    debtCar: num('debtCar'),
-    debtOther: num('debtOther'),
-    debtTotal: num('debtHome') + num('debtCar') + num('debtOther'),
-    emergencyCash: num('savEmergency'),
-    taxRMF: num('taxRMF'),
-    taxSSF: num('taxSSF'),
-    taxPVD: num('taxPVD'),
-    taxSS: num('taxSS'),
-    welfare: document.querySelector('input[name="welfare"]:checked')?.value,
-    hospTier: document.querySelector('.tier-card-hosp.selected')?.dataset.tier,
-    schoolTier: document.querySelector('.tier-card-sch.selected')?.dataset.tier,
-    uniTier: document.querySelector('.tier-card-uni.selected')?.dataset.tier,
-    retireAge: num('retireAge'),
-    retireMonthly: num('retireMonthly'),
     incomeMain: num('incomeMain'),
-    selectedPlan: ''
+    investTotal: num('investTotal'),
+    retireAge: num('retireAge'),
+    retireMonthly: num('retireMonthly')
   };
 
   try {
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
       body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' } // text/plain prevents CORS preflight issue
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' }
     });
 
     statusEl.textContent = '✅ บันทึกข้อมูลเรียบร้อย!';
