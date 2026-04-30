@@ -72,7 +72,7 @@ container.appendChild(createSlide(1, `
         <div class="detail-group">
           <div class="detail-connector"></div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="inv_all">
-            <div class="detail-text">ทอง / กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div>
+            <div class="detail-text">ลงทุนในสินทรัพย์ต่าง ๆ เช่น<br>ทอง / กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div>
             <div class="detail-checkbox"></div>
           </div>
         </div>
@@ -81,15 +81,15 @@ container.appendChild(createSlide(1, `
         <div class="detail-group">
           <div class="detail-connector"></div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_edu">
-            <div class="detail-text">กองทุนการศึกษาลูก</div>
+            <div class="detail-text">วางแผนการศึกษาลูก</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_ret">
-            <div class="detail-text">กองทุนเพื่อการเกษียณ</div>
+            <div class="detail-text">วางแผนมรดก เช่น บ้าน, รถ, ที่ดิน, อื่นๆ</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_legacy">
-            <div class="detail-text">กองทุนมรดก (บ้าน, รถ, ที่ดิน, อื่นๆ)</div>
+            <div class="detail-text">วางแผนเกษียณ</div>
             <div class="detail-checkbox"></div>
           </div>
         </div>
@@ -102,11 +102,11 @@ container.appendChild(createSlide(1, `
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_long">
-            <div class="detail-text">ปกป้องรายได้ระยะยาว/ประกันโรคร้ายแรง (3-5 ปี)</div>
+            <div class="detail-text">ปกป้องรายได้ระยะยาว (3-5 ปี)</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_health">
-            <div class="detail-text">ปกป้องเงินออม/ประกันสุขภาพ (สวัสดิการรักษาพยาบาล)</div>
+            <div class="detail-text">ปกป้องเงินออม</div>
             <div class="detail-checkbox"></div>
           </div>
         </div>
@@ -419,21 +419,21 @@ document.querySelectorAll('#familyCards .select-card').forEach(card => {
 function calcEducation() {
   const schYears = num('eduSchoolYears');
   const uniYears = num('eduUniYears');
-  
+
   const schTierEl = document.querySelector('.tier-card-sch.selected');
   const uniTierEl = document.querySelector('.tier-card-uni.selected');
-  
+
   const schPrice = schTierEl ? parseInt(schTierEl.dataset.price) : 0;
   const uniPrice = uniTierEl ? parseInt(uniTierEl.dataset.price) : 0;
-  
+
   const totalSch = schYears * schPrice;
   const totalUni = uniYears * uniPrice;
   const total = totalSch + totalUni;
-  
+
   const el = document.getElementById('eduCalcResult');
   if (total > 0) {
     el.innerHTML = 'รวมทุนการศึกษาบุตรทั้งหมด: <span style="color:var(--aia-red);">' + fmt(total) + ' บาท</span><br>' +
-                   '<span style="font-size:0.85rem; font-weight:normal; color:var(--text-secondary);">(ระดับโรงเรียน ' + fmt(totalSch) + ' บาท + ระดับมหาวิทยาลัย ' + fmt(totalUni) + ' บาท)</span>';
+      '<span style="font-size:0.85rem; font-weight:normal; color:var(--text-secondary);">(ระดับโรงเรียน ' + fmt(totalSch) + ' บาท + ระดับมหาวิทยาลัย ' + fmt(totalUni) + ' บาท)</span>';
   } else {
     el.innerHTML = 'กรุณากรอกจำนวนปีเพื่อคำนวณ';
   }
@@ -451,23 +451,23 @@ function computeProtectionTip() {
   const tipShort = document.getElementById('tipShort');
   const tipLong = document.getElementById('tipLong');
   const tipRuleFinal = document.getElementById('incomeRuleFinal');
-  
+
   if (inc > 0) {
     totalDisplay.textContent = 'รายได้รวมต่อเดือน: ' + fmt(inc) + ' บาท';
-    
+
     const shortMin = inc * 3;
     const shortMax = inc * 6;
     tipShort.innerHTML = '💡 แผนที่ปลอดภัย: ~ <strong>' + fmt(shortMin) + ' - ' + fmt(shortMax) + '</strong> บาท';
-    
+
     const longMin = inc * 12 * 3;
     const longMax = inc * 12 * 5;
     tipLong.innerHTML = '💡 แผนที่ปลอดภัย: ~ <strong>' + fmt(longMin) + ' - ' + fmt(longMax) + '</strong> บาท';
-    
+
     const budgetYear = (inc * 12) * 0.15;
     tipRuleFinal.innerHTML = 'รายได้รวมต่อปีโดยประมาณ: <strong>' + fmt(inc * 12) + '</strong> บาท<br>' +
-                             'เงินที่นำมาวางแผนประกันและคุ้มครอง (ไม่ควรเกิน 15%):<br>' +
-                             '👉 สูงสุดไม่เกิน <strong style="color:var(--aia-red); font-size:1.1rem;">' + fmt(budgetYear) + '</strong> บาท/ปี ' +
-                             '<span style="font-size:0.8rem;">(หรือ ' + fmt(budgetYear / 12) + ' บาท/เดือน)</span>';
+      'เงินที่นำมาวางแผนประกันและคุ้มครอง (ไม่ควรเกิน 15%):<br>' +
+      '👉 สูงสุดไม่เกิน <strong style="color:var(--aia-red); font-size:1.1rem;">' + fmt(budgetYear) + '</strong> บาท/ปี ' +
+      '<span style="font-size:0.8rem;">(หรือ ' + fmt(budgetYear / 12) + ' บาท/เดือน)</span>';
   } else {
     totalDisplay.textContent = '';
     tipShort.innerHTML = '💡 แผนที่ปลอดภัย: กรุณากรอกรายได้';
@@ -492,9 +492,9 @@ function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
 
 // ============ ON SLIDE SAVE (CALCULATIONS) ============
 function onSlideSave(idx) {
-  if (idx === 4) computeRetirement(); 
-  if (idx === 10) computeWelfare(); 
-  if (idx === 14) computeSolution(); 
+  if (idx === 4) computeRetirement();
+  if (idx === 10) computeWelfare();
+  if (idx === 14) computeSolution();
 }
 
 // Welfare Calc
