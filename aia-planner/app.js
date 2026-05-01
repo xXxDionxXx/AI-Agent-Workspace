@@ -54,11 +54,11 @@ container.appendChild(createSlide(1, `
         <div class="pyramid-stack">
           <div class="pyramid-layer layer-a">
             <div class="pyramid-heading">Investment</div>
-            <div class="pyramid-sub">ลงทุน/ต่อยอด</div>
+            <div class="pyramid-sub">ลงทุน</div>
           </div>
           <div class="pyramid-layer layer-b">
             <div class="pyramid-heading">Saving</div>
-            <div class="pyramid-sub">ออมเพื่อเป้าหมาย</div>
+            <div class="pyramid-sub">ออมเงินเพื่อเป้าหมาย</div>
           </div>
           <div class="pyramid-layer layer-c">
             <div class="pyramid-heading">Protection</div>
@@ -72,7 +72,7 @@ container.appendChild(createSlide(1, `
         <div class="detail-group">
           <div class="detail-connector"></div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="inv_all">
-            <div class="detail-text">ลงทุนในสินทรัพย์ต่าง ๆ เช่น<br>ทอง / กองทุนรวม / หุ้น / อสังหาริมทรัพย์ / อื่นๆ</div>
+            <div class="detail-text">ธุรกิจ / อสังหา / หุ้น / กองทุน / ทอง / อื่น ๆ</div>
             <div class="detail-checkbox"></div>
           </div>
         </div>
@@ -81,15 +81,19 @@ container.appendChild(createSlide(1, `
         <div class="detail-group">
           <div class="detail-connector"></div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_edu">
-            <div class="detail-text">วางแผนการศึกษาลูก</div>
+            <div class="detail-text">เงินสด</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_ret">
-            <div class="detail-text">วางแผนมรดก เช่น บ้าน, รถ, ที่ดิน, อื่นๆ</div>
+            <div class="detail-text">บ้าน / รถ / ที่ดิน / อื่น ๆ</div>
+            <div class="detail-checkbox"></div>
+          </div>
+          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_ret">
+            <div class="detail-text">ค่าเทอมลูก</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="sav_legacy">
-            <div class="detail-text">วางแผนเกษียณ</div>
+            <div class="detail-text">เกษียณ</div>
             <div class="detail-checkbox"></div>
           </div>
         </div>
@@ -98,11 +102,7 @@ container.appendChild(createSlide(1, `
         <div class="detail-group">
           <div class="detail-connector"></div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_short">
-            <div class="detail-text">ปกป้องรายได้ระยะสั้น/เงินสำรองฉุกเฉิน (3-6 เดือน)</div>
-            <div class="detail-checkbox"></div>
-          </div>
-          <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_long">
-            <div class="detail-text">ปกป้องรายได้ระยะยาว (3-5 ปี)</div>
+            <div class="detail-text">ปกป้องรายได้ / เงินสำรองฉุกเฉิน</div>
             <div class="detail-checkbox"></div>
           </div>
           <div class="detail-box" onclick="toggleDetailCheck(this)" data-plan="pro_health">
