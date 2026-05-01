@@ -1,4 +1,34 @@
-let currentSlide=0;const TOTAL_SLIDES=15;
+let currentSlide=0;const TOTAL_SLIDES=17;
+
+// Slide-to-plan mapping: which data-plan checkbox must be checked for each slide to be active
+const SLIDE_PLAN_MAP = {
+  2: 'inv_all',      // INVESTMENT
+  3: 'sav_edu',      // EDUCATION
+  4: 'sav_retire',   // RETIREMENT
+  5: 'sav_asset',    // กองทุนมรดก
+  12: 'tax_plan',    // TAX PLANNING
+};
+
+function updateSlideOverlays() {
+  Object.entries(SLIDE_PLAN_MAP).forEach(([slideIdx, planKey]) => {
+    const slide = document.getElementById('slide-' + slideIdx);
+    if (!slide) return;
+    const planBox = document.querySelector('[data-plan="' + planKey + '"]');
+    const isChecked = planBox && planBox.classList.contains('checked');
+    let overlay = slide.querySelector('.slide-disabled-overlay');
+    if (!isChecked) {
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'slide-disabled-overlay';
+        overlay.innerHTML = '<div class="disabled-msg"><h3>⏸ ยังไม่ได้เลือกวางแผนในหมวดนี้</h3><p>กลับไปที่หน้า Financial Plans เพื่อเลือก checkbox หมวดนี้</p></div>';
+        slide.querySelector('.slide-inner').style.position = 'relative';
+        slide.querySelector('.slide-inner').appendChild(overlay);
+      }
+    } else if (overlay) {
+      overlay.remove();
+    }
+  });
+}
 
 function goToSlide(n){
   const slides=document.querySelectorAll('.slide');
@@ -10,6 +40,7 @@ function goToSlide(n){
   document.getElementById('btnPrev').disabled=n===0;
   const btn=document.getElementById('btnNext');
   btn.innerHTML=n===slides.length-1?'✓':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  updateSlideOverlays();
 }
 function nextSlide(){if(typeof onSlideSave==='function')onSlideSave(currentSlide);if(currentSlide<TOTAL_SLIDES-1)goToSlide(currentSlide+1)}
 function prevSlide(){if(currentSlide>0)goToSlide(currentSlide-1)}

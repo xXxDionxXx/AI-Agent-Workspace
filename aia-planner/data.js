@@ -134,28 +134,28 @@ const SCHOOL_TIERS = [
     id: 'gov', name: 'โรงเรียนรัฐบาล (สพฐ.)',
     desc: 'ห้องปกติ (8k-12k) / ห้องพิเศษ EP (35k-50k)',
     price: '8,000 - 50,000 บาท/ปี',
-    priceNum: 50000,
+    priceNum: 50000, priceMin: 8000, priceMax: 50000,
     examples: 'สวนกุหลาบ, เตรียมอุดม, สามเสน, สตรีวิทยา',
   },
   {
     id: 'private', name: 'โรงเรียนเอกชน (ไทย/สองภาษา)',
     desc: 'หลักสูตรไทย (50k-80k) / Bilingual (150k-250k)',
     price: '50,000 - 250,000 บาท/ปี',
-    priceNum: 150000,
+    priceNum: 150000, priceMin: 50000, priceMax: 250000,
     examples: 'กรุงเทพคริสเตียน, อัสสัมชัญ, สาธิตพัฒนา',
   },
   {
     id: 'inter_b', name: 'โรงเรียนนานาชาติ (Tier B)',
     desc: 'หลักสูตรต่างประเทศ ระดับเริ่มต้น-กลาง',
     price: '350,000 - 550,000 บาท/ปี',
-    priceNum: 450000,
+    priceNum: 450000, priceMin: 350000, priceMax: 550000,
     examples: 'EIS, St.Andrews, Wells',
   },
   {
     id: 'inter_a', name: 'โรงเรียนนานาชาติ (Tier A)',
     desc: 'ระดับพรีเมียม ค่าเทอมสูงสุด',
     price: '800,000 - 1,000,000+ บาท/ปี',
-    priceNum: 1000000,
+    priceNum: 1000000, priceMin: 800000, priceMax: 1000000,
     examples: 'NIST, ISB, Harrow',
   },
 ];
@@ -165,35 +165,147 @@ const UNI_TIERS = [
     id: 'gov_norm', name: 'มหาวิทยาลัยรัฐ (ภาคปกติ)',
     desc: 'จุฬาฯ, มธ., มก.',
     price: '28,000 - 45,000 บาท/ปี',
-    priceNum: 40000,
+    priceNum: 40000, priceMin: 28000, priceMax: 45000,
     examples: 'จุฬาฯ, ธรรมศาสตร์, เกษตรศาสตร์',
   },
   {
     id: 'gov_sp', name: 'มหาวิทยาลัยรัฐ (โครงการพิเศษ)',
     desc: 'วิศวะ มก., มนุษย์ มศว., วิทย์ มหิดล',
     price: '60,000 - 100,000 บาท/ปี',
-    priceNum: 80000,
+    priceNum: 80000, priceMin: 60000, priceMax: 100000,
     examples: 'ม.เกษตรศาสตร์, มศว, มหิดล',
   },
   {
     id: 'private', name: 'มหาวิทยาลัยเอกชน',
     desc: 'หลักสูตรไทย',
     price: '80,000 - 140,000 บาท/ปี',
-    priceNum: 110000,
+    priceNum: 110000, priceMin: 80000, priceMax: 140000,
     examples: 'ม.กรุงเทพ, หอการค้าไทย, ม.รังสิต',
   },
   {
     id: 'inter_b', name: 'มหาวิทยาลัยอินเตอร์ (Tier B)',
     desc: 'ระดับเริ่มต้น-กลาง',
     price: '150,000 - 300,000 บาท/ปี',
-    priceNum: 200000,
+    priceNum: 200000, priceMin: 150000, priceMax: 300000,
     examples: 'Stamford, MUIC, BU International',
   },
   {
     id: 'inter_a', name: 'มหาวิทยาลัยอินเตอร์ (Tier A)',
     desc: 'ระดับพรีเมียม',
     price: '180,000 - 500,000 บาท/ปี',
-    priceNum: 300000,
+    priceNum: 300000, priceMin: 180000, priceMax: 500000,
     examples: 'AIT, BBA จุฬาฯ, BBA ธรรมศาสตร์',
   },
 ];
+
+// --- Welfare Comparison Data ---
+const WELFARE_COMPARE = {
+  categories: [
+    { cat: '1. ค่าห้องพัก (ต่อวัน)', items: [
+      { name: 'ห้องรวม รพ.รัฐ', gold: '✅', social: '✅', gov: '✅', private: '✅' },
+      { name: 'ห้องเดี่ยว รพ.รัฐ', gold: '❌', social: '700', gov: '1,000', private: '4,000 / 6,000 / 9,000' },
+      { name: 'ห้องเดี่ยว รพ.เอกชน', gold: '❌', social: '❌', gov: '❌', private: '4,000 / 6,000 / 9,000' },
+    ]},
+    { cat: '2. ยาและการรักษา', items: [
+      { name: 'ยาในบัญชี', gold: '✅', social: '✅', gov: '✅', private: '✅' },
+      { name: 'ยานอกบัญชี', gold: '⚠️ จำกัด', social: '—', gov: '—', private: '✅' },
+      { name: 'ยามุ่งเป้า (โรคร้ายแรง)', gold: '⚠️ เข้าถึงยาก', social: '—', gov: '—', private: '✅ 1/30/50 ล้าน' },
+      { name: 'ผู้ป่วยนอก (OPD)', gold: '✅', social: '✅', gov: '✅', private: '1,500 - 2,000' },
+    ]},
+    { cat: '3. บริการและความเร็ว', items: [
+      { name: 'ความรวดเร็ว / คิวผ่าตัด', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
+      { name: 'อิสระในการเลือกหมอ', gold: '❌', social: '❌', gov: '❌', private: '✅' },
+    ]},
+  ]
+};
+
+// --- Health Plans ---
+const HEALTH_PLANS = [
+  { id: 'economy', name: 'Economy Class', icon: '✈️', room: '4,000', roomNum: 4000,
+    ci: '✅ 1 ล้าน / 4 ปี', opd: '1,500', color: 'var(--aia-blue)' },
+  { id: 'business', name: 'Business Class', icon: '🌟', room: '6,000', roomNum: 6000,
+    ci: '✅ 30 ล้าน / 4 ปี', opd: '❌', color: '#7c3aed' },
+  { id: 'first', name: 'First Class', icon: '👑', room: '9,000', roomNum: 9000,
+    ci: '✅ 50 ล้าน / 4 ปี', opd: '2,000', color: 'var(--aia-red)' },
+];
+
+// --- Hospital Plan Mapping ---
+const HOSPITAL_PLAN_MAP = {
+  luxury: { minRoom: 12000, recommended: 'first', gap: { economy: '8,000+', business: '6,000+', first: '3,000+' }},
+  highend: { minRoom: 6000, recommended: 'business', gap: { economy: '2,000+', business: '0', first: '0' }},
+  standard: { minRoom: 3000, recommended: 'economy', gap: { economy: '0', business: '0', first: '0' }},
+  gov: { minRoom: 2000, recommended: 'economy', gap: { economy: '0', business: '0', first: '0' }},
+};
+
+// --- Tax Data ---
+const TAX_REVENUE_TYPES = [
+  { id: '40_1', name: '40(1) เงินเดือน, โบนัส', question: 'มีรายได้ประจำจากพนักงาน/ข้าราชการ?', deductRate: 0.5, deductMax: 100000, group: '1_2' },
+  { id: '40_2', name: '40(2) ค่าคอมมิชชัน, รับจ้าง', question: 'มีค่าตอบแทนจากนายหน้า/รับจ้างอิสระ?', deductRate: 0.5, deductMax: 100000, group: '1_2' },
+  { id: '40_3', name: '40(3) ค่าลิขสิทธิ์', question: 'มีรายได้จากสิทธิบัตร/งานเขียน?', deductRate: 0.5, deductMax: 100000 },
+  { id: '40_4', name: '40(4) เงินปันผล, ดอกเบี้ย', question: 'มีเงินปันผลหุ้น/ดอกเบี้ย?', deductRate: 0, deductMax: 0 },
+  { id: '40_5', name: '40(5) ค่าเช่า', question: 'มีรายได้จากการให้เช่าทรัพย์สิน?', deductRate: 0.2, deductMax: null },
+  { id: '40_6', name: '40(6) วิชาชีพเฉพาะ', question: 'เป็นหมอ/วิศวกร/ทนาย?', deductRate: 0.3, deductMax: null },
+  { id: '40_7', name: '40(7) รับเหมา', question: 'มีงานรับเหมาก่อสร้าง?', deductRate: 0.6, deductMax: null },
+  { id: '40_8', name: '40(8) ธุรกิจ/อื่นๆ', question: 'ทำธุรกิจ/ขายของออนไลน์?', deductRate: 0.6, deductMax: null },
+];
+
+const TAX_DEDUCTIONS = [
+  { cat: 'ส่วนตัวและครอบครัว', items: [
+    { id: 'ded_self', name: 'ค่าลดหย่อนส่วนตัว', max: 60000, auto: true },
+    { id: 'ded_spouse', name: 'คู่สมรส (ไม่มีรายได้)', max: 60000 },
+    { id: 'ded_child', name: 'บุตร (คนละ)', max: 30000, note: 'คนที่ 2+ เกิดหลัง 2561 ได้ 60,000' },
+    { id: 'ded_parent', name: 'บิดามารดา (คนละ)', max: 30000, note: 'อายุ 60+, รายได้ไม่เกิน 30,000/ปี' },
+  ]},
+  { cat: 'ประกันภัย', items: [
+    { id: 'ded_life_ins', name: 'ประกันชีวิต/สะสมทรัพย์', max: 100000, note: 'คุ้มครอง 10 ปี+' },
+    { id: 'ded_health_ins', name: 'ประกันสุขภาพตนเอง', max: 25000, note: 'รวมประกันชีวิตไม่เกิน 100,000' },
+    { id: 'ded_parent_health', name: 'ประกันสุขภาพพ่อแม่', max: 15000 },
+    { id: 'ded_social', name: 'ประกันสังคม', max: 9000 },
+  ]},
+  { cat: 'เกษียณ (รวมกันไม่เกิน 500,000)', items: [
+    { id: 'ded_pension_ins', name: 'ประกันบำนาญ', max: 200000, note: 'ไม่เกิน 15% ของรายได้' },
+    { id: 'ded_pvd', name: 'PVD / กบข.', max: 500000, note: 'ไม่เกิน 15% ของค่าจ้าง' },
+    { id: 'ded_ssf', name: 'กองทุน SSF', max: 200000, note: 'ไม่เกิน 30% ของรายได้' },
+    { id: 'ded_rmf', name: 'กองทุน RMF', max: 500000, note: 'ไม่เกิน 30% ของรายได้' },
+  ]},
+  { cat: 'อื่นๆ', items: [
+    { id: 'ded_housing', name: 'ดอกเบี้ยกู้ยืมบ้าน', max: 100000 },
+    { id: 'ded_thai_esg', name: 'กองทุน ThaiESG', max: 300000, note: 'ไม่เกิน 30% / ไม่อยู่ในถัง 5 แสน' },
+    { id: 'ded_donate', name: 'เงินบริจาคทั่วไป', max: null, note: 'ไม่เกิน 10% ของเงินได้หลังหัก' },
+    { id: 'ded_donate2x', name: 'เงินบริจาค 2 เท่า', max: null, note: 'สถานศึกษา/รพ.รัฐ/กีฬา' },
+  ]},
+];
+
+const TAX_BRACKETS = [
+  { min: 0, max: 150000, rate: 0 },
+  { min: 150001, max: 300000, rate: 0.05 },
+  { min: 300001, max: 500000, rate: 0.10 },
+  { min: 500001, max: 750000, rate: 0.15 },
+  { min: 750001, max: 1000000, rate: 0.20 },
+  { min: 1000001, max: 2000000, rate: 0.25 },
+  { min: 2000001, max: 5000000, rate: 0.30 },
+  { min: 5000001, max: Infinity, rate: 0.35 },
+];
+
+function calcTax(netIncome) {
+  let tax = 0;
+  for (const b of TAX_BRACKETS) {
+    if (netIncome <= 0) break;
+    const taxable = Math.min(netIncome, b.max - b.min + 1);
+    if (netIncome > b.min - 1) {
+      const amt = Math.min(netIncome - (b.min - 1), b.max - b.min + 1);
+      tax += amt * b.rate;
+    }
+  }
+  // Simpler recalc
+  tax = 0;
+  let remaining = netIncome;
+  for (const b of TAX_BRACKETS) {
+    if (remaining <= 0) break;
+    const width = b.max === Infinity ? remaining : (b.max - b.min + 1);
+    const taxableInBracket = Math.min(remaining, width);
+    tax += taxableInBracket * b.rate;
+    remaining -= taxableInBracket;
+  }
+  return Math.max(tax, 0);
+}
