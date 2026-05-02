@@ -1,24 +1,13 @@
 // ============ DATA LAYER ============
 
-// --- Welfare Data (migrated from welfare-gap-tool) ---
+// --- Welfare Data ---
 const WELFARE = {
   social33: {
-    label: 'ประกันสังคม (ม.33)', emoji: '🔵',
+    label: 'ประกันสังคม', emoji: '🔵',
     tagText: 'สวัสดิการพนักงานเอกชน',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล (เทียบกับประกันสุขภาพ)', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.รัฐ หรือเอกชนบางแห่งตามสิทธิ์', s: 'yellow' },
-        { n: 'Economy Class', d: 'ครอบคลุม รพ.เอกชนระดับ Standard (เช่น สินแพทย์, เปาโล)', s: 'green' },
-        { n: 'Business / First Class', d: 'ครอบคลุม รพ.เอกชน High-end ถึง Luxury (เช่น กรุงเทพ, บำรุงราษฎร์)', s: 'green' },
-      ]},
-      { cat: '💊 ค่ายาและโรคร้ายแรง', items: [
-        { n: 'สิทธิ์ประกันสังคม', d: 'จำกัดยาตามบัญชี / ไม่มียามุ่งเป้า (Targeted Therapy) / ไม่มีรังสีรักษาใหม่', s: 'red' },
-        { n: 'Economy Class', d: 'คุ้มครองโรคทั่วไป แต่อาจไม่ครอบคลุมยามุ่งเป้าหรือโรคร้ายแรงเต็มที่', s: 'yellow' },
-        { n: 'Business / First Class', d: 'ครอบคลุมค่ายามุ่งเป้า รังสีรักษา และโรคร้ายแรงหายห่วง', s: 'green' },
-      ]},
-      { cat: '💰 สวัสดิการอื่นๆ', items: [
-        { n: 'ทุพพลภาพ / เสียชีวิต', d: 'มีเงินก้อนจำกัด (ทุพพลภาพสูงสุด 8,750/ด. | เสียชีวิต 50,000 บ.)', s: 'red' },
-        { n: 'บำนาญชราภาพ', d: 'ได้รับเมื่ออายุ 55 ปี (เฉลี่ย 3,000 - 5,250 บ./ด.)', s: 'yellow' },
+      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
+        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.ตามสิทธิ์', s: 'yellow' }
       ]},
     ]
   },
@@ -26,18 +15,8 @@ const WELFARE = {
     label: 'ข้าราชการ', emoji: '💼',
     tagText: 'สวัสดิการกรมบัญชีกลาง',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล (เทียบกับประกันสุขภาพ)', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.รัฐ (หากเข้าเอกชนเบิกได้แค่ฉุกเฉิน 72 ชม.)', s: 'yellow' },
-        { n: 'ค่าห้องพิเศษ', d: 'เบิกได้จำกัด (เช่น 1,000 บ./วัน) ซึ่งไม่พอจ่ายจริง', s: 'red' },
-        { n: 'Economy Class', d: 'เข้า รพ.เอกชน Standard ได้หมดกังวลเรื่องค่าห้อง', s: 'green' },
-      ]},
-      { cat: '💊 ค่ายาและโรคร้ายแรง', items: [
-        { n: 'สิทธิ์ข้าราชการ', d: 'ยาตามบัญชีฟรี แต่ยานอกบัญชี/ยามุ่งเป้า/รังสีรักษา เบิกไม่ได้', s: 'red' },
-        { n: 'Business / First Class', d: 'ครอบคลุมยามุ่งเป้า และค่ารักษาโรคร้ายแรงหลักล้าน', s: 'green' },
-      ]},
-      { cat: '💰 สวัสดิการอื่นๆ', items: [
-        { n: 'บำนาญ', d: 'สูงสุด 70% ของเงินเดือน + กบข. + บำเหน็จตกทอด', s: 'green' },
-        { n: 'คุ้มครองชีวิต', d: 'ไม่มีทุนประกันชีวิตเพิ่มเติม', s: 'red' },
+      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
+        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.รัฐ (เอกชนได้แค่ฉุกเฉิน 72 ชม.)', s: 'yellow' }
       ]},
     ]
   },
@@ -45,18 +24,8 @@ const WELFARE = {
     label: 'บัตรทอง', emoji: '💳',
     tagText: 'หลักประกันสุขภาพถ้วนหน้า',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล (เทียบกับประกันสุขภาพ)', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'รักษาฟรีเฉพาะ รพ.รัฐในสิทธิ์ (คิวยาว)', s: 'yellow' },
-        { n: 'Economy Class', d: 'สามารถเลือกเข้า รพ.เอกชนระดับ Standard ได้ ไม่ต้องรอคิว', s: 'green' },
-        { n: 'First Class', d: 'เข้า รพ.ระดับ Luxury รับบริการแบบโรงแรม 5 ดาว', s: 'green' },
-      ]},
-      { cat: '💊 ค่ายาและโรคร้ายแรง', items: [
-        { n: 'สิทธิ์บัตรทอง', d: 'ยานอกบัญชีและยามุ่งเป้าต้องจ่ายเองทั้งหมด', s: 'red' },
-        { n: 'Business / First Class', d: 'คุ้มครองยามุ่งเป้า (Targeted Therapy) และโรคร้ายแรง', s: 'green' },
-      ]},
-      { cat: '💰 สวัสดิการอื่นๆ', items: [
-        { n: 'ทุพพลภาพ / เสียชีวิต', d: 'ไม่มี', s: 'red' },
-        { n: 'บำนาญ', d: 'ไม่มี', s: 'red' },
+      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
+        { n: 'รพ.ที่เข้ารับการรักษา', d: 'รักษาฟรีเฉพาะ รพ.รัฐในสิทธิ์', s: 'yellow' }
       ]},
     ]
   }
@@ -73,7 +42,7 @@ const HOSPITAL_TIERS = [
   },
   {
     id: 'highend', name: 'High-End',
-    desc: 'โรงพยาบาลมาตรฐานสูง — ยอดนิยมสำหรับแผนกลาง-บน',
+    desc: 'โรงพยาบาลมาตรฐานสูง',
     price: '6,000-10,000 บาท/วัน',
     priceNum: 8000,
     hospitals: 'กรุงเทพ, พญาไท 2, พระราม 9, วิชัยยุทธ, นนทเวช',
@@ -85,48 +54,7 @@ const HOSPITAL_TIERS = [
     priceNum: 5000,
     hospitals: 'สินแพทย์, วิภาวดี, เกษมราษฎร์, เปาโล, ไทยนครินทร์',
   },
-  {
-    id: 'gov', name: 'Government',
-    desc: 'โรงพยาบาลรัฐ ห้องพิเศษ',
-    price: '2,000-5,000 บาท/วัน',
-    priceNum: 3500,
-    hospitals: 'จุฬาลงกรณ์, ศิริราช, รามาธิบดี, ธรรมศาสตร์',
-  },
 ];
-
-// --- AIA Products ---
-const AIA_PRODUCTS = {
-  ci: {
-    name: 'AIA CI Super Care',
-    type: 'ประกันโรคร้ายแรง (เบี้ยไม่ทิ้ง)',
-    desc: 'คุ้มครอง 62 โรคร้ายแรง ชำระเบี้ย 10/20 ปี คุ้มครองถึง 99 ปี เบี้ยคงที่ มีมูลค่าเวนคืน',
-    forWho: 'คนที่มีภาระ มีครอบครัว ต้องการปกป้องรายได้',
-  },
-  ciMulti: {
-    name: 'AIA Multi-Pay CI Plus',
-    type: 'ประกันโรคร้ายแรง (เจอ-จ่าย-หลายจบ)',
-    desc: 'เคลมได้หลายครั้ง ครอบคลุมตั้งแต่ระยะเริ่มต้นถึงรุนแรง สูงสุด 5-6 ครั้ง',
-    forWho: 'คนที่ต้องการความคุ้มครองสูงสุดจากโรคร้ายแรง',
-  },
-  life: {
-    name: 'AIA 20 Pay Life',
-    type: 'ประกันชีวิตตลอดชีพ (เบี้ยไม่ทิ้ง)',
-    desc: 'ชำระเบี้ย 20 ปี คุ้มครองถึง 99 ปี มีมูลค่าเวนคืน ใช้เป็นสัญญาหลักแนบสัญญาสุขภาพ',
-    forWho: 'คนที่มีภาระหนี้สิน ต้องการหลักประกันให้ครอบครัว',
-  },
-  healthHappy: {
-    name: 'AIA Health Happy',
-    type: 'ประกันสุขภาพเหมาจ่าย',
-    desc: 'เหมาจ่ายค่ารักษาตามจริง คุ้มครองถึง 99 ปี เจอ 6 โรคร้ายวงเงินเพิ่ม 2 เท่า 4 ปี วงเงิน 1-25 ล้านบาท/ปี',
-    forWho: 'คนที่ต้องการอัพเกรดคุณภาพชีวิต เลือก รพ.เอกชนได้',
-  },
-  healthSaver: {
-    name: 'AIA Health Saver',
-    type: 'ประกันสุขภาพกึ่งเหมาจ่าย',
-    desc: 'วงเงินเริ่มต้น 5 แสนบาท ราคาจับต้องได้ เหมาะเป็นแผนเริ่มต้น',
-    forWho: 'คนงบจำกัดที่ต้องการความคุ้มครองพื้นฐาน',
-  },
-};
 
 // --- Education Tiers ---
 const SCHOOL_TIERS = [
@@ -202,19 +130,19 @@ const UNI_TIERS = [
 const WELFARE_COMPARE = {
   categories: [
     { cat: '1. ค่าห้องพัก (ต่อวัน)', items: [
-      { name: 'ห้องรวม รพ.รัฐ', gold: '✅', social: '✅', gov: '✅', private: '✅' },
       { name: 'ห้องเดี่ยว รพ.รัฐ', gold: '❌', social: '700', gov: '1,000', private: '4,000 / 6,000 / 9,000' },
       { name: 'ห้องเดี่ยว รพ.เอกชน', gold: '❌', social: '❌', gov: '❌', private: '4,000 / 6,000 / 9,000' },
     ]},
     { cat: '2. ยาและการรักษา', items: [
       { name: 'ยาในบัญชี', gold: '✅', social: '✅', gov: '✅', private: '✅' },
-      { name: 'ยานอกบัญชี', gold: '⚠️ จำกัด', social: '—', gov: '—', private: '✅' },
-      { name: 'ยามุ่งเป้า (โรคร้ายแรง)', gold: '⚠️ เข้าถึงยาก', social: '—', gov: '—', private: '✅ 1/30/50 ล้าน' },
+      { name: 'ยานอกบัญชี', gold: '⚠️ จำกัดมาก', social: '⚠️ ขึ้นอยู่กับหมอ/รพ.', gov: '⚠️ ยาไทยได้ แต่ Co-payment ยานอก', private: '✅' },
+      { name: 'ยามุ่งเป้า / รังสีรักษา (โรคร้ายแรง)', gold: '⚠️ จำกัดยา / คิวนาน', social: '⚠️ ขึ้นอยู่กับหมอ/รพ.', gov: '⚠️ เงื่อนไขซับซ้อน / มีส่วนต่าง', private: '10 / 30 / 50 ล้าน' },
       { name: 'ผู้ป่วยนอก (OPD)', gold: '✅', social: '✅', gov: '✅', private: '1,500 - 2,000' },
     ]},
     { cat: '3. บริการและความเร็ว', items: [
-      { name: 'ความรวดเร็ว / คิวผ่าตัด', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
-      { name: 'อิสระในการเลือกหมอ', gold: '❌', social: '❌', gov: '❌', private: '✅' },
+      { name: 'เทคโนโลยี / คุณภาพการรักษา', gold: '⭐', social: '⭐', gov: '⭐⭐', private: '⭐⭐⭐⭐⭐' },
+      { name: 'ความรวดเร็ว / ไม่ต้องรอคิว', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
+      { name: 'คุณภาพบริการ / สถานที่', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
     ]},
   ]
 };
@@ -222,60 +150,14 @@ const WELFARE_COMPARE = {
 // --- Health Plans ---
 const HEALTH_PLANS = [
   { id: 'economy', name: 'Economy Class', icon: '✈️', room: '4,000', roomNum: 4000,
-    ci: '✅ 1 ล้าน / 4 ปี', opd: '1,500', color: 'var(--aia-blue)' },
+    ci: '✅ 10 ล้าน / 4 ปี', opd: '❌', note: '(เหมาจ่าย 5 ล้าน)', color: 'var(--aia-blue)' },
   { id: 'business', name: 'Business Class', icon: '🌟', room: '6,000', roomNum: 6000,
-    ci: '✅ 30 ล้าน / 4 ปี', opd: '❌', color: '#7c3aed' },
+    ci: '✅ 30 ล้าน / 4 ปี', opd: '❌', note: '(เหมาจ่าย 15 ล้าน)', color: '#7c3aed' },
   { id: 'first', name: 'First Class', icon: '👑', room: '9,000', roomNum: 9000,
-    ci: '✅ 50 ล้าน / 4 ปี', opd: '2,000', color: 'var(--aia-red)' },
+    ci: '✅ 50 ล้าน / 4 ปี', opd: '2,000', note: '(เหมาจ่าย 25 ล้าน)', color: 'var(--aia-red)' },
 ];
 
-// --- Hospital Plan Mapping ---
-const HOSPITAL_PLAN_MAP = {
-  luxury: { minRoom: 12000, recommended: 'first', gap: { economy: '8,000+', business: '6,000+', first: '3,000+' }},
-  highend: { minRoom: 6000, recommended: 'business', gap: { economy: '2,000+', business: '0', first: '0' }},
-  standard: { minRoom: 3000, recommended: 'economy', gap: { economy: '0', business: '0', first: '0' }},
-  gov: { minRoom: 2000, recommended: 'economy', gap: { economy: '0', business: '0', first: '0' }},
-};
-
-// --- Tax Data ---
-const TAX_REVENUE_TYPES = [
-  { id: '40_1', name: '40(1) เงินเดือน, โบนัส', question: 'มีรายได้ประจำจากพนักงาน/ข้าราชการ?', deductRate: 0.5, deductMax: 100000, group: '1_2' },
-  { id: '40_2', name: '40(2) ค่าคอมมิชชัน, รับจ้าง', question: 'มีค่าตอบแทนจากนายหน้า/รับจ้างอิสระ?', deductRate: 0.5, deductMax: 100000, group: '1_2' },
-  { id: '40_3', name: '40(3) ค่าลิขสิทธิ์', question: 'มีรายได้จากสิทธิบัตร/งานเขียน?', deductRate: 0.5, deductMax: 100000 },
-  { id: '40_4', name: '40(4) เงินปันผล, ดอกเบี้ย', question: 'มีเงินปันผลหุ้น/ดอกเบี้ย?', deductRate: 0, deductMax: 0 },
-  { id: '40_5', name: '40(5) ค่าเช่า', question: 'มีรายได้จากการให้เช่าทรัพย์สิน?', deductRate: 0.2, deductMax: null },
-  { id: '40_6', name: '40(6) วิชาชีพเฉพาะ', question: 'เป็นหมอ/วิศวกร/ทนาย?', deductRate: 0.3, deductMax: null },
-  { id: '40_7', name: '40(7) รับเหมา', question: 'มีงานรับเหมาก่อสร้าง?', deductRate: 0.6, deductMax: null },
-  { id: '40_8', name: '40(8) ธุรกิจ/อื่นๆ', question: 'ทำธุรกิจ/ขายของออนไลน์?', deductRate: 0.6, deductMax: null },
-];
-
-const TAX_DEDUCTIONS = [
-  { cat: 'ส่วนตัวและครอบครัว', items: [
-    { id: 'ded_self', name: 'ค่าลดหย่อนส่วนตัว', max: 60000, auto: true },
-    { id: 'ded_spouse', name: 'คู่สมรส (ไม่มีรายได้)', max: 60000 },
-    { id: 'ded_child', name: 'บุตร (คนละ)', max: 30000, note: 'คนที่ 2+ เกิดหลัง 2561 ได้ 60,000' },
-    { id: 'ded_parent', name: 'บิดามารดา (คนละ)', max: 30000, note: 'อายุ 60+, รายได้ไม่เกิน 30,000/ปี' },
-  ]},
-  { cat: 'ประกันภัย', items: [
-    { id: 'ded_life_ins', name: 'ประกันชีวิต/สะสมทรัพย์', max: 100000, note: 'คุ้มครอง 10 ปี+' },
-    { id: 'ded_health_ins', name: 'ประกันสุขภาพตนเอง', max: 25000, note: 'รวมประกันชีวิตไม่เกิน 100,000' },
-    { id: 'ded_parent_health', name: 'ประกันสุขภาพพ่อแม่', max: 15000 },
-    { id: 'ded_social', name: 'ประกันสังคม', max: 9000 },
-  ]},
-  { cat: 'เกษียณ (รวมกันไม่เกิน 500,000)', items: [
-    { id: 'ded_pension_ins', name: 'ประกันบำนาญ', max: 200000, note: 'ไม่เกิน 15% ของรายได้' },
-    { id: 'ded_pvd', name: 'PVD / กบข.', max: 500000, note: 'ไม่เกิน 15% ของค่าจ้าง' },
-    { id: 'ded_ssf', name: 'กองทุน SSF', max: 200000, note: 'ไม่เกิน 30% ของรายได้' },
-    { id: 'ded_rmf', name: 'กองทุน RMF', max: 500000, note: 'ไม่เกิน 30% ของรายได้' },
-  ]},
-  { cat: 'อื่นๆ', items: [
-    { id: 'ded_housing', name: 'ดอกเบี้ยกู้ยืมบ้าน', max: 100000 },
-    { id: 'ded_thai_esg', name: 'กองทุน ThaiESG', max: 300000, note: 'ไม่เกิน 30% / ไม่อยู่ในถัง 5 แสน' },
-    { id: 'ded_donate', name: 'เงินบริจาคทั่วไป', max: null, note: 'ไม่เกิน 10% ของเงินได้หลังหัก' },
-    { id: 'ded_donate2x', name: 'เงินบริจาค 2 เท่า', max: null, note: 'สถานศึกษา/รพ.รัฐ/กีฬา' },
-  ]},
-];
-
+// --- Tax Brackets ---
 const TAX_BRACKETS = [
   { min: 0, max: 150000, rate: 0 },
   { min: 150001, max: 300000, rate: 0.05 },
@@ -289,16 +171,6 @@ const TAX_BRACKETS = [
 
 function calcTax(netIncome) {
   let tax = 0;
-  for (const b of TAX_BRACKETS) {
-    if (netIncome <= 0) break;
-    const taxable = Math.min(netIncome, b.max - b.min + 1);
-    if (netIncome > b.min - 1) {
-      const amt = Math.min(netIncome - (b.min - 1), b.max - b.min + 1);
-      tax += amt * b.rate;
-    }
-  }
-  // Simpler recalc
-  tax = 0;
   let remaining = netIncome;
   for (const b of TAX_BRACKETS) {
     if (remaining <= 0) break;

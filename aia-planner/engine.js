@@ -1,12 +1,15 @@
-let currentSlide=0;const TOTAL_SLIDES=17;
+let currentSlide=0;const TOTAL_SLIDES=15;
 
 // Slide-to-plan mapping: which data-plan checkbox must be checked for each slide to be active
 const SLIDE_PLAN_MAP = {
-  2: 'inv_all',      // INVESTMENT
-  3: 'sav_edu',      // EDUCATION
-  4: 'sav_retire',   // RETIREMENT
-  5: 'sav_asset',    // กองทุนมรดก
-  12: 'tax_plan',    // TAX PLANNING
+  3: 'pro_income',   // Income Protection
+  4: 'sav_asset',    // Asset & Liab
+  5: 'sav_edu',      // Education
+  6: 'sav_retire',   // Retirement
+  7: 'pro_savings',  // Welfare Selection
+  8: 'pro_savings',  // Welfare Compare
+  9: 'pro_savings',  // Health Plan
+  10: 'tax_plan',    // Tax
 };
 
 function updateSlideOverlays() {
@@ -46,7 +49,6 @@ function nextSlide(){if(typeof onSlideSave==='function')onSlideSave(currentSlide
 function prevSlide(){if(currentSlide>0)goToSlide(currentSlide-1)}
 
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide()}if(e.key==='ArrowLeft'){e.preventDefault();prevSlide()}});
-// Touch swipe gestures removed as requested
 
 // Platform toggle
 document.querySelectorAll('.plat-btn').forEach(b=>{b.addEventListener('click',()=>{
@@ -60,4 +62,4 @@ function pri(l){return({must:'🔴',should:'🟡',opt:'⚪'})[l]?`<span class="p
 function secHdr(n,label){return`<div class="section-hdr"><div class="section-num">${n}</div><span class="section-label">${label}</span></div>`}
 function inp(id,label,ph,type='text',p=''){return`<div class="form-group"><label class="form-label" for="${id}">${label} ${p?pri(p):''}</label><input class="form-input" type="${type}" id="${id}" placeholder="${ph}" autocomplete="off"></div>`}
 function selCard(name,val,emoji,title,desc,chk=false){return`<label class="select-card ${chk?'selected':''}" data-val="${val}"><input type="radio" name="${name}" value="${val}" ${chk?'checked':''}>${emoji?`<span class="select-card-emoji">${emoji}</span>`:''}<div><div class="select-card-title">${title}</div>${desc?`<div class="select-card-desc">${desc}</div>`:''}</div></label>`}
-function initSelectCards(c){if(!c)return;c.querySelectorAll('.select-card').forEach(card=>{card.addEventListener('click',()=>{const nm=card.querySelector('input[type="radio"]').name;c.querySelectorAll(`.select-card input[name="${nm}"]`).forEach(i=>{i.closest('.select-card').classList.remove('selected')});card.classList.add('selected');card.querySelector('input').checked=true})})}
+function initSelectCards(c){if(!c)return;c.querySelectorAll('.select-card').forEach(card=>{card.addEventListener('click',()=>{const nm=card.querySelector('input[type="radio"]').name;c.querySelectorAll(`.select-card input[name="${nm}"]`).forEach(i=>{i.closest('.select-card').classList.remove('selected')});card.classList.add('selected');card.querySelector('input').checked=true;if(typeof onSelectCardChange==='function'){onSelectCardChange(nm,val)}})})}
