@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "skills": {
+    "brainstorming": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/brainstorming/SKILL.md",
+      "computedHash": "f483c304fcde060211ffae00f49bb728536e7e7613c99db45b5b924d9fc17243"
+    },
+    "content-strategy": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/content-strategy/SKILL.md",
+      "computedHash": "e1ab02527702ead90a9e5774cfe1be9a222bdcc6e861f2cae778ad7cc293f225"
+    },
+    "finance-expert": {
+      "source": "personamanagmentlayer/pcl",
+      "sourceType": "github",
+      "skillPath": "stdlib/domains/finance-expert/SKILL.md",
+      "computedHash": "83ff6d943fe47f1cec6c79b2d364303c2e058366c3fdfc6bc5938539cc914b33"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "insurance-expert": {
+      "source": "personamanagmentlayer/pcl",
+      "sourceType": "github",
+      "skillPath": "stdlib/domains/insurance-expert/SKILL.md",
+      "computedHash": "e355a9c566f9cbd180dc0ef5d1c03cf561350bb1b42d1ea8fc87cef6ceda157c"
+    },
+    "persona-content-creator": {
+      "source": "googleworkspace/cli",
+      "sourceType": "github",
+      "skillPath": "skills/persona-content-creator/SKILL.md",
+      "computedHash": "25bae70a5ca8e8d9d21d8572fcc135e296d070cc631f55fcc008a379cc227216"
+    },
+    "skill-creator": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/skill-creator/SKILL.md",
+      "computedHash": "7e3c9cd74e9e2b4828527a857170e86310f2dab5ea8030a9043df2c7e6c88857"
+    },
+    "social-content": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/social-content/SKILL.md",
+      "computedHash": "c141cd0a4cbd8ce1b9ead79ada85ea349d794119c3cb730c3def3f689022bfb1"
+    },
+    "social-selling-content-generator": {
+      "source": "onewave-ai/claude-skills",
+      "sourceType": "github",
+      "skillPath": "social-selling-content-generator/SKILL.md",
+      "computedHash": "42924e4612b7afcdb3119b2fd5d5a6533aceef0a224cff6d26e43f6e7e4a0dec"
+    },
+    "systematic-debugging": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/systematic-debugging/SKILL.md",
+      "computedHash": "72e9ab72627e4fd8ed26a582e82309a98ecdc4f6e1c99418430ac05682c9e91d"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "6337038fe1fe6bbe1b9f252ab678ee575859190bab6f0f246f4061824eb40875"
+    },
+    "web-artifacts-builder": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-artifacts-builder/SKILL.md",
+      "computedHash": "fdddbe9bb720ea1aea9292ee513ec10b2a8f4912e2c343bdc246ab3febd7c9b3"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    },
+    "webapp-testing": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/webapp-testing/SKILL.md",
+      "computedHash": "3f14af7f5690695209c22fbf8c8d133769a86d64892602c09bb13f135e14e857"
+    }
+  }
+}
