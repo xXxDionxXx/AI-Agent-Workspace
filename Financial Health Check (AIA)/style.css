@@ -564,10 +564,10 @@ body.platform-phone  { font-size: 1rem; }
   .custom-grid-table .grid-cell.selected{transform:none;}
   .custom-grid-table .grid-cell.selected::after{width:16px;height:16px;font-size:0.6rem;top:4px;right:4px;}
   .custom-grid-table th{padding:6px 3px;font-size:0.72rem;}
-  .custom-grid-table td:first-child{padding:8px 6px;width:90px !important;}
-  .custom-grid-table td:first-child label{font-size:0.78rem !important;}
-  .custom-grid-table td:first-child label span{font-size:0.78rem !important;}
-  .custom-grid-table td:first-child div{font-size:0.68rem !important;}
+  .custom-grid-table td:first-child{padding:8px 10px;width:160px !important;}
+  .custom-grid-table td:first-child label{font-size:0.85rem !important;}
+  .custom-grid-table td:first-child label span{font-size:0.85rem !important;}
+  .custom-grid-table td:first-child div{font-size:0.75rem !important; white-space: normal;}
 
   /* inline flex containers — force wrap */
   div[style*="display:flex; gap:12px; align-items:center"]{
