@@ -1,78 +1,189 @@
 function doPost(e) {
-  var sheetName = "AIA_Leads"; // ชื่อ Sheet ที่จะบันทึกข้อมูล
   var lock = LockService.getScriptLock();
-  lock.tryLock(10000); // พยายามล็อค 10 วินาทีเพื่อป้องกันคนกดพร้อมกัน
+  lock.tryLock(10000); 
 
   try {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = doc.getSheetByName(sheetName);
+    const SS_ID = "16ZEws0EPR17_bO73nlrMlm-X1Rjw8UaNPxHC6-NnnZw"; 
+    var doc = SpreadsheetApp.openById(SS_ID);
     
-    // ถ้ายังไม่มี Sheet ชื่อ AIA_Leads ให้สร้างใหม่
-    if (!sheet) {
-      sheet = doc.insertSheet(sheetName);
-    }
-    
-    // แปลงข้อมูล JSON ที่ส่งมาจาก Web App
-    var data = JSON.parse(e.postData.contents);
-    
-    // ดึง Header ปัจจุบันที่มีอยู่ใน Sheet (ถ้ามี)
-    var headers = [];
-    if (sheet.getLastColumn() > 0) {
-      headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    }
-    
-    // เตรียมข้อมูลแถวใหม่
-    var newRow = [];
-    
-    // เพิ่ม timestamp เป็นคอลัมน์แรกเสมอ
-    if (headers.indexOf("Timestamp") === -1) {
-      headers.unshift("Timestamp");
-    }
-    data["Timestamp"] = new Date();
-    
-    // วนลูป Key ทั้งหมดใน Data ที่ส่งมา
-    for (var key in data) {
-      // ถ้า Key นี่ยังไม่มีใน Header ให้เพิ่มเข้าไป
-      if (headers.indexOf(key) === -1) {
-        headers.push(key);
-        // อัปเดต Header ใน Sheet
-        sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-      }
-      
-      // หาตำแหน่ง index ของคอลัมน์นี้ แล้วใส่ข้อมูล
-      var colIndex = headers.indexOf(key);
-      
-      // ตรวจสอบว่าข้อมูลเป็น Array/Object หรือไม่ ถ้าใช่ให้แปลงเป็น String
-      var cellValue = data[key];
-      if (typeof cellValue === 'object') {
-        cellValue = JSON.stringify(cellValue);
-      }
-      
-      newRow[colIndex] = cellValue;
-    }
-    
-    // เติมช่องว่างให้ครบตามจำนวน Header
-    for (var i = 0; i < headers.length; i++) {
-      if (newRow[i] === undefined) {
-        newRow[i] = "";
-      }
-    }
-    
-    // เพิ่มแถวใหม่ลงไป
-    sheet.appendRow(newRow);
-    
-    // จัดรูปแบบแถว Header ให้สวยงาม (ตัวหนา, พื้นหลังสีเทา)
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#f3f4f6");
+    // ดึงข้อมูลดิบจาก e.parameter
+    var raw = e.parameter || {};
 
-    return ContentService.createTextOutput(JSON.stringify({"result":"success"})).setMimeType(ContentService.MimeType.JSON);
+    // คลีนค่าสวัสดิการ + ใส่ Emoji
+    var welfareRaw = (raw.welfare || "-").split("—")[0].trim();
+    // ตัด Emoji เดิมออก
+    var welfareText = welfareRaw.replace(/[\u2700-\u27BF\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF]|[\u2011-\u26FF]/g, '').trim();
+    // ใส่ Emoji ตามสวัสดิการ
+    if (welfareText.indexOf("ประกันสังคม") >= 0) welfareText = "🔵 ประกันสังคม";
+    else if (welfareText.indexOf("ข้าราชการ") >= 0) welfareText = "💼 ข้าราชการ";
+    else if (welfareText.indexOf("บัตรทอง") >= 0) welfareText = "💳 บัตรทอง";
+    else if (welfareText === "") welfareText = "-";
+
+    // ใส่ Emoji ให้แผนสุขภาพ
+    var healthPlan = raw.plan_health || "-";
+    if (healthPlan === "Economy") healthPlan = "✈️ Economy Class";
+    else if (healthPlan === "Business") healthPlan = "🌟 Business Class";
+    else if (healthPlan === "First Class") healthPlan = "👑 First Class";
+
+    var chkAsset = (raw.chk_asset === "Selected") ? "✅" : "❌";
+    var chkEdu = (raw.chk_edu === "Selected") ? "✅" : "❌";
+    var chkParent = (raw.chk_parent === "Selected") ? "✅" : "❌";
+
+    // อายุ + ปี
+    var ageText = (raw.client_age || "-") + " ปี";
+    if (raw.client_age === "" || raw.client_age === "-" || !raw.client_age) ageText = "-";
+
+    // ฟังก์ชันจัดรูปแบบเงิน (ปัดเศษ + สกุลเงิน)
+    function fmtMoney(val) {
+      var n = parseInt(String(val).replace(/,/g, ''), 10) || 0;
+      if (n === 0) return "฿0";
+      return "฿" + n.toLocaleString('en-US');
+    }
+
+    // จัดเรียงข้อมูล
+    var rowData = [
+      raw.timestamp || "-",
+      raw.client_name || "ลูกค้าใหม่",
+      ageText,
+      fmtMoney(raw.income_monthly),
+      raw.family_status || "-",
+      welfareText,
+      fmtMoney(raw.total_asset),
+      fmtMoney(raw.total_liability),
+      raw.emergency_goal || "-",
+      fmtMoney(raw.edu_budget),
+      fmtMoney(raw.retire_monthly),
+      fmtMoney(raw.retire_total),
+      fmtMoney(raw.parent_monthly),
+      fmtMoney(raw.parent_total),
+      healthPlan,
+      raw.plan_income || "-",
+      chkAsset,
+      chkEdu,
+      chkParent,
+      fmtMoney(raw.premium_total),
+      raw.premium_pct || "0%"
+    ];
+
+    var headers = [
+      "วันเวลาที่บันทึก", "ชื่อลูกค้า", "อายุ", "รายได้ต่อเดือน", "สถานะครอบครัว", "สวัสดิการที่มีปัจจุบัน",
+      "สินทรัพย์รวม", "หนี้สินรวม", "เป้าหมายเงินสำรองฉุกเฉิน", "ทุนการศึกษารวม", "เงินเกษียณที่ต้องการใช้/เดือน", "เงินเกษียณรวมที่ต้องมี",
+      "เงินสนับสนุนบุพการี/เดือน", "เงินดูแลบุพการีรวม", "แผนสุขภาพที่เลือก (AIA)", "แผนปกป้องรายได้ที่เลือก",
+      "แผนปกป้องทรัพย์สิน", "แผนปกป้องใบปริญญา", "แผนคุณภาพชีวิตบุพการี", "เบี้ยประกันที่เลือกต่อปี", "สัดส่วนเบี้ยต่อรายได้ (%)"
+    ];
+
+    // --- ส่วนที่ 1: บันทึกลงหน้า Clients Plan (แนว Column) ---
+    var masterSheet = doc.getSheetByName("Clients Plan");
+    if (!masterSheet) {
+      masterSheet = doc.insertSheet("Clients Plan");
+      for (var i = 0; i < headers.length; i++) {
+        masterSheet.getRange(i + 1, 1).setValue(headers[i]).setBackground("#d21145").setFontColor("#ffffff").setFontWeight("bold");
+      }
+      masterSheet.setColumnWidth(1, 250);
+      masterSheet.setFrozenColumns(1);
+    }
     
+    var lastCol = masterSheet.getLastColumn();
+    var newCol = lastCol + 1;
+    
+    var data2D = rowData.map(function(item) { return [item]; });
+    masterSheet.getRange(1, newCol, rowData.length, 1).setValues(data2D);
+    masterSheet.setColumnWidth(newCol, 200);
+
+    // จัดข้อความกึ่งกลาง (แนวนอน)
+    masterSheet.getRange(1, newCol, rowData.length, 1).setHorizontalAlignment("center");
+
+    // --- ส่วนที่ 2: สร้างชีตแยกสำหรับข้อมูลกรมธรรม์เดิม (ถ้ามี) ---
+    var policies = [];
+    try { 
+      policies = JSON.parse(raw.policies_json || "[]"); 
+    } catch(e) {}
+
+    var finalSheetName = "No Policy Data";
+    if (policies && policies.length > 0) {
+      var clientName = raw.client_name || "ลูกค้า";
+      var baseName = clientName.toString().trim();
+      finalSheetName = baseName;
+      var counter = 2;
+      while (doc.getSheetByName(finalSheetName)) {
+        finalSheetName = baseName + " (" + counter + ")";
+        counter++;
+      }
+      var polSheet = doc.insertSheet(finalSheetName);
+      
+      // หัวตารางกรมธรรม์ครบทุกหัวข้อจาก Policy Audit
+      var polHeaders = [
+        "ชื่อผู้เอาประกัน", "เลขกรมธรรม์", "ชื่อแบบประกัน",
+        "ประเภท", "สถานะ", "ช่องทางชำระ",
+        "ทุนประกันชีวิต", "มูลค่าเวนคืน", "เบี้ยประกัน", "รายงวด",
+        "ระยะเวลาส่งเบี้ย (ปี)", "คุ้มครองถึง",
+        "งวดถัดไป (วันที่)",
+        "ขาดตั้งแต่วันที่", "ยอดชำระเพื่อต่ออายุ",
+        "ทุนชีวิตลดเหลือ (Paid-up)",
+        "คุ้มครองถึงปี (Extended)", 
+        "หนี้กู้เบี้ยสะสม (APL)", "ดอกเบี้ย APL (%)",
+        "เงินคืน: ปีที่", "เงินคืน: ถึง", "เงินคืน: ครั้งละ",
+        "จบสัญญาได้ (บาท)",
+        "🏥 ชื่อแบบสุขภาพ", "รูปแบบ (เหมาจ่าย/แยกหมวด)", "ต่อครั้ง/ต่อปี",
+        "การันตีต่ออายุ (GR)", "ค่าห้อง+อาหาร/วัน", "ค่าแพทย์ตรวจเยี่ยม/วัน",
+        "วงเงินรักษารวม", "OPD (ครั้งละ)",
+        "Deductible", "ยอด Deductible",
+        "⚠️ ชื่อแบบ PA", "ทุนเสียชีวิตอุบัติเหตุ", "ค่ารักษาอุบัติเหตุ/ครั้ง",
+        "🛡️ ชื่อแบบ CI", "ทุนประกัน CI", "คุ้มครอง (จำนวนโรค)", "เงื่อนไข CI",
+        "🛏️ ชื่อแบบ HB", "ยอดชดเชย/วัน", "สูงสุด (วัน)",
+        "ลดหย่อนภาษีชีวิต", "ลดหย่อนภาษีสุขภาพ",
+        "ผู้รับผลประโยชน์", "กู้เงินสดสูงสุด"
+      ];
+      for (var i = 0; i < polHeaders.length; i++) {
+        polSheet.getRange(i + 1, 1).setValue(polHeaders[i]).setBackground("#0a75bb").setFontColor("#ffffff").setFontWeight("bold");
+      }
+      polSheet.setColumnWidth(1, 250);
+      polSheet.setFrozenColumns(1);
+
+      // ใส่ข้อมูลกรมธรรม์แต่ละเล่ม
+      policies.forEach(function(pol, index) {
+        var polData = [
+          pol.cName || "-",
+          pol.pNo || "-",
+          pol.name || "-",
+          pol.type || "-",
+          pol.status || "-",
+          pol.channel || "-",
+          fmtMoney(pol.sa), fmtMoney(pol.cv), fmtMoney(pol.p), pol.payFreq || "-",
+          pol.payYears || "-", pol.coverYears || "-",
+          pol.nextDueDate || "-",
+          pol.lapseDate || "-", fmtMoney(pol.lapseAmount),
+          fmtMoney(pol.paidUpSA),
+          pol.extendedYear || "-",
+          fmtMoney(pol.aplDebt), pol.aplInterest || "-",
+          pol.cbStart || "-", pol.cbEnd || "-", pol.cbAmount || "-",
+          fmtMoney(pol.maturityAmount),
+          pol.healthName || "-", pol.hType1 || "-", pol.hType2 || "-",
+          pol.gr || "-", fmtMoney(pol.roomRate), fmtMoney(pol.doctorRate),
+          fmtMoney(pol.healthLimit), fmtMoney(pol.opd),
+          pol.deductible || "-", fmtMoney(pol.deductibleAmt),
+          pol.paName || "-", fmtMoney(pol.paDeath), fmtMoney(pol.paMedical),
+          pol.ciName || "-", fmtMoney(pol.ci), pol.ciConditions || "-", pol.ciCond || "-",
+          pol.hbName || "-", fmtMoney(pol.hb), pol.hbMaxDays || "-",
+          fmtMoney(pol.taxLife), fmtMoney(pol.taxHealth),
+          pol.beneficiary || "-", fmtMoney(pol.loanMax)
+        ];
+        var col = index + 2;
+        var pol2D = polData.map(function(item) { return [item]; });
+        polSheet.getRange(1, col, polData.length, 1).setValues(pol2D);
+        polSheet.setColumnWidth(col, 200);
+        // จัดกึ่งกลาง
+        polSheet.getRange(1, col, polData.length, 1).setHorizontalAlignment("center");
+      });
+    }
+
+    return ContentService.createTextOutput("Success: Saved to Clients Plan" + (policies.length > 0 ? " and " + finalSheetName : ""));
   } catch(e) {
-    return ContentService.createTextOutput(JSON.stringify({"result":"error", "error": e})).setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
+    return ContentService.createTextOutput("Error: " + e.toString());
+  } finally { lock.releaseLock(); }
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({"result":"ok","message":"AIA Financial Planner API is running"})).setMimeType(ContentService.MimeType.JSON);
+  if (e.parameter && Object.keys(e.parameter).length > 0) return doPost(e);
+  return ContentService.createTextOutput("AIA One-Tab API v9.0 is running");
 }

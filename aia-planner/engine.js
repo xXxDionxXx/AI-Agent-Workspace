@@ -1,4 +1,4 @@
-let currentSlide=0;const TOTAL_SLIDES=14;
+let currentSlide=0;const TOTAL_SLIDES=15;
 
 function goToSlide(n){
   const slides=document.querySelectorAll('.slide');

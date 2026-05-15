@@ -6,27 +6,33 @@ const WELFARE = {
     label: 'ประกันสังคม', emoji: '🔵',
     tagText: 'สวัสดิการพนักงานเอกชน',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.ตามสิทธิ์', s: 'yellow' }
-      ]},
+      {
+        cat: '🏥 สิทธิรักษาพยาบาล', items: [
+          { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.ตามสิทธิ์', s: 'yellow' }
+        ]
+      },
     ]
   },
   gov: {
     label: 'ข้าราชการ', emoji: '💼',
     tagText: 'สวัสดิการกรมบัญชีกลาง',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.รัฐ (เอกชนได้แค่ฉุกเฉิน 72 ชม.)', s: 'yellow' }
-      ]},
+      {
+        cat: '🏥 สิทธิรักษาพยาบาล', items: [
+          { n: 'รพ.ที่เข้ารับการรักษา', d: 'เฉพาะ รพ.รัฐ (เอกชนได้แค่ฉุกเฉิน 72 ชม.)', s: 'yellow' }
+        ]
+      },
     ]
   },
   gold: {
     label: 'บัตรทอง', emoji: '💳',
     tagText: 'หลักประกันสุขภาพถ้วนหน้า',
     benefits: [
-      { cat: '🏥 สิทธิรักษาพยาบาล', items: [
-        { n: 'รพ.ที่เข้ารับการรักษา', d: 'รักษาฟรีเฉพาะ รพ.รัฐในสิทธิ์', s: 'yellow' }
-      ]},
+      {
+        cat: '🏥 สิทธิรักษาพยาบาล', items: [
+          { n: 'รพ.ที่เข้ารับการรักษา', d: 'รักษาฟรีเฉพาะ รพ.รัฐในสิทธิ์', s: 'yellow' }
+        ]
+      },
     ]
   }
 };
@@ -129,32 +135,45 @@ const UNI_TIERS = [
 // --- Welfare Comparison Data ---
 const WELFARE_COMPARE = {
   categories: [
-    { cat: '1. ค่าห้องพัก (ต่อวัน)', items: [
-      { name: 'ห้องเดี่ยว รพ.รัฐ', gold: '❌', social: '700', gov: '1,000', private: '4,000 / 6,000 / 9,000' },
-      { name: 'ห้องเดี่ยว รพ.เอกชน', gold: '❌', social: '❌', gov: '❌', private: '4,000 / 6,000 / 9,000' },
-    ]},
-    { cat: '2. ยาและการรักษา', items: [
-      { name: 'ยาในบัญชี', gold: '✅', social: '✅', gov: '✅', private: '✅' },
-      { name: 'ยานอกบัญชี', gold: '⚠️ จำกัดมาก', social: '⚠️ ขึ้นอยู่กับหมอ/รพ.', gov: '⚠️ ยาไทยได้ แต่ Co-payment ยานอก', private: '✅' },
-      { name: 'ยามุ่งเป้า / รังสีรักษา (โรคร้ายแรง)', gold: '⚠️ จำกัดยา / คิวนาน', social: '⚠️ ขึ้นอยู่กับหมอ/รพ.', gov: '⚠️ เงื่อนไขซับซ้อน / มีส่วนต่าง', private: '10 / 30 / 50 ล้าน' },
-      { name: 'ผู้ป่วยนอก (OPD)', gold: '✅', social: '✅', gov: '✅', private: '0 / 2,000' },
-    ]},
-    { cat: '3. บริการและความเร็ว', items: [
-      { name: 'เทคโนโลยี / คุณภาพการรักษา', gold: '⭐', social: '⭐', gov: '⭐⭐', private: '⭐⭐⭐⭐⭐' },
-      { name: 'ความรวดเร็ว / ไม่ต้องรอคิว', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
-      { name: 'คุณภาพบริการ / สถานที่', gold: '⭐', social: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
-    ]},
+    {
+      cat: '1. ค่าห้องพัก (ต่อวัน)', items: [
+        { name: 'ห้องรวม รพ. รัฐบาล', gold: '✅', social33: '✅', gov: '✅', private: '✅' },
+        { name: 'ห้องเดี่ยว รพ. รัฐบาล', gold: '❌', social33: '700', gov: '1,000', private: '4,000 / 8,000 / 12,000' },
+        { name: 'ห้องเดี่ยว รพ. เอกชน', gold: '❌', social33: '❌', gov: '❌', private: '4,000 / 8,000 / 12,000' },
+      ]
+    },
+    {
+      cat: '2. ยาและการรักษา', items: [
+        { name: 'ยาในบัญชี', gold: '✅', social33: '✅', gov: '✅', private: '✅' },
+        { name: 'ยานอกบัญชี', gold: '⚠️ จำกัดมาก', social33: '⚠️ จำกัดเกรดยา / มีส่วนต่าง', gov: '⚠️ ยาไทยได้ แต่ Co-payment ยานอก', private: '✅' },
+        { name: 'ยามุ่งเป้า (โรคร้ายแรง)', gold: '⚠️ จำกัดยา / คิวนาน', social33: '⚠️ เข้าถึงยาก / เงื่อนไขซับซ้อน', gov: '⚠️ เงื่อนไขซับซ้อน / มีส่วนต่าง', private: '10 / 30 / 50 ล้าน' },
+        { name: 'รังสีรักษา', gold: '⚠️ จำกัดยา / คิวนาน', social33: '⚠️ คิวนาน / เทคโนโลยีที่จำกัด', gov: '⚠️ คิวนาน / มีส่วนต่าง', private: '✅' },
+        { name: 'ผู้ป่วยนอก (OPD)', gold: '✅', social33: '✅', gov: '✅', private: '0 / 2,000' },
+      ]
+    },
+    {
+      cat: '3. บริการและความเร็ว', items: [
+        { name: 'ความรวดเร็ว / คิวผ่าตัด', gold: '⭐', social33: '⭐⭐', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
+        { name: 'อิสระในการเลือกหมอ', gold: '❌', social33: '❌', gov: '⭐⭐⭐', private: '⭐⭐⭐⭐⭐' },
+      ]
+    },
   ]
 };
 
 // --- Health Plans ---
 const HEALTH_PLANS = [
-  { id: 'economy', name: 'Economy Class', icon: '✈️', room: '4,000', roomNum: 4000,
-    ci: '✅ 10 ล้าน / 4 ปี', opd: '❌', note: '(เหมาจ่าย 5 ล้าน)', color: 'var(--aia-blue)' },
-  { id: 'business', name: 'Business Class', icon: '🌟', room: '6,000', roomNum: 6000,
-    ci: '✅ 30 ล้าน / 4 ปี', opd: '❌', note: '(เหมาจ่าย 15 ล้าน)', color: '#7c3aed' },
-  { id: 'first', name: 'First Class', icon: '👑', room: '9,000', roomNum: 9000,
-    ci: '✅ 50 ล้าน / 4 ปี', opd: '2,000', note: '(เหมาจ่าย 25 ล้าน)', color: 'var(--aia-red)' },
+  {
+    id: 'economy', name: 'Economy Class', icon: '✈️', room: '3,000', roomNum: 3000,
+    ci: '✅ 5 ล้าน / 5 ปี', opd: '❌', hb: '1,000', note: '(เหมาจ่าย 5 ล้าน)', color: 'var(--aia-blue)'
+  },
+  {
+    id: 'business', name: 'Business Class', icon: '🌟', room: '6,000', roomNum: 6000,
+    ci: '✅ 15 ล้าน / 5 ปี', opd: '❌', hb: '2,000', note: '(เหมาจ่าย 15 ล้าน)', color: '#7c3aed'
+  },
+  {
+    id: 'first', name: 'First Class', icon: '👑', room: '9,000', roomNum: 9000,
+    ci: '✅ 25 ล้าน / 5 ปี', opd: '❌', hb: '3,000', note: '(เหมาจ่าย 25 ล้าน)', color: 'var(--aia-red)'
+  },
 ];
 
 // --- Tax Brackets ---
