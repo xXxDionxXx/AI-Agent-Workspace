@@ -16,11 +16,15 @@ function prevSlide(){if(currentSlide>0)goToSlide(currentSlide-1)}
 
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide()}if(e.key==='ArrowLeft'){e.preventDefault();prevSlide()}});
 
-// Platform toggle
-document.querySelectorAll('.plat-btn').forEach(b=>{b.addEventListener('click',()=>{
-  document.querySelectorAll('.plat-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
-  document.body.className='platform-'+b.dataset.platform;
-})});
+// Auto-detect platform based on screen width
+function detectPlatform(){
+  const w=window.innerWidth;
+  if(w<=600) document.body.className='platform-phone';
+  else if(w<=1024) document.body.className='platform-ipad';
+  else document.body.className='platform-laptop';
+}
+detectPlatform();
+window.addEventListener('resize',detectPlatform);
 
 // Helpers
 function createSlide(i,html){const d=document.createElement('div');d.className='slide'+(i===0?' active':'');d.id='slide-'+i;d.innerHTML='<div class="slide-inner">'+html+'</div>';return d}

@@ -203,7 +203,7 @@ container.appendChild(createSlide(3, `
         <input type="text" class="form-input" style="flex:2;" value="บ้าน / ที่อยู่อาศัย">
         <input type="text" class="form-input asset-val" style="flex:2;" placeholder="มูลค่า (บาท)" oninput="formatNumberInput(this); calcAssets()">
         <label class="form-input" style="flex:1; display:flex; align-items:center; gap:6px;"><input type="radio" name="ast1" class="asset-type" value="asset" onchange="calcAssets()"> ทรัพย์สิน</label>
-        <label class="form-input" style="flex:1; display:flex; align-items:center; gap:6px;"><input type="radio" name="ast1" class="asset-type" value="liability" checked onchange="calcAssets()"> หหนี้สิน</label>
+        <label class="form-input" style="flex:1; display:flex; align-items:center; gap:6px;"><input type="radio" name="ast1" class="asset-type" value="liability" checked onchange="calcAssets()"> หนี้สิน</label>
       </div>
       <div style="display:flex; gap:12px; align-items:center;">
         <input type="text" class="form-input" style="flex:2;" value="คอนโด">
@@ -1223,22 +1223,22 @@ function getThaiDateTime() {
   return `${date}-${month}-${year}, ${time} น.`;
 }
 
-// --- Submit (v4.0 - Ultra Reliable & Multiple Submissions) ---
+// --- Submit ---
 function submitToGoogleSheets() {
   const btn = document.getElementById('btnSubmitData');
   const bar = document.getElementById('saveStatusBar');
   
   if (!bar) return;
 
-  // UI State: Starting
+  // UI State: Connecting
   btn.disabled = true;
   btn.style.opacity = '0.7';
   btn.innerText = '⏳ กำลังบันทึก...';
   
   bar.style.display = 'block';
-  bar.style.background = 'rgba(255, 255, 255, 0.2)'; // กระจกใสขึ้นเพื่อให้ตัดกับพื้นหลังสีน้ำเงิน
-  bar.style.color = '#ffffff'; // ตัวหนังสือสีขาว
-  bar.innerHTML = '📡 Sending data to Google Sheets...';
+  bar.style.background = 'rgba(255, 255, 255, 0.2)';
+  bar.style.color = '#ffffff';
+  bar.innerHTML = '📡 กำลังเชื่อมต่อ Server...';
 
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgOxLQl5lEGgemarcQt_PHHYzCR2SzXHWSVT0MUGzsqoqIesIp7gQf_XSxUuHmk-ERFw/exec';
 
@@ -1276,8 +1276,6 @@ function submitToGoogleSheets() {
       "policies_json": JSON.stringify(policies || [])
     };
 
-    console.log("Submitting Data v5.0 (Multi-Field Form):", payloadData);
-
     // สร้าง Iframe ลับ
     const ifrId = 'ifr_submit_' + Date.now();
     const ifr = document.createElement('iframe');
@@ -1291,7 +1289,6 @@ function submitToGoogleSheets() {
     form.action = SCRIPT_URL;
     form.target = ifrId;
 
-    // ส่งข้อมูลแยกทีละ Field เพื่อความชัวร์ (Google Apps Script จะรับผ่าน e.parameter โดยตรง)
     for (let key in payloadData) {
       const input = document.createElement('input');
       input.type = 'hidden';
@@ -1303,28 +1300,27 @@ function submitToGoogleSheets() {
     document.body.appendChild(form);
     form.submit();
 
-    // เนื่องจากเราอ่าน Response ข้ามโดเมนไม่ได้ ให้หน่วงเวลาและถือว่าสำเร็จ (Apps Script รับ Form ชัวร์กว่า fetch)
     setTimeout(() => {
-      bar.innerHTML = '✅ Data Saved Successfully!';
-      bar.style.background = '#22c55e'; // สีเขียวชัดเจน
+      bar.innerHTML = '✅ บันทึกสำเร็จ!';
+      bar.style.background = '#22c55e';
       bar.style.color = '#ffffff';
       
       btn.disabled = false;
       btn.style.opacity = '1';
-      btn.innerText = '💾 บันทึกแผน (Resubmit)';
+      btn.innerText = '💾 บันทึกแผน';
       
       // ลบ Form/Iframe
       document.body.removeChild(form);
       document.body.removeChild(ifr);
 
-      // ซ่อนแถบสถานะหลัง 6 วินาที
+      // ซ่อนแถบสถานะหลัง 5 วินาที
       setTimeout(() => {
         bar.style.display = 'none';
-      }, 6000);
+      }, 5000);
     }, 2500);
 
   } catch (err) {
-    console.error("Critical JS Error:", err);
+    console.error("Submit Error:", err);
     bar.innerHTML = '⚠️ ข้อผิดพลาด: ' + err.message;
     bar.style.background = '#fee2e2';
     bar.style.color = '#991b1b';
@@ -1906,7 +1902,8 @@ function num(id) {
   } else {
     text = el.innerText || el.textContent || "";
   }
-  return parseInt(text.replace(/,/g, ''), 10) || 0;
+  // Strip everything except digits and minus sign
+  return parseInt(text.replace(/[^0-9-]/g, ''), 10) || 0;
 }
 function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
 
