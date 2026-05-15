@@ -1916,3 +1916,13 @@ function num(id) {
 }
 function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
 
+// Restore slide state on reload
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('savedSlide');
+  if (saved !== null) {
+    const slideIndex = parseInt(saved, 10);
+    if (!isNaN(slideIndex) && slideIndex > 0) {
+      goToSlide(slideIndex);
+    }
+  }
+});

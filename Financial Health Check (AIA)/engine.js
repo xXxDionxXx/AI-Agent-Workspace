@@ -10,6 +10,7 @@ function goToSlide(n){
   document.getElementById('btnPrev').disabled=n===0;
   const btn=document.getElementById('btnNext');
   btn.innerHTML=n===slides.length-1?'✓':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  sessionStorage.setItem('savedSlide', n);
   if(typeof onSlideEnter === 'function') onSlideEnter(n);
 }
 function nextSlide(){if(typeof onSlideSave==='function')onSlideSave(currentSlide);if(currentSlide<TOTAL_SLIDES-1)goToSlide(currentSlide+1)}
