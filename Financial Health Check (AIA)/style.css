@@ -21,9 +21,9 @@ body.platform-phone  { font-size: 1rem; }
 
 /* Platform widths */
 .slides-container{position:relative;width:100%;height:calc(100dvh - 70px);overflow:hidden;z-index:1}
-.slide{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:40px 32px 20px;opacity:0;transform:translateX(60px);pointer-events:none;transition:all .4s ease;overflow-y:auto}
+.slide{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:40px 32px 20px;opacity:0;transform:translateX(30px);pointer-events:none;transition:opacity 0.25s ease-out, transform 0.25s ease-out;will-change:opacity, transform;overflow-y:auto}
 .slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
-.slide.exit-left{opacity:0;transform:translateX(-60px)}
+.slide.exit-left{opacity:0;transform:translateX(-30px)}
 .slide-inner{width:100%;display:flex;flex-direction:column;gap:20px;padding-bottom:40px}
 
 /* Platform content widths */
@@ -554,7 +554,7 @@ body.platform-phone  { font-size: 1rem; }
   .custom-grid-table{font-size:0.75rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .custom-grid-table thead,
   .custom-grid-table tbody,
-  .custom-grid-table tr{display:table;width:100%;table-layout:fixed;}
+  .custom-grid-table tr{display:table;width:600px;table-layout:fixed;}
   .custom-grid-table .grid-cell{padding:8px 4px;width:auto;}
   .custom-grid-table .grid-cell label{font-size:0.75rem;line-height:1.3;}
   .custom-grid-table .grid-cell label span[style*="font-size:1.15rem"]{font-size:0.9rem !important;}
@@ -702,9 +702,7 @@ body.platform-phone  { font-size: 1rem; }
 
 /* Animations */
 @keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.slide.active .glass-card{animation:fadeInUp .6s ease both}
-.slide.active .glass-card:nth-child(2){animation-delay:.1s}
-.slide.active .glass-card:nth-child(3){animation-delay:.2s}
+/* Nested card animations removed to fix lag */
 
 /* Custom Grid Selection (Slide 13) */
 .custom-grid-table .grid-cell {

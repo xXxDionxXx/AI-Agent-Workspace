@@ -1752,6 +1752,15 @@ function onSlideSave(idx) {
   if (idx === 14) calcCustomPremium();
 }
 
+function onSlideEnter(idx) {
+  if (idx === 10) computeTaxSummary();
+  if (idx === 12) {
+    if (typeof computeAgentSummary === 'function') computeAgentSummary();
+  }
+  if (idx === 13) computeAgentSummary();
+  if (idx === 14) calcCustomPremium();
+}
+
 
 
 // --- Tax Logic ---
