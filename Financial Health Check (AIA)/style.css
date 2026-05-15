@@ -40,6 +40,7 @@ body.platform-phone  { font-size: 1rem; }
   padding:36px 40px;
   box-shadow:var(--glass-shadow);
   width:100%;
+  margin:0 auto;
 }
 .glass-card-sm{padding:20px 28px}
 

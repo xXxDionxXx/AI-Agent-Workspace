@@ -1035,7 +1035,7 @@ container.appendChild(createSlide(14, `
         <div class="highlight-note" style="background:linear-gradient(to right, rgba(16,124,65,0.1), transparent); padding:16px; border-left:5px solid #107c41; border-radius:8px;">
           <div style="font-weight:700; color:#107c41; margin-bottom:4px; font-size:1.1rem;">💎 หมายเหตุเพิ่มเติม</div>
           <div style="font-size:0.95rem; color:var(--text-primary); line-height:1.5;">
-            * เงินประกันชีวิตในแผนปกป้องทรัพย์สิน, ใบปริญญา, คุณภาพชีวิตบุพการี สามารถนำมาเป็น <strong>"เงินออมตอนเกษียณ"</strong> และ <strong>"กู้ยืมออกมาใช้ฉุกเฉิน"</strong> ได้ในอัตราดอกเบี้ยต่ำ
+            เงินประกันชีวิตในแผนปกป้องทรัพย์สิน, ใบปริญญา, คุณภาพชีวิตบุพการี สามารถนำมาเป็น <strong>"เงินออมตอนเกษียณ"</strong> และ <strong>"กู้ยืมออกมาใช้ฉุกเฉิน"</strong> ได้ในอัตราดอกเบี้ยต่ำ
           </div>
         </div>
 
@@ -1048,7 +1048,7 @@ container.appendChild(createSlide(14, `
           <div style="font-size:1.1rem; opacity:0.8; margin-bottom:24px;">บาท / ปี</div>
           
           <div style="background:rgba(255,255,255,0.15); padding:20px; border-radius:16px;">
-            <div style="font-size:0.9rem; margin-bottom:10px;">สัดส่วนเบี้ยต่อรายได้ (Rule of 15%)</div>
+            <div style="font-size:0.9rem; margin-bottom:10px;">สัดส่วนเบี้ยต่อรายได้</div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span id="percentPremium" style="font-size:1.8rem; font-weight:800;">0%</span>
               <span id="percentStatus" style="font-size:0.9rem; font-weight:700; padding:6px 12px; border-radius:8px;">เหมาะสม</span>
@@ -1062,7 +1062,7 @@ container.appendChild(createSlide(14, `
           <div style="background:rgba(255,255,255,0.1); padding:16px; border-radius:16px; margin-top:20px; border:1px dashed rgba(255,255,255,0.2);">
             <div style="font-size:1.1rem; font-weight:700; margin-bottom:6px;">💡 เงินสำรองฉุกเฉินที่ควรมี</div>
             <div style="font-size:1.5rem; font-weight:800; color:#fff;" id="cusEmergencyFund">0</div>
-            <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">(คำนวณจากรายจ่าย 3-6 เดือนของคุณ)</div>
+            <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">(รายได้/จ่าย 3-6 เดือน)</div>
           </div>
           
           <div style="margin-top:24px;">
