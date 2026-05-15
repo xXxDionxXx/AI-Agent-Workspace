@@ -566,9 +566,9 @@ body.platform-phone  { font-size: 1rem; }
   .custom-grid-table td.grid-cell label span[style*="font-size:0.75rem"], .custom-grid-table td.grid-cell label span[style*="font-size:0.7rem"] { font-size: 0.8rem !important; }
   
   /* Add Headers via Pseudo-elements */
-  .custom-grid-table td.grid-cell:nth-child(2)::before { content: '🥉 Economy'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
-  .custom-grid-table td.grid-cell:nth-child(3)::before { content: '🥈 Business'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
-  .custom-grid-table td.grid-cell:nth-child(4)::before { content: '🥇 First Class'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
+  .custom-grid-table td.grid-cell:nth-child(2)::before { content: '✈️ Economy'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
+  .custom-grid-table td.grid-cell:nth-child(3)::before { content: '🌟 Business'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
+  .custom-grid-table td.grid-cell:nth-child(4)::before { content: '👑 First Class'; display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); text-align: left; flex-shrink: 0; width: 100px; }
 
   /* Selected State */
   .custom-grid-table .grid-cell.selected { transform: none !important; background: rgba(10,117,187,0.03) !important; box-shadow: inset 4px 0 0 var(--aia-blue) !important; }
