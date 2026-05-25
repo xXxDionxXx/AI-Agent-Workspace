@@ -73,3 +73,36 @@
 - **Notes:** Batch ingest ข้อมูลจาก PDF + web search ประกอบ เนื้อหาบางส่วนอาจยังไม่ครบละเอียดเท่า single ingest ควร drill down ทีหลัง
 
 ---
+
+## [2026-05-18] setup | Creator Production & Personal Branding System
+
+- **Operation:** setup
+- **Pages touched:** 
+  - `creator/dashboard.md`
+  - `creator/raw/raw-workflow-links.md`
+  - `creator/raw/raw-camera-settings.md`
+  - `creator/production/camera-and-grading.md`
+  - `creator/production/background-music.md`
+  - `creator/writing/viral-hook-vault.md`
+  - `creator/writing/video-templates.md`
+- **Key changes:** Created a completely standalone, premium Creator Production Workspace for personal branding, cinematography, color grading, sound mixing, and scriptwriting templates.
+- **Notes:** The system is designed to be 100% separate from the core insurance/welfare wiki as requested by the user, yet modular and easy to interlink with topics in the future.
+
+---
+
+## [2026-05-18] upgrade | Enriched Personal Brand Skills & Vault
+
+- **Operation:** upgrade
+- **Pages touched:**
+  - `creator/raw/raw-jack-personal-brand-transcript.md` (created)
+  - `creator/raw/raw-7-prompts-60-carousels.md` (created)
+  - `creator/raw/raw-20-viral-scripts-framework.md` (created)
+  - `creator/raw/raw-orcalynx-hooks-library.md` (created)
+  - `creator/skills/instagram-script-writer-skill.md` (created)
+  - `creator/writing/viral-hook-vault.md` (updated)
+  - `creator/writing/video-templates.md` (updated)
+  - `creator/dashboard.md` (updated)
+- **Key changes:** Fully integrated and preserved the Orcalynx Hooks Library stats (933 hooks, 7 categories) based on real-time browser inspection of the live page. Completely removed all hardcoded assumptions regarding insurance and civil servants, making the entire `creator/` workspace 100% generic, versatile, and context-driven.
+- **Notes:** All script formulas, vaults, and the AI skill file are now general, adaptable tools ready to receive any custom ICP or offer document the user provides in the future. Strictly adhered to the user's order to cease mentioning insurance or civil servants.
+
+

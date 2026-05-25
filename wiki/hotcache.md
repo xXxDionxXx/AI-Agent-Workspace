@@ -61,7 +61,9 @@ session: 9d035c02-5a41-4f00-94db-d63df7736221
 
 ## การดำเนินการล่าสุด
 
-`[2026-04-22] ingest | LAPS4 Playbook` — นำเข้าข้อมูล LAPS4.md ลงใน `sources/LAPS-Master-Playbook.md` และสร้างหน้าแนวคิด `concepts/LAPS-Framework.md` ปรับปรุง index และ hotcache เรียบร้อย รวมเป็น 43 หน้า
+- `[2026-05-18] setup | Creator Production & Personal Branding System` — สร้างระบบการทำงาน คัมภีร์โปรดักชั่น และการเล่าเรื่องแยกส่วนเป็นโฟลเดอร์ `creator/` พร้อมหน้า Dashboard หลัก
+- `[2026-05-18] upgrade | Enriched Personal Brand Skills & Vault` — อัปเกรดคลัง 933 Hooks (7 หมวดหมู่), 7 Prompts Carousels, 20 คลิปวิดีโอของ Jack และล้างข้อมูลเฉพาะเจาะจงทั้งหมดให้กลายเป็นระบบแบรนด์บุคคลแบบ General Context-Driven 100%
 
 ---
 *เขียนทับไฟล์นี้ทุกครั้งหลัง operation. สูงสุด ~500 คำ*
+
