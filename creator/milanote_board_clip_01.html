@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คนตื่นเงิน — Production Board Clip #01</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas: #f5f4f0;
+      --dot: rgba(0,0,0,0.085);
+      --card: #ffffff;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06);
+      --card-shadow-hover: 0 8px 28px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08);
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1a1a;
+      --text-2: #555;
+      --text-3: #999;
+      --gold: #FFBA09;
+      --gold-soft: #fff8e1;
+      --gold-border: rgba(255,186,9,0.35);
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --pink: #db2777;
+      --pink-soft: #fdf2f8;
+      --orange: #ea580c;
+      --orange-soft: #fff7ed;
+      --nav: #1c1c1e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans','Sarabun',sans-serif; background: var(--canvas); color: var(--text); overflow: hidden; width:100vw; height:100vh; user-select:none; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; height:52px; background:var(--nav); display:flex; align-items:center; justify-content:space-between; padding:0 16px; z-index:9999; box-shadow:0 1px 0 rgba(255,255,255,0.05); }
+    .nav-left { display:flex; align-items:center; gap:12px; }
+    .nav-logo { display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:600; color:#fff; }
+    .nav-logo-icon { width:28px; height:28px; border-radius:7px; background:linear-gradient(135deg,var(--gold),#ff8800); display:flex; align-items:center; justify-content:center; font-size:0.85rem; }
+    .nav-breadcrumb { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:rgba(255,255,255,0.45); }
+    .nav-breadcrumb span { color:rgba(255,255,255,0.7); }
+    .nav-breadcrumb .sep { color:rgba(255,255,255,0.25); }
+    .board-title { color:#fff; font-weight:500; }
+    .nav-right { display:flex; align-items:center; gap:8px; }
+    .nav-badge { background:rgba(255,186,9,0.18); color:var(--gold); border:1px solid rgba(255,186,9,0.3); padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; }
+    .nav-btn { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:5px 14px; border-radius:7px; font-size:0.8rem; font-weight:500; cursor:pointer; transition:all 0.15s; }
+    .nav-btn:hover { background:rgba(255,255,255,0.15); }
+    .nav-btn.primary { background:var(--gold); color:#000; font-weight:600; border-color:transparent; }
+    .nav-btn.primary:hover { background:#e0a800; }
+
+    /* TOOLBAR */
+    .toolbar { position:fixed; top:52px; left:0; right:0; height:44px; background:#f9f8f5; border-bottom:1px solid rgba(0,0,0,0.07); display:flex; align-items:center; gap:4px; padding:0 16px; z-index:999; }
+    .toolbar-sep { width:1px; height:22px; background:rgba(0,0,0,0.1); margin:0 6px; }
+    .toolbar-label { font-size:0.78rem; color:var(--text-3); font-weight:500; padding:0 6px; }
+    .script-tab { padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:500; background:transparent; border:1px solid rgba(0,0,0,0.12); color:var(--text-2); cursor:pointer; transition:all 0.15s; }
+    .script-tab.active { background:var(--gold); color:#000; border-color:transparent; font-weight:600; }
+    .script-tab:hover:not(.active) { background:rgba(0,0,0,0.05); }
+    .status-pill { font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:20px; letter-spacing:0.3px; }
+    .sp-live { background:var(--green-soft); color:var(--green); border:1px solid rgba(5,150,105,0.2); }
+    .sp-filming { background:var(--gold-soft); color:#b45309; border:1px solid var(--gold-border); }
+    .sp-idea { background:var(--blue-soft); color:var(--blue); border:1px solid rgba(37,99,235,0.2); }
+    .script-switcher { margin-left:auto; display:flex; align-items:center; gap:6px; }
+    .zoom-hint { font-size:0.72rem; color:var(--text-3); padding:3px 10px; background:rgba(0,0,0,0.04); border-radius:6px; border:1px solid rgba(0,0,0,0.08); white-space:nowrap; }
+
+    /* CANVAS */
+    .canvas { position:fixed; top:96px; left:0; right:0; bottom:0; overflow:auto; background-color:var(--canvas); background-image:radial-gradient(var(--dot) 1px,transparent 1px); background-size:24px 24px; cursor:grab; }
+    .canvas:active { cursor:grabbing; }
+    .canvas-inner { position:relative; width:3600px; height:2400px; }
+
+    /* SECTION LABELS */
+    .section-label { position:absolute; font-size:0.68rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-3); pointer-events:none; }
+
+    /* CARDS */
+    .card { position:absolute; background:var(--card); border-radius:12px; border:1px solid var(--border); box-shadow:var(--card-shadow); transition:box-shadow 0.2s, transform 0.15s; overflow:hidden; display:flex; flex-direction:column; }
+    .card:hover { box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
+    .card.dragging { box-shadow:0 20px 50px rgba(0,0,0,0.18); transform:rotate(1deg) scale(1.01); z-index:8888!important; cursor:grabbing; }
+    .stripe-gold { border-top:3px solid var(--gold); }
+    .stripe-blue { border-top:3px solid var(--blue); }
+    .stripe-purple { border-top:3px solid var(--purple); }
+    .stripe-green { border-top:3px solid var(--green); }
+    .stripe-red { border-top:3px solid var(--red); }
+    .stripe-pink { border-top:3px solid var(--pink); }
+    .stripe-orange { border-top:3px solid var(--orange); }
+
+    .card-head { display:flex; align-items:center; justify-content:space-between; padding:12px 14px 10px; cursor:move; border-bottom:1px solid rgba(0,0,0,0.05); flex-shrink:0; }
+    .card-title-row { display:flex; align-items:center; gap:8px; }
+    .card-icon { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; flex-shrink:0; }
+    .icon-gold { background:var(--gold-soft); color:#b45309; }
+    .icon-blue { background:var(--blue-soft); color:var(--blue); }
+    .icon-purple { background:var(--purple-soft); color:var(--purple); }
+    .icon-green { background:var(--green-soft); color:var(--green); }
+    .icon-red { background:var(--red-soft); color:var(--red); }
+    .icon-pink { background:var(--pink-soft); color:var(--pink); }
+    .icon-orange { background:var(--orange-soft); color:var(--orange); }
+    .card-title { font-size:0.82rem; font-weight:600; color:var(--text); letter-spacing:-0.2px; }
+    .card-subtitle { font-size:0.7rem; color:var(--text-3); margin-top:1px; }
+    .card-menu-btn { width:24px; height:24px; border-radius:5px; background:transparent; border:none; color:var(--text-3); font-size:0.9rem; cursor:pointer; transition:all 0.12s; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .card-menu-btn:hover { background:rgba(0,0,0,0.06); color:var(--text); }
+    .card-body { padding:14px; font-size:0.82rem; line-height:1.65; color:var(--text-2); overflow-y:auto; flex:1; }
+
+    /* SCRIPT LINES */
+    .script-line { display:flex; align-items:flex-start; gap:8px; padding:7px 8px; border-radius:8px; margin-bottom:3px; border:1px solid transparent; transition:background 0.12s,border-color 0.12s; }
+    .script-line:hover { background:#fafafa; border-color:rgba(0,0,0,0.06); }
+    .script-ts { font-family:'DM Mono',monospace; font-size:0.67rem; color:var(--gold); background:var(--gold-soft); padding:2px 7px; border-radius:4px; white-space:nowrap; flex-shrink:0; margin-top:2px; border:1px solid var(--gold-border); }
+    .script-text { font-size:0.8rem; line-height:1.5; color:var(--text); font-family:'Sarabun',sans-serif; }
+    .script-text strong { color:#000; font-weight:700; }
+    .copy-line-btn { margin-left:auto; flex-shrink:0; width:22px; height:22px; border-radius:5px; background:transparent; border:1px solid transparent; color:var(--text-3); font-size:0.7rem; cursor:pointer; transition:all 0.12s; display:flex; align-items:center; justify-content:center; opacity:0; }
+    .script-line:hover .copy-line-btn { opacity:1; }
+    .copy-line-btn:hover { background:var(--gold-soft); border-color:var(--gold-border); color:#b45309; }
+
+    /* STORYBOARD */
+    .sb-row { display:grid; grid-template-columns:80px 1fr; gap:0; border-bottom:1px solid rgba(0,0,0,0.05); transition:background 0.12s; }
+    .sb-row:last-child { border-bottom:none; }
+    .sb-row:hover { background:#fafafa; }
+    .sb-time { padding:10px 6px; display:flex; align-items:center; justify-content:center; }
+    .sb-time-badge { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-3); background:rgba(0,0,0,0.04); padding:3px 6px; border-radius:5px; text-align:center; }
+    .sb-content { padding:10px 12px 10px 4px; }
+    .sb-label { font-size:0.66rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-3); margin-bottom:2px; }
+    .sb-visual { font-size:0.77rem; color:var(--text); line-height:1.4; margin-bottom:3px; }
+    .sb-audio { font-size:0.76rem; color:var(--blue); font-style:italic; line-height:1.4; margin-bottom:3px; }
+    .sb-fx { font-size:0.7rem; color:var(--purple); background:var(--purple-soft); padding:2px 8px; border-radius:4px; display:inline-block; }
+
+    /* SRT */
+    .srt-block { background:#fafafa; border:1px solid rgba(0,0,0,0.06); border-radius:8px; padding:9px 11px; margin-bottom:5px; position:relative; transition:background 0.12s; }
+    .srt-block:hover { background:#f5f5f5; }
+    .srt-num { font-family:'DM Mono',monospace; font-size:0.63rem; color:var(--text-3); margin-bottom:1px; }
+    .srt-tc { font-family:'DM Mono',monospace; font-size:0.67rem; color:var(--gold); margin-bottom:3px; }
+    .srt-txt { font-family:'Sarabun',sans-serif; font-size:0.81rem; color:var(--text); line-height:1.4; }
+    .srt-copy { position:absolute; top:8px; right:8px; width:22px; height:22px; border-radius:5px; background:transparent; border:1px solid transparent; color:var(--text-3); font-size:0.7rem; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:all 0.12s; }
+    .srt-block:hover .srt-copy { opacity:1; }
+    .srt-copy:hover { background:var(--gold-soft); color:#b45309; border-color:var(--gold-border); }
+
+    /* COLOR PALETTE */
+    .color-swatch-row { display:flex; gap:5px; margin-bottom:10px; }
+    .color-swatch-big { flex:1; height:48px; border-radius:9px; border:1px solid rgba(0,0,0,0.08); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+    .color-swatch-big:hover { transform:scale(1.05); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+    .color-row { display:flex; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; border:1px solid transparent; cursor:pointer; transition:background 0.12s,border-color 0.12s; margin-bottom:3px; }
+    .color-row:hover { background:#fafafa; border-color:rgba(0,0,0,0.06); }
+    .color-dot { width:30px; height:30px; border-radius:7px; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; }
+    .color-name { font-size:0.79rem; font-weight:600; color:var(--text); }
+    .color-hex { font-family:'DM Mono',monospace; font-size:0.71rem; color:var(--text-3); }
+    .color-role { font-size:0.69rem; color:var(--text-3); margin-top:1px; }
+
+    /* AUDIO */
+    .audio-section { margin-bottom:10px; }
+    .audio-section-title { font-size:0.68rem; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--text-3); margin-bottom:5px; padding-bottom:4px; border-bottom:1px solid rgba(0,0,0,0.06); }
+    .audio-item { display:flex; align-items:flex-start; gap:7px; padding:5px 7px; border-radius:7px; border:1px solid transparent; margin-bottom:2px; transition:background 0.12s,border-color 0.12s; }
+    .audio-item:hover { background:#fafafa; border-color:rgba(0,0,0,0.06); }
+    .audio-icon { font-size:0.82rem; margin-top:1px; flex-shrink:0; }
+    .audio-name { font-size:0.78rem; font-weight:600; color:var(--text); }
+    .audio-desc { font-size:0.71rem; color:var(--text-2); line-height:1.4; margin-top:1px; }
+    .audio-tag { font-size:0.63rem; font-weight:700; letter-spacing:0.3px; padding:1px 6px; border-radius:3px; margin-top:3px; display:inline-block; }
+    .tag-bg { background:var(--blue-soft); color:var(--blue); }
+    .tag-sfx { background:var(--purple-soft); color:var(--purple); }
+    .tag-trans { background:var(--green-soft); color:var(--green); }
+    .tag-hook { background:var(--gold-soft); color:#b45309; }
+
+    /* COMPOSITION */
+    .comp-diagram { background:#0f1117; border-radius:9px; padding:14px; margin-bottom:10px; font-family:'DM Mono',monospace; font-size:0.7rem; color:#5eead4; line-height:1.7; white-space:pre; overflow-x:auto; }
+    .comp-rule { display:flex; align-items:flex-start; gap:7px; padding:6px 8px; border-radius:7px; border-left:2px solid transparent; margin-bottom:4px; transition:background 0.12s; }
+    .comp-rule:hover { background:#fafafa; }
+    .comp-rule.rule-gold { border-left-color:var(--gold); }
+    .comp-rule.rule-blue { border-left-color:var(--blue); }
+    .comp-rule.rule-green { border-left-color:var(--green); }
+    .comp-rule.rule-purple { border-left-color:var(--purple); }
+    .comp-rule.rule-red { border-left-color:var(--red); }
+    .comp-rule-icon { font-size:0.8rem; flex-shrink:0; margin-top:1px; }
+    .comp-rule-text { font-size:0.77rem; color:var(--text-2); line-height:1.45; }
+    .comp-rule-text strong { color:var(--text); font-weight:600; }
+
+    /* PERSONA */
+    .persona-badge-row { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:10px; }
+    .pbadge { font-size:0.68rem; font-weight:600; padding:2px 8px; border-radius:20px; }
+    .pb-gold { background:var(--gold-soft); color:#b45309; border:1px solid var(--gold-border); }
+    .pb-blue { background:var(--blue-soft); color:var(--blue); border:1px solid rgba(37,99,235,0.2); }
+    .pb-purple { background:var(--purple-soft); color:var(--purple); border:1px solid rgba(124,58,237,0.2); }
+    .pb-green { background:var(--green-soft); color:var(--green); border:1px solid rgba(5,150,105,0.2); }
+    .persona-stat-row { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:10px; }
+    .persona-stat { background:#fafafa; border:1px solid rgba(0,0,0,0.06); border-radius:8px; padding:9px 11px; }
+    .persona-stat-num { font-size:1.3rem; font-weight:700; color:var(--text); line-height:1; }
+    .persona-stat-label { font-size:0.68rem; color:var(--text-3); margin-top:3px; }
+    .persona-kv-row { display:flex; align-items:baseline; gap:6px; margin-bottom:5px; }
+    .persona-key { font-size:0.7rem; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; min-width:58px; flex-shrink:0; }
+    .persona-val { font-size:0.78rem; color:var(--text-2); }
+
+    /* HOOK LIST */
+    .hook-item { display:flex; align-items:flex-start; gap:7px; padding:6px 8px; border-radius:7px; margin-bottom:3px; border:1px solid transparent; transition:background 0.12s,border-color 0.12s; }
+    .hook-item:hover { background:#fafafa; border-color:rgba(0,0,0,0.06); }
+    .hook-emoji { font-size:0.88rem; flex-shrink:0; margin-top:1px; }
+    .hook-title { font-size:0.79rem; font-weight:600; color:var(--text); }
+    .hook-desc { font-size:0.71rem; color:var(--text-2); line-height:1.4; margin-top:1px; }
+
+    /* CHECKLIST */
+    .check-section-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-3); margin-bottom:4px; margin-top:9px; }
+    .check-section-label:first-child { margin-top:0; }
+    .check-item { display:flex; align-items:center; gap:7px; padding:5px 7px; border-radius:7px; margin-bottom:2px; cursor:pointer; transition:background 0.12s; }
+    .check-item:hover { background:#fafafa; }
+    .check-box { width:15px; height:15px; border-radius:4px; border:1.5px solid rgba(0,0,0,0.18); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; font-size:0.6rem; }
+    .check-item.done .check-box { background:var(--green); border-color:var(--green); color:#fff; }
+    .check-item.done .check-label { text-decoration:line-through; color:var(--text-3); }
+    .check-label { font-size:0.78rem; color:var(--text-2); }
+
+    /* STEPS */
+    .step-row { display:flex; gap:9px; align-items:flex-start; padding:6px 7px; border-radius:7px; margin-bottom:3px; transition:background 0.12s; }
+    .step-row:hover { background:#fafafa; }
+    .step-num { width:21px; height:21px; border-radius:50%; background:var(--red-soft); color:var(--red); font-size:0.68rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-text { font-size:0.78rem; color:var(--text-2); line-height:1.45; }
+    .step-text code { font-family:'DM Mono',monospace; font-size:0.73rem; background:rgba(0,0,0,0.05); padding:1px 5px; border-radius:4px; color:var(--text); }
+    .step-text strong { color:var(--text); font-weight:600; }
+
+    /* IMAGE PLACEHOLDER */
+    .img-placeholder { width:100%; height:120px; background:linear-gradient(135deg,#e8e8e8,#f0f0f0); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; color:var(--text-3); font-size:0.73rem; border-bottom:1px solid rgba(0,0,0,0.05); }
+    .img-placeholder .ph-icon { font-size:1.6rem; opacity:0.4; }
+    .img-caption { padding:7px 12px; font-size:0.73rem; color:var(--text-3); font-style:italic; }
+
+    /* NOTE CARD */
+    .note-card { background:#fff9c4 !important; border-color:rgba(0,0,0,0.06) !important; }
+    .note-body { padding:12px 14px; font-family:'Sarabun',sans-serif; font-size:0.81rem; line-height:1.65; color:#4a3f00; }
+
+    /* FUNNEL */
+    .funnel-row { display:flex; gap:5px; margin-bottom:10px; }
+    .funnel-stage { flex:1; border-radius:8px; padding:9px 7px; text-align:center; border:1px solid rgba(0,0,0,0.07); }
+    .funnel-label { font-size:0.63rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+    .funnel-title { font-size:0.8rem; font-weight:600; color:var(--text); margin-bottom:2px; }
+    .funnel-desc { font-size:0.68rem; color:var(--text-3); line-height:1.3; }
+    .stage-tofu { background:var(--blue-soft); }
+    .stage-tofu .funnel-label { color:var(--blue); }
+    .stage-mofu { background:var(--gold-soft); }
+    .stage-mofu .funnel-label { color:#b45309; }
+    .stage-bofu { background:var(--green-soft); }
+    .stage-bofu .funnel-label { color:var(--green); }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:24px; right:24px; background:var(--text); color:#fff; padding:10px 18px; border-radius:9px; font-size:0.82rem; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,0.2); transform:translateY(60px); opacity:0; transition:all 0.25s cubic-bezier(0.175,0.885,0.32,1.275); z-index:99999; pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* ZOOM CONTROLS */
+    .zoom-controls { position:fixed; bottom:24px; left:24px; display:flex; align-items:center; gap:4px; background:white; border-radius:10px; border:1px solid rgba(0,0,0,0.08); box-shadow:var(--card-shadow); padding:4px; z-index:9999; }
+    .zoom-btn { width:30px; height:30px; border-radius:7px; background:transparent; border:none; font-size:0.9rem; cursor:pointer; color:var(--text-2); display:flex; align-items:center; justify-content:center; transition:background 0.12s; }
+    .zoom-btn:hover { background:rgba(0,0,0,0.06); }
+    .zoom-level { font-size:0.75rem; font-weight:600; color:var(--text); min-width:36px; text-align:center; }
+
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">💡</div>
+      คนตื่นเงิน
+    </div>
+    <div class="nav-breadcrumb">
+      <span class="sep">›</span><span>Creator</span><span class="sep">›</span>
+      <span class="board-title">Content Planning &amp; Production Board</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <span class="nav-badge">🎬 Content Plan 3 Clips</span>
+    <button class="nav-btn" onclick="resetView()">🎯 Reset View</button>
+    <button class="nav-btn primary" onclick="copySRT('srt1-content')">⬇ Export SRT</button>
+  </div>
+</nav>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <span class="toolbar-label">เลือกคลิปเพื่อดูแผนงาน:</span>
+  <button class="script-tab active" id="tab1" onclick="switchScript(1)">Clip 1 — วัยเกษียณกังวลใจ (Location Switch)</button>
+  <button class="script-tab" id="tab2" onclick="switchScript(2)">Clip 2 — ตอบคำถาม "เบี้ยประกันแพงไป?" (Flicker Text)</button>
+  <button class="script-tab" id="tab3" onclick="switchScript(3)">Clip 3 — แผนเก็บเงินล้มเหลว (Loop Video)</button>
+  <div class="script-switcher">
+    <span class="status-pill sp-filming">🎥 รอดำเนินการถ่ายทำ</span>
+    <div class="toolbar-sep"></div>
+    <span class="zoom-hint">Scroll = เลื่อน &nbsp;|&nbsp; Ctrl+Scroll = Zoom</span>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<div class="canvas" id="canvas">
+<div class="canvas-inner" id="canvasInner">
+
+<!-- ═══════════════════ ROW 1 — OVERVIEW (y=60) ═══════════════════ -->
+<div class="section-label" style="left:60px;top:30px;">📌 PERSONA &amp; RULES</div>
+<div class="section-label" style="left:430px;top:30px;">🎬 SCRIPT</div>
+<div class="section-label" style="left:870px;top:30px;">📄 SRT CAPTIONS</div>
+<div class="section-label" style="left:1230px;top:30px;">🎨 COLOR PALETTE</div>
+<div class="section-label" style="left:1530px;top:30px;">🔊 AUDIO GUIDE</div>
+<div class="section-label" style="left:1880px;top:30px;">📐 COMPOSITION</div>
+
+<!-- PERSONA CARD -->
+<div class="card stripe-gold" style="width:330px;left:60px;top:60px;" id="c-persona">
+  <div class="card-head">
+    <div class="card-title-row">
+      <div class="card-icon icon-gold">💡</div>
+      <div><div class="card-title">คนตื่นเงิน — Guidelines</div><div class="card-subtitle">Financial Awakening Content Rule</div></div>
+    </div><button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body">
+    <div class="persona-badge-row">
+      <span class="pbadge pb-gold">ที่ปรึกษาการเงิน</span><span class="pbadge pb-blue">Nothing Phone (2a)</span>
+      <span class="pbadge pb-purple">DaVinci Resolve</span><span class="pbadge pb-green">Short-form Video</span>
+    </div>
+    <div class="persona-stat-row">
+      <div class="persona-stat"><div class="persona-stat-num">90"</div><div class="persona-stat-label">ความยาวคลิปสูงสุด</div></div>
+      <div class="persona-stat"><div class="persona-stat-num">3</div><div class="persona-stat-label">จำนวนคลิปตัวอย่าง</div></div>
+      <div class="persona-stat"><div class="persona-stat-num">4K</div><div class="persona-stat-label">Nothing Phone 2a</div></div>
+      <div class="persona-stat"><div class="persona-stat-num">ASUS</div><div class="persona-stat-label">โน้ตบุ๊กสำหรับตัดต่อ</div></div>
+    </div>
+    <div class="persona-kv-row"><span class="persona-key">Keywords</span><span class="persona-val">"extra" (Clip 1) | "เช็ก" (Clip 2) | "Megaphone" (Clip 3)</span></div>
+    <div class="persona-kv-row"><span class="persona-key">Hook</span><span class="persona-val">3 วิแรกต้องหยุดสายตาด้วย Visual &amp; Question Loop</span></div>
+    <div class="persona-kv-row"><span class="persona-key">Niche</span><span class="persona-val">คนทำงาน 28–45 ปี ที่ต้องการความคุ้มครองรายได้และสุขภาพ</span></div>
+    <div class="persona-kv-row"><span class="persona-key">Platform</span><span class="persona-val">Instagram Reels · TikTok · Facebook Reels</span></div>
+    <div class="persona-kv-row"><span class="persona-key">Visuals</span><span class="persona-val">ตัดฉากสลับโลเคชั่น / แทรกลำดับช็อต B-Roll 4 ระดับ</span></div>
+  </div>
+</div>
+
+<!-- SCRIPT #1 (Location Switching - Topic: Retirement Burnout) -->
+<div class="card stripe-blue" style="width:400px;left:430px;top:60px;" id="c-script1">
+  <div class="card-head">
+    <div class="card-title-row">
+      <div class="card-icon icon-blue">🎬</div>
+      <div><div class="card-title">Script #1 — วัยเกษียณกังวลใจ</div><div class="card-subtitle">90 วินาที · จิตวิทยา x วางแผนการเงิน</div></div>
+    </div><button class="card-menu-btn" onclick="copyScript('script1-body')">📋</button>
+  </div>
+  <div class="card-body" id="script1-body" style="max-height:400px;">
+    <div class="script-line"><span class="script-ts">0:00</span><span class="script-text">ผมเจอลูกค้าวัยทำงานถามคำถามเดียวกันตลอดว่า... <strong>"ถ้าวันนึงทำงานไม่ได้ขึ้นมา... ชีวิตเราจะเป็นยังไง?"</strong></span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:05</span><span class="script-text">คนส่วนใหญ่คิดว่า <strong>"แค่มีเงินเก็บก็พอแล้ว"</strong> แต่จริงๆ มันเสี่ยงมากนะครับ</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:10</span><span class="script-text">เพราะถ้าไม่มีแผนรองรับที่ดี... <strong>เงินที่หามาทั้งชีวิต</strong>อาจจะหมดเกลี้ยงเพราะเรื่องไม่คาดคิดได้</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:16</span><span class="script-text">ด้านที่ 1: <strong>สวัสดิการและประกันสุขภาพ 💊</strong> เพื่อไม่ให้เงินเก็บรั่วไหลเวลาป่วย</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:22</span><span class="script-text">ด้านที่ 2: <strong>แผนคุ้มครองรายได้ชีวิต 👨‍👩‍👦</strong> มั่นใจว่าครอบครัวจะไปต่อได้แน่นอน</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:28</span><span class="script-text">ด้านที่ 3: <strong>กองทุนเพื่อการเกษียณ 🏖️</strong> ให้เงินทำงานงอกเงยแบบไร้กังวล</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:35</span><span class="script-text">เคล็ดลับคือ: ต้องรู้ว่าตัวเรามี<strong>จุดรั่วไหลทางการเงิน</strong>ตรงไหนบ้างก่อนจะเริ่มลงทุน</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:44</span><span class="script-text">ถ้าอยากได้ตารางเช็กสุขภาพการเงิน 4 มิติแบบเข้าใจง่ายที่สุด...</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:48</span><span class="script-text">พิมพ์คำว่า <strong>"extra" 👇</strong> แล้วผมจะส่งไฟล์คู่มือคำนวณเข้าอีเมลให้ฟรีทันทีครับ!</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+  </div>
+</div>
+
+<!-- SCRIPT #2 (Topic: ประกันสุขภาพเบี้ยแพงไปไหม?) -->
+<div class="card stripe-orange" style="width:400px;left:430px;top:60px;display:none;" id="c-script2">
+  <div class="card-head">
+    <div class="card-title-row">
+      <div class="card-icon icon-orange">🎬</div>
+      <div><div class="card-title">Script #2 — เบี้ยประกันแพงไป?</div><div class="card-subtitle">45 วินาที · จิตวิทยาปรับมุมมองลูกค้า</div></div>
+    </div><button class="card-menu-btn" onclick="copyScript('script2-body')">📋</button>
+  </div>
+  <div class="card-body" id="script2-body" style="max-height:400px;">
+    <div class="script-line"><span class="script-ts">0:00</span><span class="script-text">เคยรู้สึกไหมครับว่า... เบี้ยประกันสุขภาพสมัยนี้มัน <strong>"แพงเกินไป"</strong> จนจ่ายไม่ไหว?</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:06</span><span class="script-text">หลายคนเลือกที่จะ <strong>"ไม่ทำ"</strong> แล้วคิดว่าถ้าป่วยค่อยควักเงินจ่ายเอง หรือใช้สิทธิ์สวัสดิการรัฐ...</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:12</span><span class="script-text">แต่ความจริงแล้ว... สิ่งที่แพงกว่าเบี้ยประกันร้อยเท่า คือ <strong>ค่าห้องเดี่ยว ค่ารักษา และค่ายานอกบัญชี</strong> ในเอกชนเวลาป่วยหนักครับ</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:18</span><span class="script-text">ประกันสุขภาพไม่ได้ออกแบบมาให้คุณจ่ายทิ้ง... แต่มันออกแบบมาเพื่อ <strong>"ล็อกวงเงิน ไม่ให้เงินเก็บคุณกลายเป็นศูนย์"</strong></span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:24</span><span class="script-text">ถ้าคุณคิดว่าเบี้ยปีละสองหมื่นแพงไป... ลองจินตนาการถึงบิลค่ารักษาห้าแสนที่ลอยมาแบบไม่ตั้งตัวดูครับ</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:31</span><span class="script-text">วิธีเลือกแผนที่คุ้มค่าที่สุดคือ เลือกจ่ายตามจริง และวางเบี้ยประกันไว้ที่ <strong>5-10% ของรายได้ต่อปี</strong> ของคุณเท่านั้น</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:38</span><span class="script-text">ไม่จำเป็นต้องทำเบี้ยหลักแสนเกินตัว แต่ต้องเป็นแผนที่ปกป้องเงินก้อนหลักของคุณได้อย่างมั่นใจ</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:44</span><span class="script-text">อยากรู้งบค่าเบี้ยประกันสุขภาพที่เหมาะสมและปลอดภัยกับรายได้ของคุณตอนนี้ไหมครับ?</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:48</span><span class="script-text">พิมพ์คำว่า <strong>"เช็ก" 👇</strong> แล้วผมจะส่งตารางสัดส่วนค่าเบี้ยที่ปลอดภัยให้คำนวณในแชตทันทีครับ!</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+  </div>
+</div>
+
+<!-- SCRIPT #3 (Megaphone AI & Loop Video - Topic: Financial Health Check) -->
+<div class="card stripe-pink" style="width:400px;left:430px;top:60px;display:none;" id="c-script3">
+  <div class="card-head">
+    <div class="card-title-row">
+      <div class="card-icon icon-pink">🎬</div>
+      <div><div class="card-title">Script #3 — แผนเก็บเงินล้มเหลว</div><div class="card-subtitle">50 วินาที · จิตวิทยาความคุ้มครอง (Loop)</div></div>
+    </div><button class="card-menu-btn" onclick="copyScript('script3-body')">📋</button>
+  </div>
+  <div class="card-body" id="script3-body" style="max-height:400px;">
+    <div class="script-line"><span class="script-ts">0:00</span><span class="script-text"><strong>แผนเก็บเงินปีนี้ของคุณล่มอีกแล้วใช่ไหมครับ?</strong> นั่นเพราะคุณกำลังอุดรอยรั่วผิดจุด...</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:05</span><span class="script-text">ลูกค้าผมคนนึงตั้งใจเก็บเงินมาก แต่เก็บเท่าไหร่ก็รั่ว เพราะหมดไปกับ<strong>การจ่ายค่ารักษาพยาบาล</strong></span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:10</span><span class="script-text">เค้าบอกว่าแผนประกันสุขภาพเดิมที่มีอยู่มันไม่ครอบคลุม... พอป่วยหนักขึ้นมา เงินเก็บทั้งหมดเลยอันตรธานหายไป</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:17</span><span class="script-text">การเก็บเงินโดยไม่มีระบบสวัสดิการโอนย้ายความเสี่ยง... ก็เหมือนสร้างบ้านที่ไม่มีหลังคาครับ</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:22</span><span class="script-text">แต่มีวิธีแก้ปัญหาที่<strong>ง่ายจนเหลือเชื่อ</strong> ด้วยแอปวางแผนการเงินอัตโนมัติ AIA Financial Health</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:29</span><span class="script-text">ที่จะวิเคราะห์รอยรั่วและคำนวณเบี้ยที่คุ้มค่าให้คุณประเมินตัวเองได้ภายใน 30 วินาที</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:37</span><span class="script-text">อยากลองทดสอบตรวจหาจุดอ่อนแผนการเงินของคุณเองดูไหมล่ะครับ?</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+    <div class="script-line"><span class="script-ts">0:43</span><span class="script-text">พิมพ์คำว่า <strong>"Megaphone" 👇</strong> เดี๋ยวผมจะส่งลิงก์ตรวจประเมินฟรีให้ประเมินตัวเอง และก่อนจะถามว่า...</span><button class="copy-line-btn" onclick="copyText(this.previousElementSibling.textContent)">📋</button></div>
+  </div>
+</div>
+
+<!-- SRT CARD 1 -->
+<div class="card stripe-purple" style="width:310px;left:870px;top:60px;" id="c-srt1">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-purple">📄</div><div><div class="card-title">SRT — Script #1</div><div class="card-subtitle">วัยเกษียณกังวลใจ (Location Switch)</div></div></div>
+    <button class="card-menu-btn" onclick="copySRT('srt1-content')">⬇ All</button>
+  </div>
+  <div class="card-body" id="srt1-content" style="max-height:440px;padding-top:10px;">
+    <div class="srt-block"><div class="srt-num">1</div><div class="srt-tc">00:00:00,000 → 00:00:05,000</div><div class="srt-txt">ผมเจอลูกค้าวัยทำงานถามคำถามเดียวกันตลอดว่า...</div><button class="srt-copy" onclick="copyText('ผมเจอลูกค้าวัยทำงานถามคำถามเดียวกันตลอดว่า...')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">2</div><div class="srt-tc">00:00:05,000 → 00:00:10,000</div><div class="srt-txt">"ถ้าวันนึงทำงานไม่ได้ขึ้นมา... ชีวิตเราจะเป็นยังไง?"</div><button class="srt-copy" onclick="copyText('"ถ้าวันนึงทำงานไม่ได้ขึ้นมา... ชีวิตเราจะเป็นยังไง?"')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">3</div><div class="srt-tc">00:00:10,000 → 00:00:16,000</div><div class="srt-txt">คนส่วนใหญ่คิดว่า "แค่มีเงินเก็บก็พอแล้ว" แต่จริงๆ มันเสี่ยงมากนะครับ</div><button class="srt-copy" onclick="copyText('คนส่วนใหญ่คิดว่า "แค่มีเงินเก็บก็พอแล้ว" แต่จริงๆ มันเสี่ยงมากนะครับ')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">4</div><div class="srt-tc">00:00:16,000 → 00:00:22,000</div><div class="srt-txt">เพราะถ้าไม่มีแผนรองรับที่ดี... เงินที่หามาอาจหมดเพราะเรื่องไม่คาดคิดได้</div><button class="srt-copy" onclick="copyText('เพราะถ้าไม่มีแผนรองรับที่ดี... เงินที่หามาอาจหมดเพราะเรื่องไม่คาดคิดได้')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">5</div><div class="srt-tc">00:00:22,000 → 00:00:28,000</div><div class="srt-txt">ด้านที่ 1: สวัสดิการและประกันสุขภาพ เพื่อไม่ให้เงินเก็บรั่วไหลเวลาป่วย</div><button class="srt-copy" onclick="copyText('ด้านที่ 1: สวัสดิการและประกันสุขภาพ เพื่อไม่ให้เงินเก็บรั่วไหลเวลาป่วย')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">6</div><div class="srt-tc">00:00:28,000 → 00:00:35,000</div><div class="srt-txt">ด้านที่ 2: แผนคุ้มครองรายได้ชีวิต มั่นใจว่าครอบครัวจะไปต่อได้แน่นอน</div><button class="srt-copy" onclick="copyText('ด้านที่ 2: แผนคุ้มครองรายได้ชีวิต มั่นใจว่าครอบครัวจะไปต่อได้แน่นอน')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">7</div><div class="srt-tc">00:00:35,000 → 00:00:44,000</div><div class="srt-txt">ด้านที่ 3: กองทุนเกษียณ เคล็ดลับคือ ต้องรู้จุดรั่วไหลการเงินตนเองก่อน</div><button class="srt-copy" onclick="copyText('ด้านที่ 3: กองทุนเกษียณ เคล็ดลับคือ ต้องรู้จุดรั่วไหลการเงินตนเองก่อน')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">8</div><div class="srt-tc">00:00:44,000 → 00:00:48,000</div><div class="srt-txt">ถ้าอยากได้ตารางเช็กสุขภาพการเงิน 4 มิติแบบเข้าใจง่ายที่สุด...</div><button class="srt-copy" onclick="copyText('ถ้าอยากได้ตารางเช็กสุขภาพการเงิน 4 มิติแบบเข้าใจง่ายที่สุด...')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">9</div><div class="srt-tc">00:00:48,000 → 00:00:52,000</div><div class="srt-txt">พิมพ์คำว่า "extra" 👇 แล้วผมจะส่งไฟล์คู่มือคำนวณเข้าอีเมลให้ฟรีครับ!</div><button class="srt-copy" onclick="copyText('พิมพ์คำว่า "extra" 👇 แล้วผมจะส่งไฟล์คู่มือคำนวณเข้าอีเมลให้ฟรีครับ!')">📋</button></div>
+  </div>
+</div>
+
+<!-- SRT CARD 2 -->
+<div class="card stripe-purple" style="width:310px;left:870px;top:60px;display:none;" id="c-srt2">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-purple">📄</div><div><div class="card-title">SRT — Script #2</div><div class="card-subtitle">เบี้ยประกันสุขภาพแพงไป?</div></div></div>
+    <button class="card-menu-btn" onclick="copySRT('srt2-content')">⬇ All</button>
+  </div>
+  <div class="card-body" id="srt2-content" style="max-height:440px;padding-top:10px;">
+    <div class="srt-block"><div class="srt-num">1</div><div class="srt-tc">00:00:00,000 → 00:00:06,000</div><div class="srt-txt">เคยรู้สึกไหมครับว่า... เบี้ยประกันสุขภาพสมัยนี้มัน "แพงเกินไป" จนจ่ายไม่ไหว?</div><button class="srt-copy" onclick="copyText('เคยรู้สึกไหมครับว่า... เบี้ยประกันสุขภาพสมัยนี้มัน &quot;แพงเกินไป&quot; จนจ่ายไม่ไหว?')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">2</div><div class="srt-tc">00:00:06,000 → 00:00:12,000</div><div class="srt-txt">หลายคนเลือกที่จะ "ไม่ทำ" แล้วป่วยค่อยจ่ายเอง หรือใช้สิทธิ์สวัสดิการรัฐ...</div><button class="srt-copy" onclick="copyText('หลายคนเลือกที่จะ &quot;ไม่ทำ&quot; แล้วป่วยค่อยจ่ายเอง หรือใช้สิทธิ์สวัสดิการรัฐ...')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">3</div><div class="srt-tc">00:00:12,000 → 00:00:18,000</div><div class="srt-txt">แต่ความจริงแล้ว สิ่งที่แพงกว่าเบี้ยประกันร้อยเท่า คือค่าห้องและค่ารักษาเอกชนเวลาเจ็บป่วยหนัก</div><button class="srt-copy" onclick="copyText('แต่ความจริงแล้ว สิ่งที่แพงกว่าเบี้ยประกันร้อยเท่า คือค่าห้องและค่ารักษาเอกชนเวลาเจ็บป่วยหนัก')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">4</div><div class="srt-tc">00:00:18,000 → 00:00:24,000</div><div class="srt-txt">ประกันไม่ใช่การจ่ายทิ้ง แต่มันทำหน้าที่ล็อกวงเงิน ไม่ให้เงินเก็บคุณกลายเป็นศูนย์</div><button class="srt-copy" onclick="copyText('ประกันไม่ใช่การจ่ายทิ้ง แต่มันทำหน้าที่ล็อกวงเงิน ไม่ให้เงินเก็บคุณกลายเป็นศูนย์')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">5</div><div class="srt-tc">00:00:24,000 → 00:00:31,000</div><div class="srt-txt">ถ้าเบี้ยสองหมื่นแพงไป... ลองจินตนาการถึงบิลค่ารักษาห้าแสนที่ลอยมาแบบไม่ตั้งตัวดูครับ</div><button class="srt-copy" onclick="copyText('ถ้าเบี้ยสองหมื่นแพงไป... ลองจินตนาการถึงบิลค่ารักษาห้าแสนที่ลอยมาแบบไม่ตั้งตัวดูครับ')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">6</div><div class="srt-tc">00:00:31,000 → 00:00:38,000</div><div class="srt-txt">วิธีเลือกที่คุ้มสุดคือ จ่ายตามจริง และจำกัดงบค่าเบี้ยไว้ที่ 5-10% ของรายได้ต่อปีของคุณ</div><button class="srt-copy" onclick="copyText('วิธีเลือกที่คุ้มสุดคือ จ่ายตามจริง และจำกัดงบค่าเบี้ยไว้ที่ 5-10% ของรายได้ต่อปีของคุณ')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">7</div><div class="srt-tc">00:00:38,000 → 00:00:44,000</div><div class="srt-txt">ไม่จำเป็นต้องจ่ายเกินตัว แต่ต้องปกป้องเงินก้อนหลักของคุณได้อย่างปลอดภัย</div><button class="srt-copy" onclick="copyText('ไม่จำเป็นต้องจ่ายเกินตัว แต่ต้องปกป้องเงินก้อนหลักของคุณได้อย่างปลอดภัย')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">8</div><div class="srt-tc">00:00:44,000 → 00:00:52,000</div><div class="srt-txt">พิมพ์คำว่า "เช็ก" 👇 แล้วผมจะส่งแนวทางคำนวณเบี้ยที่ปลอดภัยเทียบกับรายได้ให้ทันทีครับ!</div><button class="srt-copy" onclick="copyText('พิมพ์คำว่า &quot;เช็ก&quot; 👇 แล้วผมจะส่งแนวทางคำนวณเบี้ยที่ปลอดภัยเทียบกับรายได้ให้ทันทีครับ!')">📋</button></div>
+  </div>
+</div>
+
+<!-- SRT CARD 3 -->
+<div class="card stripe-purple" style="width:310px;left:870px;top:60px;display:none;" id="c-srt3">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-purple">📄</div><div><div class="card-title">SRT — Script #3</div><div class="card-subtitle">แผนการเงินรั่วไหล (Loop)</div></div></div>
+    <button class="card-menu-btn" onclick="copySRT('srt3-content')">⬇ All</button>
+  </div>
+  <div class="card-body" id="srt3-content" style="max-height:440px;padding-top:10px;">
+    <div class="srt-block"><div class="srt-num">1</div><div class="srt-tc">00:00:00,000 → 00:00:05,000</div><div class="srt-txt">แผนเก็บเงินปีนี้ของคุณล่มอีกแล้วใช่ไหมครับ? นั่นเพราะคุณกำลังอุดรอยรั่วผิดจุด...</div><button class="srt-copy" onclick="copyText('แผนเก็บเงินปีนี้ของคุณล่มอีกแล้วใช่ไหมครับ? นั่นเพราะคุณกำลังอุดรอยรั่วผิดจุด...')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">2</div><div class="srt-tc">00:00:05,000 → 00:00:10,000</div><div class="srt-txt">ลูกค้าผมเก็บเงินดีมาก แต่พังพินาศหมดเพราะการดึงเงินเก็บมาจ่ายค่าหมอพยาบาล</div><button class="srt-copy" onclick="copyText('ลูกค้าผมเก็บเงินดีมาก แต่พังพินาศหมดเพราะการดึงเงินเก็บมาจ่ายค่าหมอพยาบาล')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">3</div><div class="srt-tc">00:00:10,000 → 00:00:17,000</div><div class="srt-txt">สวัสดิการเดิมที่มีไม่ตอบโจทย์ พอเจ็บป่วยกะทันหัน เงินที่สะสมไว้เลยอันตรธานหายไป</div><button class="srt-copy" onclick="copyText('สวัสดิการเดิมที่มีไม่ตอบโจทย์ พอเจ็บป่วยกะทันหัน เงินที่สะสมไว้เลยอันตรธานหายไป')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">4</div><div class="srt-tc">00:00:17,000 → 00:00:22,000</div><div class="srt-txt">การเก็บเงินที่ปราศจากสวัสดิการป้องกันความเสี่ยง ก็เปรียบเสมือนสร้างบ้านไม่มีหลังคาครับ</div><button class="srt-copy" onclick="copyText('การเก็บเงินที่ปราศจากสวัสดิการป้องกันความเสี่ยง ก็เปรียบเสมือนสร้างบ้านไม่มีหลังคาครับ')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">5</div><div class="srt-tc">00:00:22,000 → 00:00:29,000</div><div class="srt-txt">แต่มีทางแก้ง่ายๆ ด้วยแอปวางแผนการเงินอัตโนมัติ AIA Financial Health</div><button class="srt-copy" onclick="copyText('แต่มีทางแก้ง่ายๆ ด้วยแอปวางแผนการเงินอัตโนมัติ AIA Financial Health')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">6</div><div class="srt-tc">00:00:29,000 → 00:00:37,000</div><div class="srt-txt">ที่จะวิเคราะห์รอยรั่วและประเมินงบเบี้ยประกันของตัวท่านเองเสร็จภายใน 30 วินาที</div><button class="srt-copy" onclick="copyText('ที่จะวิเคราะห์รอยรั่วและประเมินงบเบี้ยประกันของตัวท่านเองเสร็จภายใน 30 วินาที')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">7</div><div class="srt-tc">00:00:37,000 → 00:00:43,000</div><div class="srt-txt">อยากรู้จุดอ่อนด้านความเสี่ยงเงินในอนาคตของตัวเองกันดูไหมล่ะครับ?</div><button class="srt-copy" onclick="copyText('อยากรู้จุดอ่อนด้านความเสี่ยงเงินในอนาคตของตัวเองกันดูไหมล่ะครับ?')">📋</button></div>
+    <div class="srt-block"><div class="srt-num">8</div><div class="srt-tc">00:00:43,000 → 00:00:50,000</div><div class="srt-txt">พิมพ์คำว่า "Megaphone" เดี๋ยวส่งช่องทางตรวจประเมินฟรีให้ทันทีครับ!</div><button class="srt-copy" onclick="copyText('พิมพ์คำว่า &quot;Megaphone&quot; เดี๋ยวส่งช่องทางตรวจประเมินฟรีให้ทันทีครับ!')">📋</button></div>
+  </div>
+</div>
+
+<!-- COLOR PALETTE -->
+<div class="card stripe-gold" style="width:260px;left:1220px;top:60px;" id="c-palette">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-gold">🎨</div><div><div class="card-title">Color Palette</div><div class="card-subtitle">Brand Colors — คลิกเพื่อ Copy</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body">
+    <div class="color-swatch-row">
+      <div class="color-swatch-big" style="background:#FFBA09;" onclick="copyText('#FFBA09')"></div>
+      <div class="color-swatch-big" style="background:#0a0a0a;" onclick="copyText('#0a0a0a')"></div>
+      <div class="color-swatch-big" style="background:#0044FF;" onclick="copyText('#0044FF')"></div>
+      <div class="color-swatch-big" style="background:#FF8800;" onclick="copyText('#FF8800')"></div>
+    </div>
+    <div class="color-row" onclick="copyText('#FFBA09')"><div class="color-dot" style="background:#FFBA09;"></div><div><div class="color-name">Brand Gold</div><div class="color-hex">#FFBA09</div><div class="color-role">Highlight · CTA · Flicker Text</div></div></div>
+    <div class="color-row" onclick="copyText('#0a0a0a')"><div class="color-dot" style="background:#0a0a0a;border:1px solid #ccc;"></div><div><div class="color-name">Deep Black</div><div class="color-hex">#0a0a0a</div><div class="color-role">BG วิดีโอ A-roll</div></div></div>
+    <div class="color-row" onclick="copyText('#0044FF')"><div class="color-dot" style="background:#0044FF;"></div><div><div class="color-name">Accent Blue</div><div class="color-hex">#0044FF</div><div class="color-role">BG Light ซ้ายหลังฉาก</div></div></div>
+    <div class="color-row" onclick="copyText('#FF8800')"><div class="color-dot" style="background:#FF8800;"></div><div><div class="color-name">Warm Orange</div><div class="color-hex">#FF8800</div><div class="color-role">BG Light ขวาหลังฉาก</div></div></div>
+    <div class="color-row" onclick="copyText('#FFFFFF')"><div class="color-dot" style="background:#fff;border:1px solid #ddd;"></div><div><div class="color-name">Pure White</div><div class="color-hex">#FFFFFF</div><div class="color-role">ผนังฉาก · Subtitle Base</div></div></div>
+  </div>
+</div>
+
+<!-- AUDIO GUIDE -->
+<div class="card stripe-purple" style="width:300px;left:1520px;top:60px;" id="c-audio">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-purple">🔊</div><div><div class="card-title">Audio Guide</div><div class="card-subtitle">BG · SFX · Transition · Hook</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body" style="max-height:440px;">
+    <div class="audio-section">
+      <div class="audio-section-title">🎵 Background Music</div>
+      <div class="audio-item"><span class="audio-icon">🎼</span><div class="audio-info"><div class="audio-name">Lo-fi Minimal Beat</div><div class="audio-desc">Volume 10% ตลอด Clip ไม่มีเนื้อร้อง</div><span class="audio-tag tag-bg">BG</span></div></div>
+      <div class="audio-item"><span class="audio-icon">🎹</span><div class="audio-info"><div class="audio-name">Fast &amp; Dynamic Tech</div><div class="audio-desc">จังหวะกระตุ้นความตื่นตัว เหมาะกับคลิปแนวเทคโนโลยี / แผนสไลด์</div><span class="audio-tag tag-bg">Mood</span></div></div>
+    </div>
+    <div class="audio-section">
+      <div class="audio-section-title">💥 SFX Timeline</div>
+      <div class="audio-item"><span class="audio-icon">🌬️</span><div class="audio-info"><div class="audio-name">Swoosh (0:00)</div><div class="audio-desc">Object Reveal Hook ลมพัดเร็ว 0.3 วินาที</div><span class="audio-tag tag-sfx">Hook</span></div></div>
+      <div class="audio-item"><span class="audio-icon">❌</span><div class="audio-info"><div class="audio-name">Error Buzzer (0:06)</div><div class="audio-desc">เสียงเตือน "กระตุก / เสียเวลา" Pattern Interrupt</div><span class="audio-tag tag-sfx">SFX</span></div></div>
+      <div class="audio-item"><span class="audio-icon">⚡</span><div class="audio-info"><div class="audio-name">Electric Buzz</div><div class="audio-desc">จังหวะเปลี่ยนฉาก (Flash / Flicker Transition)</div><span class="audio-tag tag-sfx">Transition</span></div></div>
+      <div class="audio-item"><span class="audio-icon">💥</span><div class="audio-info"><div class="audio-name">Sub Bass Drop</div><div class="audio-desc">Re-hook ก่อนแนะนำเครื่องมือ AI หรือขั้นตอนสำคัญ</div><span class="audio-tag tag-sfx">Re-hook</span></div></div>
+      <div class="audio-item"><span class="audio-icon">🔔</span><div class="audio-info"><div class="audio-name">Bell Ding x2</div><div class="audio-desc">CTA ชี้ลงให้คอมเมนต์คำสั่งพิเศษ</div><span class="audio-tag tag-hook">CTA</span></div></div>
+    </div>
+    <div class="audio-section">
+      <div class="audio-section-title">⚡ Transitions</div>
+      <div class="audio-item"><span class="audio-icon">✨</span><div class="audio-info"><div class="audio-name">Neon Flicker / White Flash</div><div class="audio-desc">ใช้ในการเปลี่ยนฉากแบบฉับพลัน</div><span class="audio-tag tag-trans">Flicker</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPOSITION -->
+<div class="card stripe-green" style="width:330px;left:1870px;top:60px;" id="c-comp">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-green">📐</div><div><div class="card-title">Composition Guide</div><div class="card-subtitle">Shot Layout · Safe Zone · Camera</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body">
+    <div class="comp-diagram">  [ผนังขาว — BACKDROP]
+   BG Blue ←       → BG Orange
+       ╲                  ╱
+           👤 นั่งตรงกลาง
+           | Eye Level
+        📱 กล้อง (1.2m)
+  ─────────────────────────
+  SAFE ZONE: 50% กลางจอ
+  SUBTITLE: ระดับหน้าอก</div>
+    <div class="comp-rule rule-gold"><span class="comp-rule-icon">🎯</span><span class="comp-rule-text"><strong>Medium Shot</strong> — A-roll หลัก เห็นมือ+แขนสำหรับ Gesture การพูด</span></div>
+    <div class="comp-rule rule-blue"><span class="comp-rule-icon">🔍</span><span class="comp-rule-text"><strong>Zoom 1.2x</strong> — ใช้สลับช่วง Pattern Interrupt (ตัดซูมในโปรแกรม)</span></div>
+    <div class="comp-rule rule-green"><span class="comp-rule-icon">📱</span><span class="comp-rule-text"><strong>B-roll Close-up</strong> — หน้าจอ iPad, มือกดคีย์บอร์ด, หน้าจอมือถือ</span></div>
+    <div class="comp-rule rule-purple"><span class="comp-rule-icon">⚙️</span><span class="comp-rule-text"><strong>Nothing Phone settings</strong>: 4K/30fps, Lock AE/AF เสมอเพื่อตัดแสงสะท้อน</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ ROW 2 — STORYBOARD + STRATEGY (y=580) ═══════════════════ -->
+<div class="section-label" style="left:60px;top:548px;">📽️ STORYBOARD</div>
+<div class="section-label" style="left:680px;top:548px;">📊 CONTENT STRATEGY</div>
+<div class="section-label" style="left:1100px;top:548px;">✅ PRE-PRODUCTION CHECKLIST</div>
+<div class="section-label" style="left:1440px;top:548px;">🏆 BRAND OUTLIERS & STRATEGY</div>
+<div class="section-label" style="left:1800px;top:548px;">📷 SHOT REFS</div>
+
+
+<!-- STORYBOARD 1 (Location Switching - Topic: Retirement Burnout) -->
+<div class="card stripe-blue" style="width:580px;left:60px;top:578px;" id="c-storyboard1">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-blue">📽️</div><div><div class="card-title">Storyboard — Clip #1 (Retirement Burnout)</div><div class="card-subtitle">ลำดับช็อตคำถามวางแผนเกษียณ 90 วินาที</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body" style="padding:0;max-height:440px;">
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:00</span></div><div class="sb-content"><div class="sb-label">🎬 Visual Hook · Medium Shot (โต๊ะทำงาน)</div><div class="sb-visual">ครีเอเตอร์นั่งที่โต๊ะสบตากล้อง ยกมือสองข้างแสดงความเห็นใจและถามคำถาม</div><div class="sb-audio">"ผมเจอลูกค้าวัยทำงานถามคำถามเดียวกันตลอดว่า... 'ถ้าวันนึงทำงานไม่ได้ขึ้นมา... ชีวิตเราจะเป็นยังไง?'"</div><span class="sb-fx">🎨 Text: "กังวลเรื่องเกษียณ? 😟" · SFX: Swoosh</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:05</span></div><div class="sb-content"><div class="sb-label">❌ Pattern Interrupt · Zoom 1.2x</div><div class="sb-visual">ซูมภาพเข้าเล็กน้อย ส่ายหน้าพูดช้าลงอย่างเห็นอกเห็นใจ</div><div class="sb-audio">"คนส่วนใหญ่คิดว่า 'แค่มีเงินเก็บก็พอแล้ว' แต่จริงๆ มันเสี่ยงมากนะครับ"</div><span class="sb-fx">🎨 Text: "แค่เงินเก็บ... ไม่พอ ❌" · SFX: Error Buzzer</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:10</span></div><div class="sb-content"><div class="sb-label">✨ Location Change 1 · Wipe Transition (ริมระเบียง)</div><div class="sb-visual">ตัดมาพูดที่ระเบียงคอนโด แสงสีธรรมชาติ ดูผ่อนคลายแต่จริงจัง</div><div class="sb-audio">"เพราะถ้าไม่มีแผนรองรับที่ดี... เงินที่หามาทั้งชีวิตอาจหมดเกลี้ยงเพราะเรื่องไม่คาดคิดได้"</div><span class="sb-fx">🎬 Effect: Wipe Transition Left to Right · SFX: Swoosh</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:16</span></div><div class="sb-content"><div class="sb-label">📷 A-Roll Spot 2 · Medium</div><div class="sb-visual">พูดต่อเรื่องเสาหลักคุ้มครองค่ารักษา</div><div class="sb-audio">"ด้านที่ 1: สวัสดิการและประกันสุขภาพ 💊 เพื่อไม่ให้เงินเก็บรั่วไหลเวลาป่วยไข้กะทันหัน"</div><span class="sb-fx">🎨 Icons: 💊 สัญลักษณ์สุขภาพขึ้นมุมจอ</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:22</span></div><div class="sb-content"><div class="sb-label">✨ Location Change 2 · Flash Step (ร้านกาแฟ)</div><div class="sb-visual">ตัดฉากฉับพลันไปที่ร้านกาแฟ แสงละมุน พูดสรุปเสาหลักถัดไป</div><div class="sb-audio">"ด้านที่ 2: แผนคุ้มครองรายได้ชีวิต 👨‍👩‍👦 และด้านที่ 3: กองทุนเกษียณ 🏖️ ให้เงินทำงานงอกเงย"</div><span class="sb-fx">🎬 Effect: Flash White 2F · SFX: Electric Buzz</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:35</span></div><div class="sb-content"><div class="sb-label">📱 B-Roll Overlay · iPad Chart Scroll</div><div class="sb-visual">ภาพอินเสิร์ทซ้อน นิ้วกำลังปัดแสดงตารางกราฟสัดส่วนสุขภาพการเงิน</div><div class="sb-audio">"เคล็ดลับคือ: ต้องรู้ว่าตัวเรามีจุดรั่วไหลทางการเงินตรงไหนบ้างก่อนจะเริ่มลงทุนครับ"</div><span class="sb-fx">🎬 Overlay Screen B-Roll · SFX: Keyboard slide</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:48</span></div><div class="sb-content"><div class="sb-label">👇 CTA · Flicker Text (โต๊ะทำงาน)</div><div class="sb-visual">ตัดกลับมาโต๊ะทำงานหลัก ยิ้มแย้ม ชี้มือลงล่างชวนรับคู่มือ</div><div class="sb-audio">"พิมพ์คำว่า 'extra' 👇 แล้วผมจะส่งตารางเช็กสุขภาพการเงินให้ฟรีทางอีเมลครับ!"</div><span class="sb-fx">🎨 Flicker: "extra" สีเหลือง #FFBA09 · SFX: Bell Ding x2</span></div></div>
+  </div>
+</div>
+
+<!-- STORYBOARD 2 (Objection: Is insurance expensive?) -->
+<div class="card stripe-orange" style="width:580px;left:60px;top:578px;display:none;" id="c-storyboard2">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-orange">📽️</div><div><div class="card-title">Storyboard — Clip #2 (Is insurance expensive?)</div><div class="card-subtitle">ลำดับช็อตปรับมุมมองลูกค้า "เบี้ยประกันแพงไป" 45 วินาที</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body" style="padding:0;max-height:440px;">
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:00</span></div><div class="sb-content"><div class="sb-label">🎬 Visual Hook · Close-up</div><div class="sb-visual">ครีเอเตอร์กุมขมับ ถอนหายใจมองบิลค่าใช้จ่าย สบตากล้องด้วยสีหน้าเห็นใจคนดู</div><div class="sb-audio">"เคยรู้สึกไหมครับว่า... เบี้ยประกันสุขภาพสมัยนี้มัน 'แพงเกินไป' จนจ่ายไม่ไหว?"</div><span class="sb-fx">🎨 Text: "เบี้ยประกันแพงไป? 💸" · SFX: Swoosh + Glitch</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:06</span></div><div class="sb-content"><div class="sb-label">❌ Problem Focus · Zoom 1.2x</div><div class="sb-visual">ส่ายหน้าและสบตาคนดู เตือนสติเกี่ยวกับการไม่วางแผน</div><div class="sb-audio">"หลายคนเลือกที่จะ 'ไม่ทำ' แล้วคิดว่าถ้าป่วยค่อยควักเงินจ่ายเอง หรือใช้สิทธิ์สวัสดิการรัฐ..."</div><span class="sb-fx">🎨 Text: "ป่วยค่อยจ่ายเอง? 🏥" · SFX: Error Buzzer</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:12</span></div><div class="sb-content"><div class="sb-label">✨ Location Change 1 · Wipe Transition (ริมระเบียง)</div><div class="sb-visual">ตัดไปยืนพูดที่ริมระเบียงคอนโด ท่าทีสบายขึ้นแต่เสียงจริงจังเพื่อเปรียบเทียบ</div><div class="sb-audio">"แต่ความจริงแล้ว... สิ่งที่แพงกว่าเบี้ยประกันร้อยเท่า คือ ค่าห้องเดี่ยว ค่ารักษา และค่ายานอกบัญชี ในเอกชนเวลาป่วยหนักครับ"</div><span class="sb-fx">🎬 Effect: Wipe Transition · Text: "แพงกว่า 100 เท่า! ⚠️" · SFX: Swoosh</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:18</span></div><div class="sb-content"><div class="sb-label">📱 B-Roll Overlay · iPad Plan</div><div class="sb-visual">ภาพมุมมองสูงขีดเขียนกางร่มทับยอดกระปุกเงินออมในไอแพด</div><div class="sb-audio">"ประกันสุขภาพไม่ได้ออกแบบมาให้คุณจ่ายทิ้ง... แต่มันออกแบบมาเพื่อ 'ล็อกวงเงิน ไม่ให้เงินเก็บคุณกลายเป็นศูนย์'"</div><span class="sb-fx">🎬 Overlay Screen B-Roll · Text: "ล็อกวงเงินเก็บ 🔒" · SFX: Pencil writing</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:24</span></div><div class="sb-content"><div class="sb-label">✨ Location Change 2 · Flash Step (ร้านกาแฟ)</div><div class="sb-visual">ตัดฉับพลันมาร้านกาแฟ ถ้วยกาแฟวางบนโต๊ะ พูดกระตุกต่อมคิดด้วยตัวเลขเปรียบเทียบ</div><div class="sb-audio">"ถ้าคุณคิดว่าเบี้ยปีละสองหมื่นแพงไป... ลองจินตนาการถึงบิลค่ารักษาห้าแสนที่ลอยมาแบบไม่ตั้งตัวดูครับ"</div><span class="sb-fx">🎬 Effect: Flash White 2F · Text: "เบี้ย 20,000 vs บิล 500,000" · SFX: Bass drop</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:31</span></div><div class="sb-content"><div class="sb-label">📊 Data Insight · Medium Shot</div><div class="sb-visual">ใช้นิ้วชี้ขึ้นเพื่อเน้นย้ำสูตรการแบ่งสัดส่วนการเงิน</div><div class="sb-audio">"วิธีเลือกแผนที่คุ้มค่าที่สุดคือ เลือกจ่ายตามจริง และวางเบี้ยประกันไว้ที่ 5-10% ของรายได้ต่อปี ของคุณเท่านั้น"</div><span class="sb-fx">🎨 Text: "งบเบี้ย 5-10% ของรายได้" · SFX: Soft chime</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:38</span></div><div class="sb-content"><div class="sb-label">💡 Summary Spot · Medium Shot</div><div class="sb-visual">ตัดกลับมามุมโต๊ะทำงานหลัก พยักหน้าให้ความมั่นใจคนดู</div><div class="sb-audio">"ไม่จำเป็นต้องทำเบี้ยหลักแสนเกินตัว แต่ต้องเป็นแผนที่ปกป้องเงินก้อนหลักของคุณได้อย่างมั่นใจ"</div><span class="sb-fx">🎨 Text: "ปกป้องเงินก้อนหลัก 🛡️" · SFX: Success chime</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:44</span></div><div class="sb-content"><div class="sb-label">👇 CTA · Flicker Text</div><div class="sb-visual">ชี้มือลงด้านล่าง ยิ้มเชิญชวนพิมพ์ตอบกลับ</div><div class="sb-audio">"พิมพ์คำว่า 'เช็ก' 👇 แล้วผมจะส่งแนวทางคำนวณเบี้ยที่ปลอดภัยเทียบกับรายได้ให้ทันทีครับ!"</div><span class="sb-fx">🎨 Flicker: "เช็ก" สีเหลือง #FFBA09 · SFX: Bell Ding x2</span></div></div>
+  </div>
+</div>
+
+<!-- STORYBOARD 3 (Financial Health Check/Loop) -->
+<div class="card stripe-pink" style="width:580px;left:60px;top:578px;display:none;" id="c-storyboard3">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-pink">📽️</div><div><div class="card-title">Storyboard — Clip #3 (Financial Health Check)</div><div class="card-subtitle">ลำดับช็อตเตือนใจเงินเก็บรั่วไหลและลูปวนดูซ้ำ 50 วินาที</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body" style="padding:0;max-height:440px;">
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:00</span></div><div class="sb-content"><div class="sb-label">🎬 Visual Hook · Object Reveal</div><div class="sb-visual">ครีเอเตอร์หยิบกระปุกออมสินหรือแผ่นเช็กสุขภาพการเงินปิดกล้องแล้วสะบัดออกรวดเร็ว</div><div class="sb-audio">"แผนเก็บเงินปีนี้ของคุณล่มอีกแล้วใช่ไหมครับ? นั่นเพราะคุณกำลังอุดรอยรั่วผิดจุด..."</div><span class="sb-fx">🎬 Effect: Object Reveal · SFX: Whoosh + Swoosh</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:05</span></div><div class="sb-content"><div class="sb-label">👤 Storytelling · Medium Shot</div><div class="sb-visual">พูดถึงเคสตัวอย่างของลูกค้าด้วยน้ำเสียงประหลาดใจกึ่งกังวลแทนคนดู</div><div class="sb-audio">"ลูกค้าผมเก็บเงินดีมาก แต่พังพินาศหมดเพราะการดึงเงินเก็บมาจ่ายค่าหมอพยาบาล"</div><span class="sb-fx">🎨 Text: "เงินเก็บหมดกับค่ารักษา 🏥" · SFX: Sub Bass Drop</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:10</span></div><div class="sb-content"><div class="sb-label">🎥 B-Roll Overlay · Financial Crisis</div><div class="sb-visual">ภาพแทรกโคลสอัพสมุดเงินฝาก หรือยอดเงินในบัญชีในแอปมือถือลดฮวบ</div><div class="sb-audio">"สวัสดิการเดิมที่มีไม่ตอบโจทย์ พอเจ็บป่วยกะทันหัน เงินที่สะสมไว้เลยอันตรธานหายไป"</div><span class="sb-fx">🎨 Text: "เงินเก็บหายวับ! 💸" สีแดง #DC2626 · SFX: Error buzzer</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:17</span></div><div class="sb-content"><div class="sb-label">💡 Metaphor Reveal · Medium (ริมระเบียง)</div><div class="sb-visual">ตัดสลับไปริมระเบียง กางมือและชี้ให้เห็นภาพเปรียบเทียบภายนอก</div><div class="sb-audio">"การเก็บเงินที่ปราศจากสวัสดิการป้องกันความเสี่ยง ก็เปรียบเสมือนสร้างบ้านไม่มีหลังคาครับ"</div><span class="sb-fx">🎨 Text: "สร้างบ้านไม่มีหลังคา 🏠❌" · SFX: Soft Swoosh</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:22</span></div><div class="sb-content"><div class="sb-label">📱 AI Tool Preview · AIA Health App</div><div class="sb-visual">ภาพโคลสอัพแอป AIA Financial Health แสดงวิเคราะห์รอยรั่วเสร็จด่วน</div><div class="sb-audio">"แต่มีทางแก้ง่ายๆ ด้วยแอปวางแผนการเงินอัตโนมัติ AIA Financial Health"</div><span class="sb-fx">🎬 Screen Overlay B-Roll · SFX: Fast Typing</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:29</span></div><div class="sb-content"><div class="sb-label">💡 AI Tool Result · Detail POV</div><div class="sb-visual">ภาพชี้ให้เห็นกราฟแสดงการประเมินตารางงบเบี้ยประกันด่วน</div><div class="sb-audio">"ที่จะวิเคราะห์รอยรั่วและประเมินงบเบี้ยประกันของตัวท่านเองเสร็จภายใน 30 วินาที"</div><span class="sb-fx">🎨 Text: "ประเมินเสร็จใน 30 วิ ⚡" · SFX: Success Chime</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:37</span></div><div class="sb-content"><div class="sb-label">❓ Interest Hook · Medium Shot</div><div class="sb-visual">ตัดมาโต๊ะทำงานหลัก ยื่นแผ่นประเมินให้เห็นที่หน้าจอ</div><div class="sb-audio">"อยากรู้จุดอ่อนด้านความเสี่ยงเงินในอนาคตของตัวเองกันดูไหมล่ะครับ?"</div><span class="sb-fx">🎨 Text: "ตรวจจุดอ่อนการเงิน? 🔍" · SFX: Soft Chime</span></div></div>
+    <div class="sb-row"><div class="sb-time"><span class="sb-time-badge">0:43</span></div><div class="sb-content"><div class="sb-label">🔁 Loop Matching · Match Cut Motion</div><div class="sb-visual">ยกกระปุกออมสินหรือแผ่นเช็กสุขภาพการเงินแผ่นเดิมปิดกล้อง เพื่อร้อยเข้าลูปแรก</div><div class="sb-audio">"พิมพ์คำว่า 'Megaphone' เดี๋ยวส่งช่องทางตรวจประเมินฟรีให้ทันทีครับ! และก่อนจะถามว่า..."</div><span class="sb-fx">🔁 Effect: Match Motion to Start · SFX: Camera Shutter</span></div></div>
+  </div>
+</div>
+
+<!-- CONTENT STRATEGY -->
+<div class="card stripe-orange" style="width:360px;left:680px;top:578px;" id="c-strategy">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-orange">📊</div><div><div class="card-title">Content Strategy</div><div class="card-subtitle">TOFU / MOFU / BOFU &amp; Viral Hooks</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body" style="max-height:440px;">
+    <div class="funnel-row">
+      <div class="funnel-stage stage-tofu"><div class="funnel-label">🔵 TOFU</div><div class="funnel-title">Awareness</div><div class="funnel-desc">ชี้ปัญหาวัยเกษียณ / ค่ารักษาแพง</div></div>
+      <div class="funnel-stage stage-mofu"><div class="funnel-label">🟡 MOFU</div><div class="funnel-title">Consider</div><div class="funnel-desc">ให้ความรู้และเปลี่ยนมุมมอง (Mindset)</div></div>
+      <div class="funnel-stage stage-bofu"><div class="funnel-label">🟢 BOFU</div><div class="funnel-title">Convert</div><div class="funnel-desc">CTA พิมพ์ "extra"/"เช็ก" แจกเครื่องมือ</div></div>
+    </div>
+    <div class="hook-item"><span class="hook-emoji">🔁</span><div><div class="hook-title">Loop Video Setup</div><div class="hook-desc">ประโยคสุดท้ายของคลิปเชื่อมกับประโยคเปิดคลิปได้อย่างไร้รอยต่อ ช่วยดึงอัตรา Watch Time ให้สูงขึ้น</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">🧲</span><div><div class="hook-title">Authority Gap</div><div class="hook-desc">ความเชี่ยวชาญด้านประกันของเรา เทียบกับความไม่รู้ของลูกค้า คือช่องว่างที่สร้างมูลค่าให้คอนเทนต์</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">📅</span><div><div class="hook-title">Weekly Batching</div><div class="hook-desc">จันทร์: หาไอเดีย (จากลูกค้า), อังคาร: เขียนสคริปต์, พุธ: ถ่ายทำ, พฤหัส: ตัดต่อวิดีโอ</div></div></div>
+  </div>
+</div>
+
+<!-- PRE-PRODUCTION CHECKLIST -->
+<div class="card stripe-green" style="width:290px;left:1080px;top:578px;" id="c-checklist">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-green">✅</div><div><div class="card-title">Pre-Production Checklist</div><div class="card-subtitle">สิ่งที่ต้องตรวจก่อนกดอัดวิดีโอ</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body">
+    <div class="check-section-label">📷 Camera Setup</div>
+    <div class="check-item done" onclick="toggleCheck(this)"><div class="check-box">✓</div><span class="check-label">ตั้ง 4K/30fps บน Nothing Phone (2a)</span></div>
+    <div class="check-item done" onclick="toggleCheck(this)"><div class="check-box">✓</div><span class="check-label">แตะค้าง Lock AE/AF เพื่อคุมแสงสว่างคงที่</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">White Balance ล็อกไว้ที่ 5500K</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">วางขาตั้งกล้องระดับสายตา ห่าง 1.2 เมตร</span></div>
+    
+    <div class="check-section-label">💡 Lighting &amp; Sound</div>
+    <div class="check-item done" onclick="toggleCheck(this)"><div class="check-box">✓</div><span class="check-label">ปิดไฟนีออนเพดานห้อง ป้องกันเงาสะท้อน</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">ไฟ Key Light ฝั่งซ้ายเฉียง 45 องศา</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">เปิดไฟตกแต่งสีส้ม/น้ำเงินด้านหลังฉาก</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">เสียบสายไมค์ไร้สายเข้ามือถือและเทสเสียง</span></div>
+  </div>
+</div>
+
+<!-- BRAND OUTLIERS CARD -->
+<div class="card stripe-gold" style="width:330px;left:1410px;top:578px;" id="c-brand">
+  <div class="card-head">
+    <div class="card-title-row"><div class="card-icon icon-gold">🏆</div><div><div class="card-title">Brand Outliers (Personal Brand)</div><div class="card-subtitle">Traffic Source · Trust Driver · Conversion</div></div></div>
+    <button class="card-menu-btn">•••</button>
+  </div>
+  <div class="card-body">
+    <div style="background:#fff7ed;border-radius:8px;padding:9px 11px;margin-bottom:8px;border:1px solid rgba(234,88,12,0.15);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--orange);margin-bottom:3px;">ภายนอก (External Outliers)</div>
+      <div style="font-size:0.75rem;color:var(--text-2);line-height:1.5;">ตัวแทนประกันมืออาชีพ, ผลลัพธ์ของลูกค้าที่วางแผนสำเร็จ, ภาพลักษณ์ที่น่าเชื่อถือ (Authority)</div>
+    </div>
+    <div style="background:#eff6ff;border-radius:8px;padding:9px 11px;margin-bottom:8px;border:1px solid rgba(37,99,235,0.15);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--blue);margin-bottom:3px;">ภายใน (Internal Outliers)</div>
+      <div style="font-size:0.75rem;color:var(--text-2);line-height:1.5;">เรื่องราวส่วนตัว, ความเชื่อเกี่ยวกับการเงิน, ทัศนคติที่อยากช่วยคนไม่ให้ล้มละลายจากค่ารักษาพยาบาล</div>
+    </div>
+    <div class="check-section-label">Scripting Framework</div>
+    <div class="step-row"><span class="step-num" style="background:var(--gold-soft);color:#b45309;">1</span><span class="step-text"><strong>Brand Outlier:</strong> ดึงดูดความสนใจด้วยผลลัพธ์หรือมุมมองที่แตกต่าง</span></div>
+    <div class="step-row"><span class="step-num" style="background:var(--gold-soft);color:#b45309;">2</span><span class="step-text"><strong>Amplifier:</strong> ขยายปัญหาให้ใหญ่ขึ้น ให้ลูกค้ารู้สึกถึงความเสี่ยง</span></div>
+    <div class="step-row"><span class="step-num" style="background:var(--gold-soft);color:#b45309;">3</span><span class="step-text"><strong>Open Loop:</strong> ทิ้งปมหรือเปิดเรื่องที่น่าสนใจให้ติดตามจนจบ</span></div>
+    <div class="step-row"><span class="step-num" style="background:var(--gold-soft);color:#b45309;">4</span><span class="step-text"><strong>CTA:</strong> เสนอทางแก้และแจก Lead Magnet (ตารางคำนวณ ฯลฯ)</span></div>
+  </div>
+</div>
+
+<!-- SHOT REFS CLIP 1 -->
+<div class="card stripe-blue shot-group-1" style="width:210px;left:1760px;top:578px;" id="c-shot1-1">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-blue">📷</div><div><div class="card-title">Shot 1 — A-Roll</div><div class="card-subtitle">โต๊ะทำงาน (Medium)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">🖥️</span><span>โต๊ะทำงาน</span><span style="font-size:0.63rem;opacity:0.7;">ถ่ายระดับสายตา 1.2 เมตร</span></div>
+  <div class="img-caption">0:00 — อธิบายที่โต๊ะหลัก</div>
+</div>
+<div class="card stripe-blue shot-group-1" style="width:210px;left:1990px;top:578px;" id="c-shot1-2">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-blue">📷</div><div><div class="card-title">Shot 2 — Balcony</div><div class="card-subtitle">ริมระเบียง (Wide)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">☀️</span><span>ระเบียงสว่าง</span><span style="font-size:0.63rem;opacity:0.7;">แสดงฉากหลังธรรมชาติ</span></div>
+  <div class="img-caption">0:10 — เปลี่ยนสถานที่สลายความน่าเบื่อ</div>
+</div>
+<div class="card stripe-blue shot-group-1" style="width:210px;left:2220px;top:578px;" id="c-shot1-3">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-blue">📷</div><div><div class="card-title">Shot 3 — Cafe</div><div class="card-subtitle">ร้านกาแฟ (POV)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">☕</span><span>มุมร้านกาแฟ</span><span style="font-size:0.63rem;opacity:0.7;">แผงไฟเบลอฉากหลังสวยๆ</span></div>
+  <div class="img-caption">0:22 — เพิ่ม Premium visual</div>
+</div>
+
+<!-- SHOT REFS CLIP 2 -->
+<div class="card stripe-orange shot-group-2" style="width:210px;left:1760px;top:578px;display:none;" id="c-shot2-1">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-orange">📷</div><div><div class="card-title">Shot 1 — Hospital Bill</div><div class="card-subtitle">บิลจำลอง (Closeup)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">💸</span><span>บิลค่ารักษาพยาบาล</span><span style="font-size:0.63rem;opacity:0.7;">โชว์บิลจำลองหลักแสนของเอกชน</span></div>
+  <div class="img-caption">0:00 — Hook ดักสายตากระตุกอารมณ์</div>
+</div>
+<div class="card stripe-orange shot-group-2" style="width:210px;left:1990px;top:578px;display:none;" id="c-shot2-2">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-orange">📷</div><div><div class="card-title">Shot 2 — Locked Funds</div><div class="card-subtitle">ป้องกันความเสี่ยง (Medium)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">🛡️</span><span>ล็อกงบรักษาพยาบาล</span><span style="font-size:0.63rem;opacity:0.7;">โชว์การกางร่มปกป้องเงินก้อนสะสม</span></div>
+  <div class="img-caption">0:18 — อธิบายกลไกลดความเสี่ยง</div>
+</div>
+<div class="card stripe-orange shot-group-2" style="width:210px;left:2220px;top:578px;display:none;" id="c-shot2-3">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-orange">📷</div><div><div class="card-title">Shot 3 — Budget Chart</div><div class="card-subtitle">คำนวณ 5-10% (iPad)</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">📊</span><span>งบเบี้ย 5-10%</span><span style="font-size:0.63rem;opacity:0.7;">ขีดเขียนสัดส่วนงบเบี้ยประกันต่อรายได้</span></div>
+  <div class="img-caption">0:31 — โครงสร้างเบี้ยเหมาะสมปลอดภัย</div>
+</div>
+
+<!-- SHOT REFS CLIP 3 -->
+<div class="card stripe-pink shot-group-3" style="width:210px;left:1760px;top:578px;display:none;" id="c-shot3-1">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-pink">📷</div><div><div class="card-title">Shot 1 — Object Hide</div><div class="card-subtitle">สะบัด iPad เปิดตัว</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">📱</span><span>สะบัดเปิดฉาก</span><span style="font-size:0.63rem;opacity:0.7;">iPad บังจอแล้วฟาดลงล่าง</span></div>
+  <div class="img-caption">0:00 — Visual Hook สะดุดตาแบบ Instagram</div>
+</div>
+<div class="card stripe-pink shot-group-3" style="width:210px;left:1990px;top:578px;display:none;" id="c-shot3-2">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-pink">📷</div><div><div class="card-title">Shot 2 — Megaphone App</div><div class="card-subtitle">แอปเจ๋งใน 30 วิ</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">🤖</span><span>Auto Captions AI</span><span style="font-size:0.63rem;opacity:0.7;">โชว์ตัวหนังสือและซับวิ่งอัตโนมัติ</span></div>
+  <div class="img-caption">0:22 — ความสะดวกของแอป Megaphone</div>
+</div>
+<div class="card stripe-pink shot-group-3" style="width:210px;left:2220px;top:578px;display:none;" id="c-shot3-3">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-pink">📷</div><div><div class="card-title">Shot 3 — Closing Loop</div><div class="card-subtitle">จบลูปร้อยรอยต่อ</div></div></div></div>
+  <div class="img-placeholder"><span class="ph-icon">🔁</span><span>จบเข้าท่าเริ่ม</span><span style="font-size:0.63rem;opacity:0.7;">ท่าทางปิดฉากไหลลื่นกลับท่าเริ่ม</span></div>
+  <div class="img-caption">0:47 — ดัน Watch Time ให้วนซ้ำ</div>
+</div>
+
+<!-- GENERAL NOTE CARD -->
+<div class="card note-card" style="width:230px;left:2460px;top:578px;" id="c-note">
+  <div class="card-head" style="background:rgba(0,0,0,0.02);border-bottom:1px solid rgba(0,0,0,0.05);">
+    <div class="card-title-row"><div class="card-icon" style="background:rgba(0,0,0,0.06);color:#4a3f00;">📌</div><div><div class="card-title" style="color:#4a3f00;">Production Note</div></div></div>
+  </div>
+  <div class="note-body">
+    <strong>🎯 การถ่ายทำวิดีโอ 3 คลิปนี้:</strong><br><br>
+    · เน้นการเปลี่ยนฉากแบบ <em>Flicker Transition</em> และ <em>Wipe Transition</em> เพื่อสร้างความพรีเมียม<br><br>
+    · ใช้ <strong>Nothing Phone (2a)</strong> ล็อกโฟกัสและค่าแสงสว่างเสมอ เพื่อให้โทนสีผิว (Skin Tone) ออกมาอุ่นสวยงามสม่ำเสมอ<br><br>
+    · ในกระบวนการตัดต่อ ให้ตั้งค่า Proxy ตามการวางแผนในบอร์ด เพื่อช่วยลดภาระประมวลผลบนเครื่องโน้ตบุ๊ก <strong>ASUS</strong> ของคุณครับ
+  </div>
+</div>
+
+<!-- ═══════════════════ ROW 3 — PRODUCTION MASTERCLASS (y=1120) ═══════════════════ -->
+<div class="section-label" style="left:60px;top:1088px;">🔁 LOOP VIDEO STRATEGY</div>
+<div class="section-label" style="left:420px;top:1088px;">🎥 B-ROLL MASTERCLASS</div>
+<div class="section-label" style="left:1040px;top:1088px;">✂️ TRANSITION GUIDE</div>
+<div class="section-label" style="left:1460px;top:1088px;">✍️ TEXT FX &amp; GRAPHICS</div>
+<div class="section-label" style="left:1830px;top:1088px;">🎙️ A-ROLL TIPS</div>
+<div class="section-label" style="left:2150px;top:1088px;">🎨 COLOR GRADING</div>
+
+<!-- LOOP VIDEO -->
+<div class="card stripe-gold" style="width:320px;left:60px;top:1118px;" id="c-loop">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-gold">🔁</div><div><div class="card-title">Loop Video Strategy</div><div class="card-subtitle">ให้คนดูวนซ้ำโดยไม่รู้ตัว</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body" style="max-height:500px;">
+    <div style="background:#fff9c4;border-radius:9px;padding:9px 11px;margin-bottom:10px;border:1px solid rgba(0,0,0,0.06);">
+      <div style="font-size:0.71rem;font-weight:700;color:#b45309;margin-bottom:3px;">🎯 Zeigarnik Loop Concept</div>
+      <div style="font-size:0.77rem;color:#4a3f00;line-height:1.5;">สมองวนซ้ำสิ่งที่ "ยังไม่จบ" — ออกแบบให้ฉากสุดท้ายนำกลับฉากแรกได้ทันที</div>
+    </div>
+    <div style="font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:6px;">📌 Visual Hook แนะนำ</div>
+    <div class="hook-item" style="border-left:3px solid var(--gold);background:var(--gold-soft);">
+      <span class="hook-emoji">⭐</span><div><div class="hook-title">Object Reveal Hook (#1 แนะนำ)</div><div class="hook-desc">iPad ปิดหน้ากล้อง → สะบัดออกเผยใบหน้า ตาม Beat เพลง — ปลาย Clip มือปิดกล้องวนกลับ</div></div>
+    </div>
+    <div class="hook-item" style="border-left:3px solid var(--blue);">
+      <span class="hook-emoji">⭐</span><div><div class="hook-title">Pattern Interrupt + Question (#2)</div><div class="hook-desc">เริ่มด้วยคำถามที่หยุดคนดู — ปลายคลิปย้อนกลับมาถามซ้ำ Watch Time พุ่ง</div></div>
+    </div>
+    <div class="hook-item" style="border-left:3px solid var(--purple);">
+      <span class="hook-emoji">✅</span><div><div class="hook-title">Walking into Frame Loop</div><div class="hook-desc">เดินเข้าเฟรม → พูด → เดินออก → ตัดกลับเดินเข้าใหม่</div></div>
+    </div>
+    <div class="hook-item" style="border-left:3px solid var(--green);">
+      <span class="hook-emoji">💡</span><div><div class="hook-title">Flash Teleport Loop</div><div class="hook-desc">Flash ขาว 2เฟรม → เปลี่ยน Location ปลายคลิป Flash กลับ Location แรก</div></div>
+    </div>
+    <div style="background:var(--blue-soft);border-radius:8px;padding:9px 11px;margin-top:8px;border:1px solid rgba(37,99,235,0.15);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--blue);margin-bottom:4px;">🔁 วิธีทำ Loop ใน DaVinci</div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.55;">
+        1. ถ่ายฉากแรก-สุดท้ายในท่าเดียวกัน<br>
+        2. Timeline: ฉากสุดท้าย → ฉากแรก ต้องไหลต่อ<br>
+        3. Transition: Flash White 2เฟรม หรือ Whip Pan<br>
+        4. BG Music: Crossfade ไม่มีรอยต่อ<br>
+        5. Export → เปิดดูในโทรศัพท์
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B-ROLL MASTERCLASS -->
+<div class="card stripe-blue" style="width:580px;left:420px;top:1118px;" id="c-broll">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-blue">🎥</div><div><div class="card-title">B-Roll Masterclass</div><div class="card-subtitle">ทุก Shot มีคำสั่งถ่าย + Graphic + SFX</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body" style="padding:0;max-height:500px;">
+    <div style="padding:9px 14px 7px;background:#f8f9ff;border-bottom:1px solid rgba(0,0,0,0.06);">
+      <div style="font-size:0.68rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;">📐 SEQUENCE METHOD — ถ่ายทุกฉากตามลำดับนี้</div>
+      <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+        <span style="background:var(--blue-soft);color:var(--blue);border:1px solid rgba(37,99,235,0.2);border-radius:20px;padding:2px 9px;font-size:0.7rem;font-weight:600;">① WIDE</span>
+        <span style="color:var(--text-3);font-size:0.75rem;">→</span>
+        <span style="background:var(--purple-soft);color:var(--purple);border:1px solid rgba(124,58,237,0.2);border-radius:20px;padding:2px 9px;font-size:0.7rem;font-weight:600;">② MEDIUM</span>
+        <span style="color:var(--text-3);font-size:0.75rem;">→</span>
+        <span style="background:var(--gold-soft);color:#b45309;border:1px solid var(--gold-border);border-radius:20px;padding:2px 9px;font-size:0.7rem;font-weight:600;">③ CLOSE-UP</span>
+        <span style="color:var(--text-3);font-size:0.75rem;">→</span>
+        <span style="background:var(--green-soft);color:var(--green);border:1px solid rgba(5,150,105,0.2);border-radius:20px;padding:2px 9px;font-size:0.7rem;font-weight:600;">④ DETAIL/POV</span>
+      </div>
+    </div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f0f4ff;"><span class="sb-time-badge" style="color:var(--blue);">Writing POV</span></div><div class="sb-content"><div class="sb-label">📸 Over-shoulder / Top-down 45°</div><div class="sb-visual"><strong>W:</strong> เห็นโต๊ะทั้งหมด → <strong>M:</strong> มือเขียนสมุด → <strong>CU:</strong> ปลายปากกา</div><div class="sb-audio">ใช้ตอน "สุขภาพ / เงินสำรอง / ชีวิต / เกษียณ" (0:33)</div><span class="sb-fx">🎨 Icons: 💊💰👨‍👩‍👦🏖️ Pop ขึ้นพร้อม Ding x4</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f0f4ff;"><span class="sb-time-badge" style="color:var(--blue);">Screen Scroll</span></div><div class="sb-content"><div class="sb-label">📱 Top-down / Side angle</div><div class="sb-visual"><strong>W:</strong> มือถือ iPad บนโต๊ะ → <strong>M:</strong> นิ้วเลื่อน → <strong>CU:</strong> ตัวเลขบนจอ</div><div class="sb-audio">ใช้ตอน "เงินเก็บที่ไม่มีแผนรองรับ" (0:18)</div><span class="sb-fx">📲 Overlay + ตัวเลขวิ่ง · SFX: เสียงสไลด์</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f0f4ff;"><span class="sb-time-badge" style="color:var(--blue);">Inside a Bag</span></div><div class="sb-content"><div class="sb-label">🎒 วางกล้องในกระเป๋า มองออกมา</div><div class="sb-visual"><strong>POV:</strong> มือดึง iPad / Wallet ออกจากกระเป๋า — มุมที่ไม่เคยเห็น Wow Factor</div><div class="sb-audio">ใช้ Intro / Transition ระหว่าง Location</div><span class="sb-fx">✨ ไม่ต้อง Graphic — ปล่อยภาพสวยพูดเอง</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f5f0ff;"><span class="sb-time-badge" style="color:var(--purple);">Waking Scene</span></div><div class="sb-content"><div class="sb-label">😴 Low angle / ระดับเตียง</div><div class="sb-visual"><strong>W:</strong> ห้องนอน → <strong>M:</strong> ลุกนั่งบนเตียง → <strong>CU:</strong> กดปิด Alarm</div><div class="sb-audio">Hook "ถ้าวันหนึ่งทำงานไม่ได้" สร้าง Empathy</div><span class="sb-fx">⏰ SFX: Alarm → ปิด · Text: "06:30 AM"</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f5f0ff;"><span class="sb-time-badge" style="color:var(--purple);">Flash Step</span></div><div class="sb-content"><div class="sb-label">⚡ Stationary camera · Subject moves</div><div class="sb-visual">ยืนจุด A → Flash ขาว 2เฟรม → ปรากฏจุด B → Flash → จุด C</div><div class="sb-audio">Transition ระหว่าง Location ใน Clip 90 วินาที</div><span class="sb-fx">💥 SFX: Flash Snap · DaVinci: White Frame 2F</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;"><div class="sb-time" style="background:#f0fff4;"><span class="sb-time-badge" style="color:var(--green);">Double Exposure</span></div><div class="sb-content"><div class="sb-label">🖼️ Silhouette / Backlit</div><div class="sb-visual">ถ่าย Subject เป็น Silhouette → Overlay วิดีโอเมือง/กราฟ ซ้อนทับ Blend: Screen</div><div class="sb-audio">Intro Cinematic หรือ Thumbnail Carousel</div><span class="sb-fx">🎨 DaVinci: Blend Mode → Screen · Opacity 60-80%</span></div></div>
+    <div class="sb-row" style="grid-template-columns:100px 1fr;border-bottom:none;"><div class="sb-time" style="background:#fff0f6;"><span class="sb-time-badge" style="color:var(--pink);">Match Cut</span></div><div class="sb-content"><div class="sb-label">✂️ Shape/Motion เหมือนกันทั้ง 2 ช็อต</div><div class="sb-visual">Shot A: มือหมุนปากกา → Cut → Shot B: มือหมุน Coffee Cup</div><div class="sb-audio">เปลี่ยน Location แบบ Seamless ไม่ต้องบอก</div><span class="sb-fx">🔇 ไม่ต้อง SFX — ความแม่นยำ Motion = Premium</span></div></div>
+  </div>
+</div>
+
+<!-- TRANSITION GUIDE -->
+<div class="card stripe-purple" style="width:380px;left:1040px;top:1118px;" id="c-transition">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-purple">✂️</div><div><div class="card-title">Transition Guide</div><div class="card-subtitle">5 Transitions ทำให้คลิปดู Expensive 2x</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body" style="padding:0;max-height:500px;">
+    <div style="padding:7px 14px;background:#f8f5ff;border-bottom:1px solid rgba(0,0,0,0.05);"><div style="font-size:0.68rem;color:var(--text-3);font-style:italic;">🎯 กฎ: ใช้ Transition เฉพาะตอนเปลี่ยน Scene/Location เท่านั้น</div></div>
+    <div style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="background:var(--gold-soft);color:#b45309;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;">⭐ #1 Flicker Transition</span></div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;">1. วาง 2 Clips ติดกัน<br>2. สร้าง White Solid 2-3 เฟรม<br>3. วางแทรก: Clip A → White → Clip A → White → Clip B<br>4. Opacity ไม่เท่ากัน (100%→60%→100%→100%)</div>
+      <div style="margin-top:5px;background:var(--gold-soft);border-radius:6px;padding:5px 9px;font-size:0.71rem;color:#b45309;">🔊 SFX: Neon Flicker / Electric Buzz (Google Drive)</div>
+    </div>
+    <div style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="background:var(--blue-soft);color:var(--blue);font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;">✅ #2 Wipe Transition</span></div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;">คลิกขวา → <strong>Add Transition: Wipe</strong><br>ทิศทาง: Left→Right หรือ Diagonal<br>ระยะ: <strong>4-6 เฟรม</strong> (เร็ว = Cinematic) · Edge Softness เล็กน้อย</div>
+      <div style="margin-top:5px;background:var(--blue-soft);border-radius:6px;padding:5px 9px;font-size:0.71rem;color:var(--blue);">🔊 SFX: Swoosh / Whip Pan ตาม Beat</div>
+    </div>
+    <div style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="background:var(--purple-soft);color:var(--purple);font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;">✅ #3 Flash Teleport</span></div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;">ถ่าย: ยืนจุด A → หยุด → ย้ายจุด B → ถ่ายใหม่<br>DaVinci: แทรก White Frame 3เฟรม + Gaussian Blur ก่อน-หลัง</div>
+      <div style="margin-top:5px;background:var(--purple-soft);border-radius:6px;padding:5px 9px;font-size:0.71rem;color:var(--purple);">🔊 SFX: Camera Flash / Snap + cut on beat</div>
+    </div>
+    <div style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="background:var(--green-soft);color:var(--green);font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;">✅ #4 Radial Blur Zoom</span></div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;">Fusion/OpenFX: <strong>Zoom Blur</strong><br>Clip A ปลาย: Scale 100→120% + Motion Blur<br>Clip B ต้น: Scale 120→100% + Motion Blur</div>
+      <div style="margin-top:5px;background:var(--green-soft);border-radius:6px;padding:5px 9px;font-size:0.71rem;color:var(--green);">🔊 SFX: Woosh + Sub Bass Rumble</div>
+    </div>
+    <div style="padding:11px 14px;">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="background:rgba(0,0,0,0.05);color:var(--text);font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;">✅ #5 Match Cut + Cutting on Motion</span></div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;"><strong>Match Cut:</strong> ตัดตอน Shape/Motion 2 ช็อตเหมือนกัน<br><strong>Cutting on Motion:</strong> ตัดตอนที่ Subject กำลังเคลื่อนที่ ไม่รอหยุด<br>ตัวอย่าง: มือวางแก้ว (กำลังลง) → Cut → มือวางปากกา</div>
+      <div style="margin-top:5px;background:rgba(0,0,0,0.04);border-radius:6px;padding:5px 9px;font-size:0.71rem;color:var(--text-3);">🔇 ไม่ต้อง SFX — ความแม่นยำ Motion = Premium Feel</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEXT FX & GRAPHICS -->
+<div class="card stripe-pink" style="width:340px;left:1460px;top:1118px;" id="c-textfx">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-pink">✍️</div><div><div class="card-title">Text FX &amp; Graphics</div><div class="card-subtitle">Flicker · Pop-up · Subtitle · Export</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body" style="max-height:500px;">
+    <div style="background:#fdf2f8;border-radius:9px;padding:10px 11px;margin-bottom:10px;border:1px solid rgba(219,39,119,0.15);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--pink);margin-bottom:5px;">⭐ Flicker Text Effect</div>
+      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.6;"><strong>CapCut:</strong> Text → Animation → "Flicker" / "Glitch"<br><strong>DaVinci:</strong> Text+ → Keyframe Opacity: 100→0→100→0→100 ใน 10เฟรม<br><br><strong>ข้อความที่ใช้ Flicker:</strong><br>→ <strong style="color:var(--gold);">พิมพ์ "เช็ก" 👇</strong> — #FFBA09 ตัวใหญ่<br>→ <strong>จำกัด 5 สิทธิ์!</strong> — สีแดง ตัวรอง<br>→ <strong>SAVE 💾</strong> — ขาว มุมขวาบน</div>
+    </div>
+    <div style="font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:6px;">📌 Pop-up Text Color Rules</div>
+    <div class="comp-rule rule-gold" style="margin-bottom:3px;"><span class="comp-rule-icon">🟡</span><span class="comp-rule-text"><strong>Keyword สำคัญ</strong> — #FFBA09 ตัวใหญ่ Bold ตรงกลางอก</span></div>
+    <div class="comp-rule rule-blue" style="margin-bottom:3px;"><span class="comp-rule-icon">🔵</span><span class="comp-rule-text"><strong>คำอธิบาย</strong> — ขาว ตัวเล็กกว่า ใต้ Keyword</span></div>
+    <div class="comp-rule rule-red" style="margin-bottom:3px;"><span class="comp-rule-icon">🔴</span><span class="comp-rule-text"><strong>Warning</strong> — #DC2626 · "หมดเร็วกว่าที่คิด!"</span></div>
+    <div class="comp-rule rule-green" style="margin-bottom:10px;"><span class="comp-rule-icon">🟢</span><span class="comp-rule-text"><strong>Solution</strong> — #059669 · "ง่ายขึ้นทันที ✨"</span></div>
+    <div style="background:#f8f9ff;border-radius:8px;padding:9px 11px;margin-bottom:8px;border:1px solid rgba(37,99,235,0.1);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--blue);margin-bottom:4px;">📄 Subtitle Style</div>
+      <div style="font-size:0.75rem;color:var(--text-2);line-height:1.55;">Font: <strong>Prompt Bold / Kanit Bold</strong><br>ตำแหน่ง: ระดับหน้าอก (ไม่ล่างสุด)<br>สี: ขาว + Outline ดำ · ไม่ต้อง BG Box<br>Max/บรรทัด: <strong>44 ตัวอักษร</strong></div>
+    </div>
+    <div style="background:#1c1c1e;border-radius:8px;padding:9px 11px;">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--gold);margin-bottom:4px;">📤 Export Instagram Safe</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.69rem;color:#5eead4;line-height:1.7;">Format : H.264 / MP4<br>Res    : 1080×1920 (9:16)<br>FPS    : 30<br>Bitrate: 8-15 Mbps<br>Audio  : AAC 320kbps<br>Max    : &lt;100MB</div>
+    </div>
+  </div>
+</div>
+
+<!-- A-ROLL TIPS -->
+<div class="card stripe-orange" style="width:290px;left:1840px;top:1118px;" id="c-aroll">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-orange">🎙️</div><div><div class="card-title">A-Roll Techniques</div><div class="card-subtitle">Talking Head ให้ดูไม่น่าเบื่อ</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body" style="max-height:500px;">
+    <div class="hook-item"><span class="hook-emoji">📐</span><div><div class="hook-title">เปลี่ยน Camera Angle ทุก 3-5 วิ</div><div class="hook-desc">ถ่ายหลายมุม: Medium → Close-up → Zoom 1.2x ตัดสลับในโต๊ะตัดต่อ</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">🚶</span><div><div class="hook-title">เปลี่ยน Location ทุก 30 วิ</div><div class="hook-desc">โต๊ะทำงาน → ริมหน้าต่าง → Cafe ใช้ Flash Teleport เปลี่ยนแบบ Cinematic</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">✋</span><div><div class="hook-title">ใช้ Gesture มือตลอด</div><div class="hook-desc">ยกนิ้ว นับ ผายมือ ชี้ — ทำให้ภาพดูมีชีวิต ไม่ใช่หน้าลอย</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">👀</span><div><div class="hook-title">สบตากล้อง = สบตาคนดู</div><div class="hook-desc">สายตาหลุดจากเลนส์ = คนดูรู้สึกว่าไม่มั่นใจ</div></div></div>
+    <div class="hook-item"><span class="hook-emoji">⏸️</span><div><div class="hook-title">Pause หลังคำสำคัญ = Power</div><div class="hook-desc">หยุด 0.5-1 วิหลังพูดคำหนัก — สมองคนดูเติมความหมายเอง</div></div></div>
+    <div style="background:#fff7ed;border-radius:8px;padding:9px 11px;margin-top:8px;border:1px solid rgba(234,88,12,0.15);">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--orange);margin-bottom:3px;">📱 Phone Overhead Shot</div>
+      <div style="font-size:0.75rem;color:var(--text-2);line-height:1.5;">วาง Nothing Phone บน Tripod Overhead (มองจากบน) → ถ่าย B-roll: มือกด iPad, เขียน, วางของ — มุมนี้ดู Premium มากบน IG</div>
+    </div>
+  </div>
+</div>
+
+<!-- COLOR GRADING -->
+<div class="card stripe-red" style="width:260px;left:2170px;top:1118px;" id="c-color">
+  <div class="card-head"><div class="card-title-row"><div class="card-icon icon-red">🎨</div><div><div class="card-title">Color Grading</div><div class="card-subtitle">DaVinci — Cinematic Look</div></div></div><button class="card-menu-btn">•••</button></div>
+  <div class="card-body">
+    <div style="font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-3);margin-bottom:7px;">🎨 สไตล์คนตื่นเงิน</div>
+    <div class="step-row"><span class="step-num">1</span><span class="step-text">Lift Shadows +10 → ดู Cinematic ไม่ดำสนิท</span></div>
+    <div class="step-row"><span class="step-num">2</span><span class="step-text">Saturation -8 → Highlights อุ่น Yellow-Orange</span></div>
+    <div class="step-row"><span class="step-num">3</span><span class="step-text">Skin Tone: Orange Hue อุ่น ผิวไม่เทาไม่เหลือง</span></div>
+    <div class="step-row"><span class="step-num">4</span><span class="step-text">Vignette 10% → ดึงสายตาเข้าหน้ากลางเฟรม</span></div>
+    <div class="step-row"><span class="step-num">5</span><span class="step-text">Sharpness เล็กน้อย → ดวงตาคมบน Mobile</span></div>
+    <div style="background:#0f1117;border-radius:8px;padding:9px 11px;margin-top:8px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.69rem;color:#5eead4;line-height:1.75;">Shadows    : +10 ~ +15<br>Contrast   : +5 ~ +10<br>Saturation : -5 ~ -10<br>Highlights : -5<br>Temp       : +100K<br>Vignette   : 10-12%</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- canvas-inner -->
+</div><!-- canvas -->
+
+<!-- ZOOM CONTROLS -->
+<div class="zoom-controls">
+  <button class="zoom-btn" onclick="zoomOut()">−</button>
+  <span class="zoom-level" id="zoomLabel">85%</span>
+  <button class="zoom-btn" onclick="zoomIn()">+</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── DRAG & DROP ── */
+let activeDrag=null,startX=0,startY=0,startLeft=0,startTop=0;
+document.querySelectorAll('.card').forEach(card=>{
+  const handle=card.querySelector('.card-head');
+  if(!handle)return;
+  handle.addEventListener('mousedown',e=>{
+    if(e.target.closest('.card-menu-btn,.srt-copy,.copy-line-btn,a,button'))return;
+    activeDrag=card; startX=e.clientX; startY=e.clientY;
+    startLeft=parseInt(card.style.left)||0; startTop=parseInt(card.style.top)||0;
+    card.classList.add('dragging'); e.preventDefault();
+  });
+});
+document.addEventListener('mousemove',e=>{
+  if(!activeDrag)return;
+  activeDrag.style.left=(startLeft+(e.clientX-startX)/currentZoom)+'px';
+  activeDrag.style.top=(startTop+(e.clientY-startY)/currentZoom)+'px';
+});
+document.addEventListener('mouseup',()=>{
+  if(activeDrag){activeDrag.classList.remove('dragging');activeDrag=null;}
+});
+
+/* ── CANVAS PAN (middle mouse / canvas drag) ── */
+const canvas=document.getElementById('canvas');
+const inner=document.getElementById('canvasInner');
+let isPanning=false,panStartX=0,panStartY=0,panScrollX=0,panScrollY=0;
+canvas.addEventListener('mousedown',e=>{
+  if(e.target!==canvas&&e.target!==inner)return;
+  isPanning=true; panStartX=e.clientX; panStartY=e.clientY;
+  panScrollX=canvas.scrollLeft; panScrollY=canvas.scrollTop;
+  canvas.style.cursor='grabbing'; e.preventDefault();
+});
+document.addEventListener('mousemove',e=>{
+  if(!isPanning)return;
+  canvas.scrollLeft=panScrollX-(e.clientX-panStartX);
+  canvas.scrollTop=panScrollY-(e.clientY-panStartY);
+});
+document.addEventListener('mouseup',()=>{if(isPanning){isPanning=false;canvas.style.cursor='grab';}});
+
+/* ── SCROLL = PAN  |  CTRL+SCROLL = ZOOM ── */
+let currentZoom=0.85;
+canvas.addEventListener('wheel',e=>{
+  const cardBody = e.target.closest('.card-body');
+  if (cardBody && !e.ctrlKey && !e.metaKey) {
+    // Let the card body scroll natively without panning the canvas
+    return;
+  }
+  e.preventDefault();
+  if(e.ctrlKey||e.metaKey){
+    /* Ctrl/Cmd + Scroll = Zoom */
+    if(e.deltaY<0) zoomIn(); else zoomOut();
+  } else if(e.shiftKey){
+    /* Shift + Scroll = Pan Left/Right */
+    canvas.scrollLeft+=e.deltaY||e.deltaX;
+  } else {
+    /* Normal Scroll = Pan Up/Down */
+    canvas.scrollLeft+=e.deltaX;
+    canvas.scrollTop+=e.deltaY;
+  }
+},{passive:false});
+
+function applyZoom(){
+  inner.style.transform=`scale(${currentZoom})`;
+  inner.style.transformOrigin='top left';
+  document.getElementById('zoomLabel').textContent=Math.round(currentZoom*100)+'%';
+}
+function zoomIn(){currentZoom=Math.min(2,+(currentZoom+0.1).toFixed(1));applyZoom();}
+function zoomOut(){currentZoom=Math.max(0.3,+(currentZoom-0.1).toFixed(1));applyZoom();}
+function resetView(){currentZoom=0.85;applyZoom();canvas.scrollLeft=0;canvas.scrollTop=0;}
+setTimeout(()=>{applyZoom();},80);
+
+/* ── SCRIPT SWITCHER ── */
+function switchScript(n){
+  document.querySelectorAll('.script-tab').forEach((t,i)=>t.classList.toggle('active',i+1===n));
+  
+  // Toggle Scripts
+  document.getElementById('c-script1').style.display=n===1?'flex':'none';
+  document.getElementById('c-script2').style.display=n===2?'flex':'none';
+  document.getElementById('c-script3').style.display=n===3?'flex':'none';
+  
+  // Toggle SRTs
+  document.getElementById('c-srt1').style.display=n===1?'flex':'none';
+  document.getElementById('c-srt2').style.display=n===2?'flex':'none';
+  document.getElementById('c-srt3').style.display=n===3?'flex':'none';
+  
+  // Toggle Storyboards
+  document.getElementById('c-storyboard1').style.display=n===1?'flex':'none';
+  document.getElementById('c-storyboard2').style.display=n===2?'flex':'none';
+  document.getElementById('c-storyboard3').style.display=n===3?'flex':'none';
+  
+  // Toggle Shot Groups
+  document.querySelectorAll('.shot-group-1').forEach(el=>el.style.display=n===1?'flex':'none');
+  document.querySelectorAll('.shot-group-2').forEach(el=>el.style.display=n===2?'flex':'none');
+  document.querySelectorAll('.shot-group-3').forEach(el=>el.style.display=n===3?'flex':'none');
+  
+  // Update Export button targets
+  const exportBtn = document.querySelector('.nav-btn.primary');
+  if (exportBtn) {
+    exportBtn.setAttribute('onclick', `copySRT('srt${n}-content')`);
+  }
+}
+
+/* ── COPY ── */
+function copyText(t){
+  navigator.clipboard.writeText(t.trim()).catch(()=>{});
+  showToast('📋 คัดลอกแล้ว!');
+}
+function copySRT(id){
+  const el=document.getElementById(id);
+  let out='';
+  el.querySelectorAll('.srt-block').forEach((b,i)=>{
+    const tc=b.querySelector('.srt-tc').textContent.replace('→','-->');
+    const txt=b.querySelector('.srt-txt').textContent;
+    out+=`${i+1}\n${tc}\n${txt}\n\n`;
+  });
+  navigator.clipboard.writeText(out.trim()).catch(()=>{});
+  showToast('✅ คัดลอก SRT ทั้งหมดแล้ว!');
+}
+function copyScript(id){
+  const el=document.getElementById(id);
+  let out='';
+  el.querySelectorAll('.script-text').forEach(l=>out+=l.textContent+'\n');
+  navigator.clipboard.writeText(out.trim()).catch(()=>{});
+  showToast('✅ คัดลอก Script แล้ว!');
+}
+
+/* ── CHECKLIST ── */
+function toggleCheck(el){
+  el.classList.toggle('done');
+  el.querySelector('.check-box').textContent=el.classList.contains('done')?'✓':'';
+}
+
+/* ── CARD Z-INDEX ── */
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('mousedown',()=>{
+    document.querySelectorAll('.card').forEach(c=>c.style.zIndex=10);
+    card.style.zIndex=50;
+  });
+});
+
+/* ── TOAST ── */
+let toastTimeout;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</body>
+</html>
