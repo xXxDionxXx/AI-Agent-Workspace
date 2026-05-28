@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIA Premium Calculator - ระบบคำนวณเบี้ยประกันเอไอเอ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="premium-container">
+
+    <!-- Header Section -->
+    <header class="premium-header">
+      <div class="premium-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+        </svg>
+      </div>
+      <h1 class="premium-title">AIA Premium Calculator</h1>
+      <p class="premium-subtitle">ระบบคำนวณเบี้ยประกันภัยภัยเอไอเอ สำหรับฝ่ายขายและผู้เอาประกันภัย</p>
+    </header>
+
+    <!-- Custom Navigation Bar -->
+    <nav class="premium-navbar">
+      <button class="nav-tab-btn active" data-tab="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9"/>
+          <rect x="14" y="3" width="7" height="5"/>
+          <rect x="14" y="12" width="7" height="9"/>
+          <rect x="3" y="16" width="7" height="5"/>
+        </svg>
+        แดชบอร์ดหลัก
+      </button>
+      <button class="nav-tab-btn" data-tab="life-health">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-8-4.5-8-11.8A5.2 5.2 0 0 1 12 5a5.2 5.2 0 0 1 8 4.2c0 7.3-8 11.8-8 11.8z"/>
+        </svg>
+        ประกันสุขภาพ (หลัก + เสริม)
+      </button>
+      <button class="nav-tab-btn" data-tab="savings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        ประกันสะสมทรัพย์
+      </button>
+      <button class="nav-tab-btn" data-tab="retirement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        วางแผนบำนาญ
+      </button>
+    </nav>
+
+    <!-- 1. DASHBOARD HUB VIEW -->
+    <main id="dashboard-view" class="hub-grid">
+
+      <!-- Card 1: Life & Health Bundle -->
+      <div class="hub-card" data-target="life-health">
+        <div class="hub-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <h2 class="hub-card-title">แผนประกันสุขภาพและชีวิตหลัก</h2>
+        <p class="hub-card-desc">สัญญาร่วมตลอดชีพ 20 PAY LIFE ร่วมกับประกันเหมาจ่าย Health Saver, Health Happy หรือแยกค่ารักษาพยาบาล H&S / Extra</p>
+        <div class="hub-card-action">
+          ไปคำนวณเบี้ย
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 2: Savings Plans -->
+      <div class="hub-card" data-target="savings">
+        <div class="hub-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <h2 class="hub-card-title">แผนประกันสะสมทรัพย์</h2>
+        <p class="hub-card-desc">เน้นวินัยในการออมเงินที่มีเป้าหมายชัดเจน ได้รับทั้งความคุ้มครองชีวิตและผลตอบแทนคืนที่แน่นอนในสัญญาเดียว</p>
+        <div class="hub-card-action">
+          ไปคำนวณเบี้ย
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 3: Retirement Plans -->
+      <div class="hub-card" data-target="retirement">
+        <div class="hub-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h2 class="hub-card-title">แผนประกันบำนาญบำเหน็จ</h2>
+        <p class="hub-card-desc">เตรียมความพร้อมในการมีเงินเดือนใช้สม่ำเสมอหลังเกษียณ วางรากฐานความมั่นคงระยะยาวอย่างเป็นระบบ</p>
+        <div class="hub-card-action">
+          ไปคำนวณเบี้ย
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 4: Critical Illness Placeholder -->
+      <div class="hub-card" data-target="life-health">
+        <div class="hub-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h2 class="hub-card-title">ประกันคุ้มครองโรคร้ายแรง</h2>
+        <p class="hub-card-desc">รับเงินก้อนทันทีเมื่อตรวจพบโรคร้ายแรงระยะใดก็ตาม เพื่อรักษาตัวโดยไม่กระทบต่อฐานะการเงินของครอบครัว</p>
+        <div class="hub-card-action">
+          ไปคำนวณเบี้ย (แนบเพิ่มในหน้าสุขภาพ)
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 5: Child Health Plans -->
+      <div class="hub-card" data-target="life-health">
+        <div class="hub-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+        </div>
+        <h2 class="hub-card-title">ประกันสุขภาพเด็กเล็ก</h2>
+        <p class="hub-card-desc">คุ้มครองค่ารักษาพยาบาลลูกรักตั้งแต่วัยขวบปีแรก ลดความกังวลใจเรื่องค่าใช้จ่ายยามเจ็บป่วยฉุกเฉิน</p>
+        <div class="hub-card-action">
+          ไปคำนวณเบี้ย (แนบเพิ่มในหน้าสุขภาพ)
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- 2. LIFE & HEALTH CALCULATOR VIEW -->
+    <section id="life-health-view" class="calculator-view hidden" data-role="aia-bundle-calculator">
+      <div class="calculator-layout">
+        <div class="calculator-main">
+          <a href="#" class="back-to-hub-btn" style="color: var(--primary-red); display: inline-flex; align-items:center; gap: 0.5rem; text-decoration: none; font-weight: 700; margin-bottom: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            กลับสู่แดชบอร์ดหลัก
+          </a>
+
+          <!-- Step 1: Core Life -->
+          <div class="calc-section">
+            <div class="calc-section-header">
+              <h3>1) สัญญาชีวิตหลัก (20 PAY LIFE)</h3>
+              <span style="font-size: 0.8rem; background: rgba(210,17,69,0.1); color: var(--primary-red); padding: 0.2rem 0.6rem; border-radius: 99px; font-weight: 700;">จำเป็นต้องเลือก</span>
+            </div>
+            <div class="calc-checkbox-wrapper">
+              <input type="checkbox" id="core-life-active" data-role="life-enable" checked>
+              <div class="calc-checkbox-label">
+                <b>เปิดสัญญากรมธรรม์หลัก 20 PAY LIFE (NON-PAR)</b>
+                <span>ชำระเบี้ย 20 ปี คุ้มครองตลอดชีพถึงอายุ 99 ปี</span>
+              </div>
+            </div>
+            <div class="calc-field-group">
+              <div class="field">
+                <label>เพศผู้เอาประกันภัย</label>
+                <div class="segmented-control">
+                  <input type="radio" id="sex-male" name="core-sex" value="male" data-role="life-sex" checked>
+                  <label for="sex-male">ชาย</label>
+                  <input type="radio" id="sex-female" name="core-sex" value="female" data-role="life-sex">
+                  <label for="sex-female">หญิง</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>อายุผู้เอาประกันภัย</label>
+                <select data-role="life-age"></select>
+              </div>
+              <div class="field full-width">
+                <label>วงเงินความคุ้มครองชีวิต (ทุนประกันชีวิต)</label>
+                <select data-role="life-sum"></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Health Insurance Settings -->
+          <div class="calc-section" data-role="health-section">
+            <div class="calc-section-header">
+              <h3>2) ประกันสุขภาพเสริม (Health Rider)</h3>
+              <div class="sync-badge">ซิงค์อายุและเพศอัตโนมัติ</div>
+            </div>
+            <div class="calc-field-group">
+              <div class="field full-width">
+                <label>รูปแบบประกันสุขภาพหลัก</label>
+                <select data-role="health-group">
+                  <option value="lump" selected>ประกันสุขภาพแบบเหมาจ่าย (AIA Health Saver / Happy)</option>
+                  <option value="separate">ประกันสุขภาพแบบแยกค่าใช้จ่าย (AIA H&S / Extra)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Group A: Lump Sum Product (เหมาจ่าย) -->
+            <div data-role="health-lump-wrap" class="mt-4">
+              <div class="calc-field-group">
+                <div class="field full-width">
+                  <label>เลือกแพ็กเกจเหมาจ่าย</label>
+                  <select data-role="health-lump-product">
+                    <option value="saver" selected>AIA HEALTH SAVER (คุ้มค่า คุ้มราคา)</option>
+                    <option value="happy">AIA HEALTH HAPPY (เหมาจ่ายระดับท็อป)</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Saver -->
+              <div data-role="health-saver-block" class="mt-4">
+                <div class="calc-checkbox-wrapper">
+                  <input type="checkbox" id="saver-active" data-role="health-saver-enable" checked>
+                  <div class="calc-checkbox-label">
+                    <b>ยืนยันเลือกสัญญาเพิ่มเติม AIA HEALTH SAVER</b>
+                    <span>เหมาจ่ายเริ่มต้น 200,000 - 500,000 บาท</span>
+                  </div>
+                </div>
+                <div class="calc-field-group">
+                  <div class="field">
+                    <label>ช่วงอายุ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-saver-age-range" disabled></select>
+                  </div>
+                  <div class="field">
+                    <label>เพศ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-saver-sex" disabled>
+                      <option value="male">ชาย</option>
+                      <option value="female">หญิง</option>
+                    </select>
+                  </div>
+                  <div class="field full-width">
+                    <label>เลือกวงเงินความคุ้มครองเหมาจ่ายต่อครั้ง</label>
+                    <select data-role="health-saver-plan"></select>
+                  </div>
+                </div>
+              </div>
+              <!-- Happy -->
+              <div data-role="health-happy-block" class="mt-4 hidden">
+                <div class="calc-checkbox-wrapper">
+                  <input type="checkbox" id="happy-active" data-role="health-happy-enable">
+                  <div class="calc-checkbox-label">
+                    <b>ยืนยันเลือกสัญญาเพิ่มเติม AIA HEALTH HAPPY</b>
+                    <span>เหมาจ่ายสูงสุด 1,000,000 - 25,000,000 บาทต่อปี</span>
+                  </div>
+                </div>
+                <div class="calc-field-group">
+                  <div class="field">
+                    <label>ช่วงอายุ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-happy-age-range" disabled></select>
+                  </div>
+                  <div class="field">
+                    <label>เพศ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-happy-sex" disabled>
+                      <option value="male">ชาย</option>
+                      <option value="female">หญิง</option>
+                    </select>
+                  </div>
+                  <div class="field full-width">
+                    <label>เลือกแผนวงเงินค่ารักษารายปี</label>
+                    <select data-role="health-happy-plan"></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group B: Separate Expenses -->
+            <div data-role="health-separate-wrap" class="mt-4 hidden">
+              <div class="calc-field-group">
+                <div class="field full-width">
+                  <label>เลือกสัญญาแยกค่ารักษา</label>
+                  <select data-role="health-separate-product">
+                    <option value="hs" selected>AIA H&S (New Standard)</option>
+                    <option value="hs_extra">AIA H&S EXTRA (New Standard)</option>
+                  </select>
+                </div>
+              </div>
+              <!-- H&S -->
+              <div data-role="health-hs-block" class="mt-4">
+                <div class="calc-checkbox-wrapper">
+                  <input type="checkbox" id="hs-active" data-role="health-hs-enable">
+                  <div class="calc-checkbox-label">
+                    <b>ยืนยันเลือกสัญญาเพิ่มเติม AIA H&S (New Standard)</b>
+                    <span>สัญญาแยกค่าห้อง/ค่ายารักษาพยาบาลแบบมาตรฐาน</span>
+                  </div>
+                </div>
+                <div class="calc-field-group">
+                  <div class="field">
+                    <label>ช่วงอายุ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-hs-age-range" disabled></select>
+                  </div>
+                  <div class="field">
+                    <label>เพศ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-hs-sex" disabled>
+                      <option value="male">ชาย</option>
+                      <option value="female">หญิง</option>
+                    </select>
+                  </div>
+                  <div class="field full-width">
+                    <label>เลือกขนาดแผนคุ้มครองหลัก</label>
+                    <select data-role="health-hs-plan"></select>
+                  </div>
+                </div>
+              </div>
+              <!-- H&S Extra -->
+              <div data-role="health-hs-extra-block" class="mt-4 hidden">
+                <div class="calc-checkbox-wrapper">
+                  <input type="checkbox" id="hs-extra-active" data-role="health-hs-extra-enable">
+                  <div class="calc-checkbox-label">
+                    <b>ยืนยันเลือกสัญญาเพิ่มเติม AIA H&S EXTRA (New Standard)</b>
+                    <span>สัญญาแยกค่าห้อง พร้อมเงินคืนผู้ป่วยนอก OPD และเบี้ยพิเศษ</span>
+                  </div>
+                </div>
+                <div class="calc-field-group">
+                  <div class="field">
+                    <label>ช่วงอายุ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-hs-extra-age-range" disabled></select>
+                  </div>
+                  <div class="field">
+                    <label>เพศ (ซิงค์อัตโนมัติ)</label>
+                    <select data-role="health-hs-extra-sex" disabled>
+                      <option value="male">ชาย</option>
+                      <option value="female">หญิง</option>
+                    </select>
+                  </div>
+                  <div class="field full-width">
+                    <label>เลือกขนาดแผนคุ้มครอง EXTRA</label>
+                    <select data-role="health-hs-extra-plan"></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: HB Daily Compensation -->
+          <div class="calc-section" data-role="hb-section">
+            <div class="calc-section-header">
+              <h3>3) สัญญาเพิ่มเติมชดเชยรายได้รายวัน (HB)</h3>
+              <span class="sync-badge">จำกัดอายุสูงสุด 55 ปี</span>
+            </div>
+            <div class="calc-checkbox-wrapper">
+              <input type="checkbox" id="hb-active" data-role="hb-enable">
+              <div class="calc-checkbox-label">
+                <b>ซื้อความคุ้มครองรายได้รายวันระหว่างพักรักษาตัว (HB)</b>
+                <span>ชดเชยเงินรายวันเมื่อต้องแอดมิตรักษาตัวในฐานะผู้ป่วยใน (IPD)</span>
+              </div>
+            </div>
+            <div class="calc-field-group">
+              <div class="field full-width">
+                <label>จำนวนเงินชดเชยรายได้ต่อวัน</label>
+                <select data-role="hb-plan"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Sidebar Summary Panel -->
+        <aside class="summary-panel">
+          <div class="summary-header">
+            <div class="summary-title">รวมเบี้ยประกันภัยรายปี</div>
+            <div class="summary-grand-total" data-role="total-premium">-</div>
+          </div>
+          <div class="flex flex-col gap-3" data-role="breakdown"></div>
+          <button class="btn-primary btn-gold btn-copy-proposal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            คัดลอกสรุปข้อเสนอ (Line)
+          </button>
+          <button class="btn-primary btn-outline" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            พิมพ์เอกสารข้อเสนอ (PDF)
+          </button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. SAVINGS PLAN CALCULATOR VIEW -->
+    <section id="savings-view" class="calculator-view hidden" data-role="aia-savings-calculator">
+      <div class="calculator-layout">
+        <div class="calculator-main">
+          <a href="#" class="back-to-hub-btn" style="color: var(--primary-red); display: inline-flex; align-items:center; gap: 0.5rem; text-decoration: none; font-weight: 700; margin-bottom: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            กลับสู่แดชบอร์ดหลัก
+          </a>
+
+          <div class="calc-section">
+            <div class="calc-section-header">
+              <h3>แผนสะสมทรัพย์ (AIA Savings)</h3>
+            </div>
+            
+            <div class="calc-field-group">
+              <div class="field full-width">
+                <label>เลือกแบบประกันสะสมทรัพย์</label>
+                <select data-role="planSelect">
+                  <option value="aia_5pay10" selected>AIA 5 PAY 10 (ชำระเบี้ยสั้น 5 ปี คุ้มครอง 10 ปี)</option>
+                  <option value="aia_savingsure">AIA SAVING SURE 10/99 (ออมคุ้มครองยาว)</option>
+                  <option value="aia_endowment1525">AIA ENDOWMENT 15/25 (ชำระ 15 ปี คุ้มครอง 25 ปี)</option>
+                  <option value="aia_excellent">AIA EXCELLENT (แผนสะสมทรัพย์อเนกประสงค์)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Panel 1: 5 Pay 10 -->
+            <div data-role="panel5p10" class="mt-4">
+              <div class="calc-field-group">
+                <div class="field">
+                  <label>ช่วงอายุผู้ขอประกัน</label>
+                  <select data-role="ageRange5p10"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select data-role="sex5p10">
+                    <option value="male">ชาย</option>
+                    <option value="female">หญิง</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินทุนประกันสะสมทรัพย์</label>
+                  <select data-role="sum5p10"></select>
+                </div>
+              </div>
+              <div class="aia-note mt-3" style="font-size: 0.85rem; color: var(--text-muted);">
+                * แผน 5 PAY 10: อัตราเบี้ยเท่ากันทั้งชายและหญิงตามช่วงอายุที่เลือก
+              </div>
+            </div>
+
+            <!-- Panel 2: Saving Sure -->
+            <div data-role="panelSavingSure" class="mt-4 hidden">
+              <div class="calc-field-group">
+                <div class="field">
+                  <label>อายุผู้ขอประกัน</label>
+                  <select data-role="ageSavingSure"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select disabled>
+                    <option value="male" selected>ชาย/หญิง (อัตราเท่ากัน)</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินทุนประกันสะสมทรัพย์</label>
+                  <select data-role="sumSavingSure"></select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Endowment 15/25 -->
+            <div data-role="panelEndowment" class="mt-4 hidden">
+              <div class="calc-field-group">
+                <div class="field">
+                  <label>ช่วงอายุผู้ขอประกัน</label>
+                  <select data-role="ageRangeEndowment"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select data-role="sexEndowment">
+                    <option value="male" selected>ชาย</option>
+                    <option value="female">หญิง</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินทุนประกันสะสมทรัพย์</label>
+                  <select data-role="sumEndowment"></select>
+                </div>
+              </div>
+              <div class="sync-badge mt-2" data-role="pillEndowment" style="display: none; background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); color: #22c55e;">
+                ได้รับส่วนลดทุนประกันสะสมทรัพย์!
+              </div>
+            </div>
+
+            <!-- Panel 4: Excellent -->
+            <div data-role="panelExcellent" class="mt-4 hidden">
+              <div class="calc-field-group">
+                <div class="field">
+                  <label>อายุผู้ขอประกัน</label>
+                  <select data-role="ageExcellent"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select data-role="sexExcellent">
+                    <option value="male" selected>ชาย</option>
+                    <option value="female">หญิง</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินทุนประกันสะสมทรัพย์</label>
+                  <select data-role="sumExcellent"></select>
+                </div>
+              </div>
+              <div class="sync-badge mt-2" data-role="pillExcellent" style="display: none; background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); color: #22c55e;">
+                ได้รับส่วนลดทุนประกันระดับสูง!
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Sidebar Savings Display -->
+        <aside class="summary-panel">
+          <div class="summary-header">
+            <div class="summary-title">ค่าเบี้ยประกันออมทรัพย์รายปี</div>
+            <div class="summary-grand-total" data-role="premium5p10" id="saving-total-display">-</div>
+            <!-- Custom Dynamic Mappings -->
+            <div class="summary-grand-total hidden" data-role="premiumSavingSure">-</div>
+            <div class="summary-grand-total hidden" data-role="premiumEndowment">-</div>
+            <div class="summary-grand-total hidden" data-role="premiumExcellent">-</div>
+          </div>
+          
+          <div class="aia-note" style="color: #9ca3af; font-size: 0.85rem;">
+            * อัตรานี้เป็นการคำนวณเบี้ยประกันรายปีสำหรับการออมเงินสะสมทรัพย์ตามแผนประกันภัยที่ได้รับการอนุมัติของเอไอเอประเทศไทย
+          </div>
+
+          <button class="btn-primary btn-gold" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            พิมพ์ข้อเสนอประกันออมเงิน (PDF)
+          </button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4. RETIREMENT PLAN CALCULATOR VIEW -->
+    <section id="retirement-view" class="calculator-view hidden" data-role="aia-retirement-calculator">
+      <div class="calculator-layout">
+        <div class="calculator-main">
+          <a href="#" class="back-to-hub-btn" style="color: var(--primary-red); display: inline-flex; align-items:center; gap: 0.5rem; text-decoration: none; font-weight: 700; margin-bottom: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            กลับสู่แดชบอร์ดหลัก
+          </a>
+
+          <div class="calc-section">
+            <div class="calc-section-header">
+              <h3>วางแผนบำนาญ (AIA Annuity Retirement)</h3>
+            </div>
+
+            <div class="calc-field-group">
+              <div class="field full-width">
+                <label>เลือกแผนบำนาญหลัก</label>
+                <select data-role="planSelect">
+                  <option value="annuity_fix" selected>AIA ANNUITY FIX (แผนบำนาญคุ้มครองมั่นคง)</option>
+                  <option value="annuity_sure">AIA ANNUITY SURE (แผนบำนาญการันตีเงินคืน)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Panel 1: Annuity Fix -->
+            <div data-role="panelAnnuityFix" class="mt-4">
+              <div class="calc-field-group">
+                <div class="field">
+                  <label>อายุผู้ขอรับบำนาญ</label>
+                  <select data-role="ageFix"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select data-role="sexFix">
+                    <option value="male" selected>ชาย</option>
+                    <option value="female">หญิง</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินเริ่มต้นเงินบำนาญรายปีที่ต้องการ</label>
+                  <select data-role="sumFix"></select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Annuity Sure -->
+            <div data-role="panelAnnuitySure" class="mt-4 hidden">
+              <div class="calc-field-group">
+                <div class="field full-width">
+                  <label>ระยะเวลาการชำระเงินที่ต้องการ</label>
+                  <select data-role="paySure">
+                    <option value="p9" selected>ชำระสั้น 9 ปี (Annuity Sure 90/9)</option>
+                    <option value="to60">ชำระยาวถึงอายุ 60 ปี (Annuity Sure 90/60)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>อายุผู้ขอรับบำนาญ</label>
+                  <select data-role="ageSure"></select>
+                </div>
+                <div class="field">
+                  <label>เพศ</label>
+                  <select data-role="sexSure">
+                    <option value="male" selected>ชาย</option>
+                    <option value="female">หญิง</option>
+                  </select>
+                </div>
+                <div class="field full-width">
+                  <label>วงเงินคุ้มครองประกันบำนาญ</label>
+                  <select data-role="sumSure"></select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Sidebar Retirement Display -->
+        <aside class="summary-panel">
+          <div class="summary-header">
+            <div class="summary-title">ค่าเบี้ยประกันบำนาญรายปี</div>
+            <div class="summary-grand-total" data-role="premiumAnnuityFix" id="retirement-total-display">-</div>
+            <!-- Custom Dynamic Mappings -->
+            <div class="summary-grand-total hidden" data-role="premiumAnnuitySure">-</div>
+          </div>
+          
+          <div class="aia-note" style="color: #9ca3af; font-size: 0.85rem;">
+            * การวางแผนเงินบำนาญรายปีช่วยให้มั่นใจเรื่องความปลอดภัยทางการเงินหลังเกษียณ วางระบบส่งมอบความมั่งคั่งอย่างมั่นใจ
+          </div>
+
+          <button class="btn-primary btn-gold" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            พิมพ์ข้อเสนอคุ้มครองบำนาญ (PDF)
+          </button>
+        </aside>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

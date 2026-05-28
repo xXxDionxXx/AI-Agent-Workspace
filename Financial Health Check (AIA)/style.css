@@ -1,8 +1,8 @@
 :root{--aia-red:#d21145;--aia-red-light:#f8d9df;--aia-red-lighter:#fbebee;--aia-blue:#0a75bb;--aia-blue-light:#dbe9f8;--aia-blue-lighter:#ecf2f9;--gray:#d9d9d9;--white:#fff;--black:#000;--text-primary:#1a1a2e;--text-secondary:#5a5a72;--text-muted:#8e8ea0;--glass-bg:rgba(255,255,255,.65);--glass-border:rgba(255,255,255,.45);--glass-shadow:0 8px 32px rgba(0,0,0,.06);--sq:20px;--font:'IBM Plex Sans Thai','Inter',system-ui,sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px}
-body{font-family:var(--font);background:url('bg.png') center/cover fixed;color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
-body::before{content:'';position:fixed;inset:0;background:linear-gradient(160deg,rgba(251,235,238,.82),rgba(255,255,255,.75) 30%,rgba(236,242,249,.78) 70%,rgba(255,255,255,.80));z-index:0}
+body{font-family:var(--font);background-color:#f8fafc;background-image:radial-gradient(at 0% 0%, rgba(210, 17, 69, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(197, 160, 89, 0.05) 0px, transparent 50%);background-attachment:fixed;color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(160deg,rgba(251,235,238,0.25),rgba(255,255,255,0.1) 30%,rgba(236,242,249,0.2) 70%,rgba(255,255,255,0.3));z-index:0;pointer-events:none}
 
 /* ===== PLATFORM TYPOGRAPHY SCALE ===== */
 body.platform-laptop { font-size: 1.1rem; }
