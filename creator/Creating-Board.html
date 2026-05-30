@@ -3,446 +3,966 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบวางแผนการผลิตวิดีโอแบบครบวงจร · Financetry Master Board</title>
+  <title>Financetry Interactive Studio · Nick | Financetry</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --canvas:#f5f4f0; --dot:rgba(0,0,0,0.085); --card:#fff;
-      --card-shadow:0 2px 8px rgba(0,0,0,0.09),0 1px 2px rgba(0,0,0,0.06);
-      --card-shadow-hover:0 8px 28px rgba(0,0,0,0.14),0 2px 6px rgba(0,0,0,0.08);
-      --border:rgba(0,0,0,0.08); --text:#1a1a1a; --text-2:#555; --text-3:#999;
-      --gold:#FFBA09; --gold-soft:#fff8e1; --gold-border:rgba(255,186,9,0.35);
-      --blue:#2563eb; --blue-soft:#eff6ff;
-      --purple:#7c3aed; --purple-soft:#f5f3ff;
-      --green:#059669; --green-soft:#ecfdf5;
-      --red:#dc2626; --red-soft:#fef2f2;
-      --orange:#ea580c; --orange-soft:#fff7ed;
-      --navy:#0f172a; --nav:#1c1c1e;
+      --bg: #0b0f19;
+      --panel: #151d30;
+      --panel-light: #1e2942;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --gold: #FFBA09;
+      --gold-gradient: linear-gradient(135deg, #FFBA09, #e0a800);
+      --blue: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.25);
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --radius: 16px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans','Sarabun',sans-serif;background:var(--canvas);color:var(--text);overflow:hidden;width:100vw;height:100vh;user-select:none;}
 
-    nav{position:fixed;top:0;left:0;right:0;height:52px;background:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:9999;box-shadow:0 1px 0 rgba(255,255,255,0.05);}
-    .nav-left{display:flex;align-items:center;gap:12px;}
-    .nav-logo{display:flex;align-items:center;gap:8px;font-size:0.9rem;font-weight:600;color:#fff;}
-    .nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--gold),#ff8800);display:flex;align-items:center;justify-content:center;font-size:0.85rem;}
-    .nav-bc{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:rgba(255,255,255,0.45);}
-    .nav-bc span{color:rgba(255,255,255,0.7);} .nav-bc .sep{color:rgba(255,255,255,0.25);}
-    .board-title{color:#fff;font-weight:500;}
-    .nav-right{display:flex;align-items:center;gap:8px;}
-    .nav-badge{background:rgba(255,186,9,0.18);color:var(--gold);border:1px solid rgba(255,186,9,0.3);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
-    .nav-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);padding:5px 14px;border-radius:7px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:all 0.15s;}
-    .nav-btn:hover{background:rgba(255,255,255,0.15);}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', 'Sarabun', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-    .toolbar{position:fixed;top:52px;left:0;right:0;height:44px;background:#f9f8f5;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:4px;padding:0 16px;z-index:999;}
-    .tb-sep{width:1px;height:22px;background:rgba(0,0,0,0.1);margin:0 6px;}
-    .tb-label{font-size:0.78rem;color:var(--text-3);font-weight:500;padding:0 6px;}
-    .status-pill{font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.3px;}
-    .sp-editing{background:var(--purple-soft);color:var(--purple);border:1px solid rgba(124,58,237,0.25);}
-    .tb-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
-    .zoom-hint{font-size:0.72rem;color:var(--text-3);padding:3px 10px;background:rgba(0,0,0,0.04);border-radius:6px;border:1px solid rgba(0,0,0,0.08);white-space:nowrap;}
+    /* Header Nav */
+    header {
+      background: rgba(21, 29, 48, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+    .brand-logo span {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gold-gradient);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 1rem;
+    }
+    .nav-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
 
-    .canvas{position:fixed;top:96px;left:0;right:0;bottom:0;overflow:auto;background-color:var(--canvas);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:24px 24px;cursor:grab;}
-    .canvas:active{cursor:grabbing;}
-    .canvas-inner{position:relative;width:4400px;height:1200px;}
+    /* Layout Main */
+    main {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
 
-    .section-label{position:absolute;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-3);pointer-events:none;}
+    /* Workflow Nav Tabs */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .step-tab {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .step-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      transition: var(--transition);
+    }
+    .step-tab.active {
+      background: var(--panel-light);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .step-tab.active::after {
+      background: var(--blue);
+    }
+    .step-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .step-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
 
-    .card{position:absolute;background:var(--card);border-radius:12px;border:1px solid var(--border);box-shadow:var(--card-shadow);transition:box-shadow 0.2s,transform 0.15s;overflow:hidden;display:flex;flex-direction:column;}
-    .card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-1px);}
-    .card.dragging{box-shadow:0 20px 50px rgba(0,0,0,0.18);transform:rotate(1deg) scale(1.01);z-index:8888!important;cursor:grabbing;}
+    /* Container Box */
+    .studio-container {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    /* Section Flex */
+    .workspace-split {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 40px;
+    }
+
+    /* Selection Pane */
+    .selection-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      border-right: 1px solid var(--border);
+      padding-right: 40px;
+    }
+    .selection-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+    .option-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .opt-btn {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .opt-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .opt-btn.active {
+      border-color: var(--blue);
+      background: var(--blue-glow);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+    }
+    .opt-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .opt-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Results Pane */
+    .results-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .results-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .results-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Idea Card List */
+    .idea-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .idea-card {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .idea-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .idea-card.selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 25px rgba(255, 186, 9, 0.12);
+    }
+    .idea-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .idea-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .ib-tofu { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+    .ib-mofu { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
+    .ib-bofu { background: rgba(139, 93, 246, 0.15); color: var(--purple); }
     
-    .stripe-gold{border-top:3px solid var(--gold);}
-    .stripe-blue{border-top:3px solid var(--blue);}
-    .stripe-purple{border-top:3px solid var(--purple);}
-    .stripe-orange{border-top:3px solid var(--orange);}
-    .stripe-navy{border-top:3px solid var(--navy);}
-    .stripe-green{border-top:3px solid var(--green);}
+    .idea-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+      margin-right: 12px;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .idea-selector {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .idea-card.selected .idea-selector {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+    .idea-card.selected .idea-selector::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #000;
+    }
 
-    .card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px;cursor:move;border-bottom:1px solid rgba(0,0,0,0.05);flex-shrink:0;}
-    .card-title-row{display:flex;align-items:center;gap:8px;}
-    .card-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;}
-    .icon-gold{background:var(--gold-soft);color:#b45309;} 
-    .icon-blue{background:var(--blue-soft);color:var(--blue);}
-    .icon-purple{background:var(--purple-soft);color:var(--purple);} 
-    .icon-orange{background:var(--orange-soft);color:var(--orange);}
-    .icon-navy{background:#e2e8f0;color:var(--navy);}
-    .icon-green{background:var(--green-soft);color:var(--green);}
-    
-    .card-title{font-size:0.82rem;font-weight:600;color:var(--text);letter-spacing:-0.2px;}
-    .card-subtitle{font-size:0.7rem;color:var(--text-3);margin-top:1px;}
-    .card-menu-btn{width:24px;height:24px;border-radius:5px;background:transparent;border:none;color:var(--text-3);font-size:0.9rem;cursor:pointer;transition:all 0.12s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .card-menu-btn:hover{background:rgba(0,0,0,0.06);color:var(--text);}
-    .card-body{padding:14px;font-size:0.82rem;line-height:1.65;color:var(--text-2);overflow-y:auto;flex:1;}
+    .idea-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+    .details-box strong {
+      color: var(--gold);
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .details-box span {
+      color: var(--text-muted);
+      font-family: 'Sarabun', sans-serif;
+    }
 
-    .pbadge{font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;margin-right:4px;margin-bottom:6px;}
-    .pb-gold{background:var(--gold-soft);color:#b45309;border:1px solid var(--gold-border);}
-    .pb-blue{background:var(--blue-soft);color:var(--blue);border:1px solid rgba(37,99,235,0.2);}
-    .pb-purple{background:var(--purple-soft);color:var(--purple);border:1px solid rgba(124,58,237,0.2);}
-    .pb-navy{background:#e2e8f0;color:var(--navy);border:1px solid rgba(15,23,42,0.2);}
-    .pb-green{background:var(--green-soft);color:var(--green);border:1px solid rgba(5,150,105,0.2);}
-    .pb-red{background:var(--red-soft);color:var(--red);border:1px solid rgba(220,38,38,0.2);}
-    .pb-orange{background:var(--orange-soft);color:var(--orange);border:1px solid rgba(234,88,12,0.2);}
+    /* Lock In Control */
+    .lock-control {
+      margin-top: 30px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lock-summary {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .lock-summary strong {
+      color: var(--text);
+    }
+    .action-btn {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 10px 20px rgba(255, 186, 9, 0.2);
+      transition: var(--transition);
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(255, 186, 9, 0.35);
+    }
+    .action-btn:disabled {
+      background: var(--panel-light);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-    .concept-item{border-left:3px solid var(--gold);padding-left:10px;margin-bottom:12px;}
-    .concept-title{font-weight:600;font-size:0.82rem;color:var(--text);margin-bottom:3px;}
-    .concept-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5;}
-
-    .script-line{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:8px;margin-bottom:3px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;}
-    .script-line:hover{background:#fafafa;border-color:rgba(0,0,0,0.06);}
-    .script-ts{font-family:'DM Mono',monospace;font-size:0.67rem;color:var(--gold);background:var(--gold-soft);padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px;border:1px solid var(--gold-border);}
-    .script-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:3px;}
-    .sl-hook{background:#fef2f2;color:#b91c1c;border:1px solid rgba(185,28,28,0.2);}
-    .sl-amp{background:#fff7ed;color:var(--orange);border:1px solid rgba(234,88,12,0.2);}
-    .sl-value{background:var(--blue-soft);color:var(--blue);border:1px solid rgba(37,99,235,0.2);}
-    .sl-cta{background:var(--gold-soft);color:#b45309;border:1px solid var(--gold-border);}
-    .script-text{font-size:0.8rem;line-height:1.55;color:var(--text);font-family:'Sarabun',sans-serif;flex:1;}
-    .script-text strong{color:#000;font-weight:700;}
-    .script-section-head{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-3);padding:6px 8px 3px;margin-top:4px;}
-
-    .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:9px;font-size:0.82rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateY(60px);opacity:0;transition:all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);z-index:99999;pointer-events:none;}
-    .toast.show{transform:translateY(0);opacity:1;}
-
-    .zoom-controls{position:fixed;bottom:24px;left:24px;display:flex;align-items:center;gap:4px;background:white;border-radius:10px;border:1px solid rgba(0,0,0,0.08);box-shadow:var(--card-shadow);padding:4px;z-index:9999;}
-    .zoom-btn{width:30px;height:30px;border-radius:7px;background:transparent;border:none;font-size:0.9rem;cursor:pointer;color:var(--text-2);display:flex;align-items:center;justify-content:center;transition:background 0.12s;}
-    .zoom-btn:hover{background:rgba(0,0,0,0.06);}
-    .zoom-level{font-size:0.75rem;font-weight:600;color:var(--text);min-width:36px;text-align:center;}
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--gold);
+      color: #000;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-left">
-    <div class="nav-logo"><div class="nav-logo-icon">💡</div>Financetry</div>
-    <div class="nav-bc">
-      <span class="sep">›</span><span>Nick | Financetry</span><span class="sep">›</span>
-      <span class="board-title">ขั้นตอนการทำคอนเทนต์การเงินระดับพรีเมียม</span>
+<header>
+  <div class="brand-logo">
+    <div class="brand-logo-icon">👑</div>
+    Financetry <span>Interactive Studio</span>
+  </div>
+  <div class="nav-meta">
+    Creator: Nick | Nothing Phone 2a Ready
+  </div>
+</header>
+
+<main>
+  <!-- Step Navigation Tabs -->
+  <div class="flow-steps">
+    <div class="step-tab active" id="step-tab-1">
+      <div class="step-num">ขั้นตอนที่ 1</div>
+      <div class="step-title">💡 Ideation & Target</div>
+      <div class="step-desc">เลือกเป้าหมายและคัดสรรไอเดีย</div>
+    </div>
+    <div class="step-tab" id="step-tab-2" style="opacity: 0.5; cursor: not-allowed;">
+      <div class="step-num">ขั้นตอนที่ 2</div>
+      <div class="step-title">📐 Funnel Format</div>
+      <div class="step-desc">กำหนดเป้าหมายคลิปและขนาดภาพ</div>
+    </div>
+    <div class="step-tab" id="step-tab-3" style="opacity: 0.5; cursor: not-allowed;">
+      <div class="step-num">ขั้นตอนที่ 3</div>
+      <div class="step-title">📝 Scripting</div>
+      <div class="step-desc">เขียนบทคำพูดและ Visual Hook</div>
+    </div>
+    <div class="step-tab" id="step-tab-4" style="opacity: 0.5; cursor: not-allowed;">
+      <div class="step-num">ขั้นตอนที่ 4</div>
+      <div class="step-title">📸 Production Setup</div>
+      <div class="step-desc">สเปกตั้งค่ากล้อง Nothing & resolve</div>
     </div>
   </div>
-  <div class="nav-right">
-    <span class="nav-badge">Stage: Post-Production</span>
-    <button class="nav-btn" onclick="resetView()">🎯 Reset View</button>
-  </div>
-</nav>
 
-<div class="toolbar">
-  <span class="tb-label">สถานะปัจจุบัน:</span>
-  <span class="status-pill sp-editing">✂️ โครงสร้างไทม์ไลน์และแผนผังงานมิกซ์เสียง/เอฟเฟกต์สมบูรณ์</span>
-  <div class="tb-sep"></div>
-  <span style="font-size:0.8rem;color:var(--text-2);">การ Sync ภาพ B-Roll คุม DB เดซิเบลเสียงพูด-ดนตรี BGM และการวางเอฟเฟกต์ SFX ในเครื่อง</span>
-  <div class="tb-right">
-    <span class="zoom-hint">ลากย้ายการ์ดได้อย่างอิสระ &nbsp;|&nbsp; Ctrl+Scroll = Zoom</span>
-  </div>
-</div>
-
-<div class="canvas" id="canvas">
-<div class="canvas-inner" id="canvasInner">
-
-<!-- ═══════════ ROW 1 — END-TO-END WORKFLOW ═══════════ -->
-<div class="section-label" style="left:60px;top:30px;">👥 1. MY PERSONAL BRAND (แก่นแบรนด์ของ NICK)</div>
-<div class="section-label" style="left:480px;top:30px;">🧠 2. IDEATION METHODS (กลไกการคิดไอเดีย)</div>
-<div class="section-label" style="left:900px;top:30px;">🎯 3. SELECTED IDEAS Scratchpad (ไอเดียที่คัดสรร)</div>
-<div class="section-label" style="left:1420px;top:30px;">📐 4. FUNNEL FORMATS MAP (การกำหนดฟอร์แมทคลิป)</div>
-<div class="section-label" style="left:1940px;top:30px;">📝 5. ACTIVE SCRIPT WORKSPACE (สมุดเขียนบทตัวจริง)</div>
-<div class="section-label" style="left:2540px;top:30px;">📸 6. CAMERA & COLOR GRADING SUITE (โปรดักชันเซ็ตติ้ง)</div>
-<div class="section-label" style="left:3020px;top:30px;">✂️ 7. DAVINCI RESOLVE SOUND & EDITING PLAN (ไทม์ไลน์เสียงและเอฟเฟกต์)</div>
-
-<!-- CARD 1: BRAND STRATEGY -->
-<div class="card stripe-navy" style="width:380px;left:60px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-navy">👥</div>
-      <div><div class="card-title">แก่นตัวตนแบรนด์ (Nick | Financetry)</div><div class="card-subtitle">จุดแข็งเชิงระบบและกลุ่มเป้าหมาย (ICP)</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-navy">First-Jobbers รายได้สูง</span>
-    <span class="pbadge pb-navy">คนกำลังมีครอบครัว</span>
-    <span class="pbadge pb-navy">เจ้าของธุรกิจใหม่</span>
-    
-    <div style="margin-top:10px;">
-      <p style="font-weight:600;font-size:0.8rem;color:var(--navy);margin-bottom:4px;">🛡️ สะพานข้ามความเสี่ยง (Anti-Vision ➔ Vision)</p>
-      <p style="font-size:0.77rem;color:var(--text-2);margin-bottom:8px;">เปลี่ยนเรื่องยาก of คนปวดหัวภาษีและไม่มีสวัสดิการคุ้มครองชีวิต ให้กลายเป็น <strong>"แผนภาพเดียวที่เข้าใจง่ายและคุ้มค่าที่สุด"</strong></p>
-    </div>
-    
-    <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:10px;margin-top:8px;">
-      <p style="font-weight:600;font-size:0.75rem;color:var(--navy);margin-bottom:4px;">⭐ EXTERNAL OUTLIERS (จุดโดดเด่นสะกดหู)</p>
-      <p style="font-size:0.75rem;color:var(--text-2);line-height:1.5;">ใช้ความสามารถในการสรุปสถิติตัวเลข วิเคราะห์เปรียบเทียบสเปรดชีตอย่างเที่ยงตรง และนำเสนอแบบเข้าใจง่ายในภาพเดียว</p>
-    </div>
-  </div>
-</div>
-
-<!-- CARD 2: IDEATION METHODS -->
-<div class="card stripe-purple" style="width:380px;left:480px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-purple">🧠</div>
-      <div><div class="card-title">พิมพ์เขียวคิดไอเดีย 3 ทิศทาง</div><div class="card-subtitle">สแกนหาไอเดียที่มีความต้องการจริง</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="concept-item">
-      <div class="concept-title">1. From Business (จากปมปัญหาลูกค้า)</div>
-      <div class="concept-desc">ตอบข้อสงสัยหรือ FAQs ที่ลูกค้าทักมาบ่อยสุดเรื่องการจัดการภาษีและการซื้อประกันสุขภาพไม่ตรงเป้า</div>
-    </div>
-    <div class="concept-item" style="border-left-color: var(--blue);">
-      <div class="concept-title">2. Scroll-Save Method (ดึงกระแสคู่แข่ง)</div>
-      <div class="concept-desc">สแกนคลิปจากช่องอื่น ๆ เลือกหัวข้อที่ตัวเราอิน (Resonance) ควบคู่กับยอดเข้าถึงที่ได้รับการพิสูจน์แล้วว่าไวรัล (Reach)</div>
-    </div>
-    <div class="concept-item" style="border-left-color: var(--orange);">
-      <div class="concept-title">3. Active Ideation (แกะคลิป Outliers 10x)</div>
-      <div class="concept-desc">ค้นหาคลิปที่มียอดวิวปังเหนือยอดวิวเฉลี่ยของช่องนั้น ๆ ตั้งแต่ 5 เท่าขึ้นไป เพื่อสกัดความต้องการที่แท้จริงของผู้คน</div>
-    </div>
-  </div>
-</div>
-
-<!-- CARD 3: SELECTED SCRATCHPAD (ไอเดียที่ผ่านการกรอง) -->
-<div class="card stripe-gold" style="width:480px;left:900px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-gold">🎯</div>
-      <div><div class="card-title">คลังไอเดียผ่านการคัดสรรสัปดาห์นี้</div><div class="card-subtitle">3 คอนเซปต์การเงินเชื่อมโยง ICP และแบรนด์ Nick</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-gold">ToFu คอนเทนต์ไวรัล</span>
-    <span class="pbadge pb-blue">สูตรสรุปภาพเดียว</span>
-    
-    <div style="background:#fafafa;border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:10px;margin-bottom:8px;">
-      <div style="font-weight:700;font-size:0.8rem;color:#b45309;margin-bottom:4px;">🔥 ไอเดียที่ 1: ความจริงของคนเงินเดือน 5 หมื่นที่เสียภาษีไปเปล่าๆ</div>
-      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.5;">
-        • <strong>ICP เป้าหมาย:</strong> Gen Y / First-Jobbers รายได้สูงที่ไม่มีแผนลดหย่อนภาษีส่วนตัว<br>
-        • <strong>จุดเด่นแบรนด์:</strong> ขยายภาพสรุปสวัสดิการลดหย่อนภาษีหน้าเดียวขึ้นมาหยุดสายตา (External Outlier)<br>
-        • <strong>ทิศทางเล่าเรื่อง:</strong> Anti-Vision (จ่ายเป็นหมื่นเปล่าๆ) ➔ Vision (เซฟแบบคุ้มค่าด้วยพอร์ตลดหย่อน)
-      </div>
-    </div>
-
-    <div style="background:#fafafa;border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:10px;margin-bottom:8px;">
-      <div style="font-weight:700;font-size:0.8rem;color:#b45309;margin-bottom:4px;">🔥 ไอเดียที่ 2: ทำไมเจ้าของธุรกิจใหม่มักเสียภาษีบุคคลแพงกว่านิติบุคคล</div>
-      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.5;">
-        • <strong>ICP เป้าหมาย:</strong> เจ้าของธุรกิจป้ายแดงและฟรีแลนซ์ที่เอาบัญชีส่วนตัวและบริษัทมาปนกันมั่ว<br>
-        • <strong>จุดเด่นแบรนด์:</strong> สวมบทบาทที่ปรึกษาวิเคราะห์กระแสเงินสดและสิทธิสวัสดิการประกันลดหย่อนนิติบุคคล<br>
-        • <strong>ทิศทางเล่าเรื่อง:</strong> ปรับปรุงทิศทางบัญชีการออม ป้องกันความเสี่ยงของกระแสเงินสดบริษัท
-      </div>
-    </div>
-
-    <div style="background:#fafafa;border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:10px;">
-      <div style="font-weight:700;font-size:0.8rem;color:#b45309;margin-bottom:4px;">🔥 ไอเดียที่ 3: วิธีปลดหนี้บ้านทันที 100% ถ้าหัวหน้าครอบครัวเกิดเหตุไม่คาดฝัน</div>
-      <div style="font-size:0.76rem;color:var(--text-2);line-height:1.5;">
-        • <strong>ICP เป้าหมาย:</strong> หัวหน้าครอบครัว/คนสร้างครอบครัวที่มีภาระหนี้ก้อนใหญ่<br>
-        • <strong>จุดเด่นแบรนด์:</strong> สะท้อนความจริงใจประกันชีวิตไม่ใช่สินค้าขายฝัน แต่คือ "โครงข่ายคุ้มกันคนที่รัก"<br>
-        • <strong>ทิศทางเล่าเรื่อง:</strong> หนีการล้มละลายของคนข้างหลัง สู่การสร้างความสงบในใจให้บ้านด้วยระบบทุนประกันสุขภาพที่ครอบคลุม
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CARD 4: FORMATS MAP -->
-<div class="card stripe-green" style="width:480px;left:1420px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-green">📐</div>
-      <div><div class="card-title">แมปปิ้งไอเดียสู่รูปแบบวิดีโอ (TOFU Comparisons)</div><div class="card-subtitle">Format Mapping & Funnel Level Setup</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-green">TOFU Level (ดึงคนใหม่)</span>
-    <span class="pbadge pb-blue">Comparisons Format</span>
-    <span class="pbadge pb-gold">ManyChat Opt-In</span>
-
-    <div style="margin-top:10px;">
-      <div style="font-weight:700;font-size:0.81rem;color:var(--green);margin-bottom:4px;">🎯 ไอเดียที่เลือกทำสัปดาห์นี้: ไอเดียที่ 1</div>
-      <p style="font-size:0.78rem;color:var(--text-2);line-height:1.6;margin-bottom:10px;">
-        เราจะนำหัวข้อ <strong>"ความจริงของคนทำงานเงินเดือน 5 หมื่นที่โดนหักภาษีเปล่าๆ"</strong> มาปรับปรุงสไตล์ให้เป็น <strong>"Comparisons Format"</strong> ด้วยการขยี้เปรียบเทียบตรรกะสองด้านสะกิดใจ:
-      </p>
+  <!-- Studio Container Workspace -->
+  <div class="studio-container">
+    <div class="workspace-split">
       
-      <div style="background:var(--gold-soft);border:1px solid var(--gold-border);border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:0.75rem;line-height:1.5;">
-        <span style="font-weight:700;color:#b45309;">⚖️ คีย์เปรียบเทียบในคลิป:</span><br>
-        ฝั่ง A: <strong>ฝืนเอาเงินไปซื้อประกันบำนาญลดภาษีเพราะหลงโฆษณา</strong><br>
-        ฝั่ง B: <strong>เอาส่วนต่างเงินลดภาษีนั้น ไปลงในกองทุนดัชนีสร้างดอกเบี้ยทบต้นเอง</strong>
+      <!-- Left Selection Panel -->
+      <div class="selection-pane">
+        
+        <!-- ICP Selector -->
+        <div>
+          <div class="selection-title">1. กลุ่มเป้าหมาย (ICP)</div>
+          <div class="option-grid">
+            <button class="opt-btn active" onclick="selectICP('salaryman', this)">
+              <div class="opt-name">มนุษย์เงินเดือน Gen Y / First-Jobber</div>
+              <div class="opt-desc">เจ็บปวดเรื่องหักภาษีเยอะ / อยากได้ประกันสุขภาพใบแรก</div>
+            </button>
+            <button class="opt-btn" onclick="selectICP('family', this)">
+              <div class="opt-name">คนสร้างครอบครัว (Family Builders)</div>
+              <div class="opt-desc">ห่วงเรื่องหนี้บ้านล้นพ้น / ทุนการศึกษาของลูก</div>
+            </button>
+            <button class="opt-btn" onclick="selectICP('business', this)">
+              <div class="opt-name">เจ้าของธุรกิจใหม่ & ฟรีแลนซ์</div>
+              <div class="opt-desc">เงินบัญชีส่วนตัวและบริษัทปนกันมั่ว / เสียภาษีบุคคลอ่วม</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Funnel Stage Selector -->
+        <div>
+          <div class="selection-title">2. ระดับเป้าหมายกรวย (Funnel Stage)</div>
+          <div class="option-grid">
+            <button class="opt-btn active" onclick="selectFunnel('tofu', this)">
+              <div class="opt-name">TOFU (เข้าถึงวงกว้าง / ดึงคนใหม่)</div>
+              <div class="opt-desc">Ratings, Comparisons, Tier Lists</div>
+            </button>
+            <button class="opt-btn" onclick="selectFunnel('mofu', this)">
+              <div class="opt-name">MOFU (บ่มเพาะเชื่อใจ / โชว์ความรู้)</div>
+              <div class="opt-desc">Talking Head, Green Screen, Life Story</div>
+            </button>
+            <button class="opt-btn" onclick="selectFunnel('bofu', this)">
+              <div class="opt-name">BOFU (ปิดนัดหมาย / ดึงลีดเข้า Zoom)</div>
+              <div class="opt-desc">Miro Chart Breakdown, Client Story</div>
+            </button>
+          </div>
+        </div>
+
       </div>
-      
-      <p style="font-size:0.75rem;color:var(--text-3);line-height:1.5;">
-        *การใช้ Comparisons Format จะมีตรรกะให้เกิดการถกเถียงอย่างกระตือรือร้นใต้คอมเมนต์ (เช่น ทีมเออมั่นคงสะสมทรัพย์ vs ทีมลงทุนเองดีกว่า) ซึ่งช่วยผลักดันให้ AI แพลตฟอร์มดันยอดผู้ติดตามพุ่งทะลัก!*
-      </p>
-    </div>
-  </div>
-</div>
 
-<!-- CARD 5: SCRIPT WORKSPACE -->
-<div class="card stripe-blue" style="width:560px;left:1940px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-blue">📝</div>
-      <div><div class="card-title">ร่างบทสคริปต์ที่อัปเดตลง Workbook แล้ว</div><div class="card-subtitle">สคริปต์ที่ 02 · 45 วินาที · จังหวะเล่า & คีย์ภาพประกอบ</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-blue">Nothing Phone 2a</span>
-    <span class="pbadge pb-green">Rec.709 เคลียร์แสง</span>
-    <span class="pbadge pb-red">ManyChat Trigger: TAX</span>
+      <!-- Right Results Panel -->
+      <div class="results-pane">
+        <div class="results-header">
+          <div>
+            <div class="results-title">คลังไอเดียที่ปรับแต่งเพื่อแบรนด์ Nick</div>
+            <div class="results-subtitle">ระบบ UI คำนวณและคัดสรรไอเดียที่ดีที่สุด 5 หัวข้อตามตัวกรองของคุณ</div>
+          </div>
+        </div>
 
-    <div class="script-section-head" style="color:var(--red);">【 HOOK (0:00 - 0:03) — สะกดสายตาหยุดนิ้ว 】</div>
-    <div class="script-line" style="border-left: 3px solid var(--red);">
-      <span class="script-ts">0:00</span>
-      <span class="script-label sl-hook">Mid Shot</span>
-      <span class="script-text">ทำงานเหนื่อยแทบตาย โดนหักภาษีปีละหลายหมื่น... ระหว่างยอมฝืนซื้อประกันลดหย่อนภาษีสะสมทรัพย์ กับเอาเงินก้อนนั้นไปลงทุนเอง แบบไหนตัวเลขสุดท้ายขาดทุนกว่ากันครับ?</span>
-    </div>
-    <div style="font-size:0.71rem;color:var(--text-3);margin-left:52px;margin-bottom:8px;">🎥 <strong>Visual Action:</strong> นั่งตัวตรง มุมเสยเล็งตานิดนึง เกรดโทนผิวสว่างเคลียร์สกินโทนพรีเมียม</div>
+        <!-- Generated Idea Cards -->
+        <div class="idea-list" id="idea-list-container">
+          <!-- Dynamically populated by JS -->
+        </div>
 
-    <div class="script-section-head" style="color:var(--orange);">【 AMPLIFIER (0:03 - 0:12) — ขยายความเจ็บปวด 】</div>
-    <div class="script-line" style="border-left: 3px solid var(--orange);">
-      <span class="script-ts">0:03</span>
-      <span class="script-label sl-amp">Push 1.2x</span>
-      <span class="script-text">คนส่วนใหญ่คิดว่าซื้อประกันแบบสะสมทรัพย์ยังไงก็คุ้มใช่ไหมครับ? เพราะเห็นว่าได้ลดภาษีด้วย แถมได้เงินคืนก้อนโต... แต่ถ้าเรากางตัวเลขจริงเปรียบเทียบกัน ความจริงมันค่อนข้างเจ็บปวดเลยครับ</span>
-    </div>
-    <div style="font-size:0.71rem;color:var(--text-3);margin-left:52px;margin-bottom:8px;">🎥 <strong>Visual Action:</strong> กล้องซูมเข้าหน้า Close-up 1.2x แบบกระชากสายตา (Frame Resize)</div>
+        <!-- Lock Control Footer -->
+        <div class="lock-control">
+          <div class="lock-summary" id="lock-summary-text">
+            กรุณาเลือกไอเดียเพื่อนำไปวางแผนสคริปต์
+          </div>
+          <button class="action-btn" id="lock-btn" disabled onclick="lockInIdea()">
+            🔒 ตกลงเลือกไอเดียนี้
+          </button>
+        </div>
 
-    <div class="script-section-head" style="color:var(--blue);">【 VALUE BODY (0:12 - 0:35) — เปรียบเทียบตัวเลขจริง 】</div>
-    <div class="script-line" style="border-left: 3px solid var(--blue);">
-      <span class="script-ts">0:12</span>
-      <span class="script-label sl-value">B-Roll IP</span>
-      <span class="script-text"><strong>ฝั่ง A:</strong> ออมเบี้ยปีละ 50,000 ได้เงินคืนพร้อมปันผล 1.2% ครบ 20 ปี เงินปลายทางประมาณ <strong>1.1 ล้านบาท</strong>... แต่ <strong>ฝั่ง B:</strong> เอาเงิน 50,000 ไปลงทุนกองทุนดัชนีผลตอบแทน 8% ด้วยดอกเบี้ยทบต้น 20 ปี... เงินสะสมจะโตขึ้นมาเป็นเกือบ <strong>2.3 ล้านบาท!</strong></span>
-    </div>
-    <div style="font-size:0.71rem;color:var(--text-3);margin-left:52px;margin-bottom:8px;">🎥 <strong>Visual Action:</strong> สลับภาพ B-Roll Overhead ถ่ายมุมก้มมือเขียนชี้เปรียบเทียบตัวเลขบนจอ iPad (ใส่เสียงกระดาษสไลด์)</div>
-
-    <div class="script-section-head" style="color:var(--purple);">【 OPEN LOOP & CTA (0:35 - 0:45) — ปิดนัดหมายรับคู่มือ 】</div>
-    <div class="script-line" style="border-left: 3px solid var(--purple);">
-      <span class="script-ts">0:35</span>
-      <span class="script-label sl-cta">Mid Shot</span>
-      <span class="script-text">เป็นคุณจะเลือกแบบไหน? คอมเมนต์มาบอกกันหน่อยครับ... และถ้าคุณอยากได้ <strong>'ชาร์ตสรุปเปรียบเทียบสเปรดชีตลดหย่อนภาษีหน้าเดียว'</strong> ที่ผมเขียนคำนวณไว้ พิมพ์คำว่า <strong>TAX</strong> ไว้ได้เลย เดี๋ยวบอทส่งไฟล์ PDF ให้ใน DM ทันทีครับ!</span>
-    </div>
-    <div style="font-size:0.71rem;color:var(--text-3);margin-left:52px;margin-bottom:8px;">🎥 <strong>Visual Action:</strong> ถอยภาพกลับมาที่เดิม ยิ้มแย้มชี้สัญลักษณ์ขึ้นข้อความทัก DM ท้ายคลิป</div>
-  </div>
-</div>
-
-<!-- CARD 6: PRODUCTION SETTINGS -->
-<div class="card stripe-orange" style="width:440px;left:2540px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-orange">📸</div>
-      <div><div class="card-title">Production & Color Grading Config</div><div class="card-subtitle">ค่าตั้งกล้อง Nothing Phone 2a & Node การเกรดสี</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-orange">Nothing Phone 2a</span>
-    <span class="pbadge pb-navy">4K | 24 fps</span>
-    <span class="pbadge pb-blue">EV -0.7 Highlight Protect</span>
-
-    <div style="background:#0f1117;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-family:'DM Mono',monospace;font-size:0.75rem;color:#cbd5e1;line-height:1.6;">
-      <span style="color:var(--gold);font-weight:700;">⚙️ CAMERA APP SETTINGS:</span><br>
-      • Exposure Compensation: -0.7 EV<br>
-      • Focus Mode: Portrait Mode f/2.0 - f/2.8<br>
-      • White Balance: Lock Fixed (ที่ร่มไฟนิ่ง)<br>
-      • Color Profile: Rec.709 (ขอบเขตสีมาตรฐาน)
-    </div>
-
-    <div style="background:#fafafa;border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:9px 12px;font-size:0.78rem;line-height:1.6;">
-      <span style="font-weight:700;color:var(--orange);">🎨 RESOLVE COLOR GRADING NODES:</span><br>
-      • <strong>Node 1 (Base Light):</strong> ดึง Offset ปรับแสงสกินโทนสว่าง + ดัน Contrast ให้เห็นมิติตัวคนชัดเจน<br>
-      • <strong>Node 2 (Brand Color):</strong> ลากไฟล์ <strong>WARM.cube</strong> มาย้อมทับ และลด Key Output Gain ลงมาที่ **40% (0.40)** เพื่อไม่ให้หน้าเหลืองส้มเข้มเกินไปบน Rec.709
-    </div>
-    
-    <div style="margin-top:10px;font-size:0.72rem;color:var(--text-3);line-height:1.5;">
-      📍 <strong>พิกัดถ่ายทำ:</strong> ห้องนอนส่วนตัว - โซนโต๊ะคอมมินิมอลขาวคลีน โดยส่องไฟ Key Light Daylight มุมเฉียง 45° และเปิดไฟ Accent Light สีฟ้า/น้ำเงิน ยิงฉากหลังผนังห้องเพื่อเพิ่มความพรีเมียมมีมิติ
-    </div>
-  </div>
-</div>
-
-<!-- CARD 7: EDITING & SOUND PLAN -->
-<div class="card stripe-purple" style="width:520px;left:3020px;top:60px;">
-  <div class="card-head">
-    <div class="card-title-row">
-      <div class="card-icon icon-purple">✂️</div>
-      <div><div class="card-title">Sound Design & Editing Blueprint</div><div class="card-subtitle">พิมพ์เขียวคุมเดซิเบลและเสียงเอฟเฟกต์ (SFX) ในเครื่องจริง</div></div>
-    </div>
-  </div>
-  <div class="card-body">
-    <span class="pbadge pb-purple">BGM: Sirius (คีย์ B Minor)</span>
-    <span class="pbadge pb-navy">Voice Peak: -3dB</span>
-    <span class="pbadge pb-gold">BGM: -22dB</span>
-
-    <div style="background:var(--blue-soft);border:1px solid rgba(37,99,235,0.15);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:0.76rem;line-height:1.5;">
-      📊 <strong>SOUND VOLUME LEVELS MIXING:</strong><br>
-      • เสียงพูดหลัก (Vocal): **Peak ที่ -3 dB** (เปิดฟังก์ชัน Voice Isolation ในโปรแกรมตัดต่อ)<br>
-      • ดนตรีประกอบ BGM: **-22 dB ถึง -25 dB** (แผ่วคลออยู่เบื้องหลัง ไม่แย่งการได้ยิน)<br>
-      • เสียงเอฟเฟกต์ SFX: **Peak ที่ -12 dB** (ไม่ดังแหลมสะดุ้งหู)
-    </div>
-
-    <div class="script-section-head" style="color:var(--purple);margin-top:6px;">🎵 ลำดับการวางเอฟเฟกต์เสียงจริงในเครื่อง (SFX Timeline Mapping):</div>
-    
-    <div style="display:flex;align-items:flex-start;gap:6px;font-size:0.77rem;margin-bottom:6px;">
-      <span style="font-family:'DM Mono',monospace;color:var(--gold);background:var(--gold-soft);padding:1px 6px;border-radius:4px;font-size:0.67rem;">0:00s</span>
-      <div>
-        <strong>เปิดตัว Hook:</strong> ใส่เสียง <strong>`Cinematic/Hit.WAV`</strong> ยิงกระแทกพร้อมคำพูดประโยคแรกเพื่อสะกดความตื่นเต้น
       </div>
-    </div>
 
-    <div style="display:flex;align-items:flex-start;gap:6px;font-size:0.77rem;margin-bottom:6px;">
-      <span style="font-family:'DM Mono',monospace;color:var(--gold);background:var(--gold-soft);padding:1px 6px;border-radius:4px;font-size:0.67rem;">0:03s</span>
-      <div>
-        <strong>กระชากภาพซูม (Frame Resize):</strong> ใส่เสียง <strong>`Transition/Woosh 1.WAV`</strong> ควบคู่กับวิชวลจังหวะกล้องขยับเข้าหาใบหน้า 1.2x
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:flex-start;gap:6px;font-size:0.77rem;margin-bottom:6px;">
-      <span style="font-family:'DM Mono',monospace;color:var(--gold);background:var(--gold-soft);padding:1px 6px;border-radius:4px;font-size:0.67rem;">0:12s</span>
-      <div>
-        <strong>ตัดสลับขึ้น B-Roll iPad:</strong> ใส่เสียง <strong>`Transition/Paper Slide.wav`</strong> เมื่อภาพกล้องหันลง Overhead ถ่ายการคำนวณกราฟ
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:flex-start;gap:6px;font-size:0.77rem;">
-      <span style="font-family:'DM Mono',monospace;color:var(--gold);background:var(--gold-soft);padding:1px 6px;border-radius:4px;font-size:0.67rem;">0:35s</span>
-      <div>
-        <strong>เปิดปาก ManyChat CTA:</strong> ใส่เสียง <strong>`Ui Tech/Notification Sound.WAV`</strong> ควบคู่กับการขึ้นป๊อปอัปข้อความคำว่า **TAX** บนหน้าจอท้ายคลิป
-      </div>
     </div>
   </div>
-</div>
-
-</div><!-- end canvas-inner -->
-</div><!-- end canvas -->
+</main>
 
 <div class="toast" id="toast"></div>
 
-<div class="zoom-controls">
-  <button class="zoom-btn" onclick="zoom(-0.1)">−</button>
-  <span class="zoom-level" id="zoomLevel">100%</span>
-  <button class="zoom-btn" onclick="zoom(0.1)">+</button>
-  <button class="zoom-btn" onclick="resetView()" title="Reset">⊙</button>
-</div>
-
 <script>
-  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
-  
-  let scale=1;
-  const inner=document.getElementById('canvasInner');
-  const zl=document.getElementById('zoomLevel');
-  function zoom(delta){scale=Math.min(2,Math.max(0.25,scale+delta));inner.style.transform=`scale(${scale})`;inner.style.transformOrigin='0 0';zl.textContent=Math.round(scale*100)+'%';}
-  document.getElementById('canvas').addEventListener('wheel',(e)=>{if(e.ctrlKey){e.preventDefault();zoom(e.deltaY>0?-0.05:0.05);}},{passive:false});
+  // Complete Content Matrix for Nick's Brand
+  const contentMatrix = {
+    salaryman: {
+      tofu: [
+        {
+          title: "ความจริงของคนทำงานเงินเดือน 5 หมื่นที่เสียภาษีไปเปล่าๆ ทุกปี",
+          badge: "TOFU comparisons",
+          antivision: "โดนหักภาษีสะสมเป็นหมื่นๆ อย่างเปล่าประโยชน์เพราะไม่รู้สิทธิ์",
+          vision: "เซฟภาษีแบบคุ้มที่สุดและได้เงินเติบโตแทน",
+          reason: "ขยี้ปมความเสียดายเงินของคนรายได้สูงเพื่อกระตุ้นให้เกิดคอมเมนต์ด่วน"
+        },
+        {
+          title: "จัดเรตติ้ง 3 แผนลดหย่อนภาษีที่คน Gen Y ซื้อบ่อยที่สุด (แบบไหนรุ่ง-แบบไหนร่วง)",
+          badge: "TOFU ratings",
+          antivision: "ซื้อพอร์ตตามคำโฆษณาแต่เงินจม ผลตอบแทนพ่ายแพ้เงินเฟ้อ",
+          vision: "คัดกรองเฉพาะสิ่่งที่คุ้มค่าและปลดล็อกเงินสดได้เร็ว",
+          reason: "วางตัวเป็นกลางเชิงตัวเลข ช่วยคนทำงานคัดเลือกแผนการเงินแบบไม่ต้องเดา"
+        },
+        {
+          title: "ประกันสุขภาพเล่มแรกของคน Gen Y: จ่ายทิ้ง VS จ่ายแบบมีเงินคืน แบบไหนขาดทุนกว่ากัน?",
+          badge: "TOFU comparisons",
+          antivision: "กลัวเบี้ยจ่ายทิ้งเปล่าๆ เลยยอมจ่ายแพงกว่า 3 เท่าแต่ผลตอบแทนแพ้เงินเฟ้อ",
+          vision: "ได้สวัสดิการเล่มแรกครอบคลุมพอดีตัว และมีเงินเหลือเอาไปต่อยอดเติบโต",
+          reason: "เป็นหัวข้อไวรัลสะกิดต่อมคนรักความคุ้มค่าที่มักเข้าใจผิดเรื่องเบี้ยประกัน"
+        },
+        {
+          title: "จัดเทียร์ S-D: 5 พอร์ตออมเงินลดหย่อนภาษียอดนิยมปีนี้",
+          badge: "TOFU tier list",
+          antivision: "เลือกเครื่องมือผิดประเภททำให้เงินออมถูกล็อกตัว 10 ปีโดยได้ปันผลต่ำกว่า 1%",
+          vision: "เลือกเครื่องมือระดับ S-Tier ที่ได้ทั้งลดหย่อนและสร้างพลังดอกเบี้ยทบต้น",
+          reason: "รูปแบบ Tier List ย่อยง่าย ดึงสายตาด้วยกราฟิกสะดุดตาคนเลื่อนฟีด"
+        },
+        {
+          title: "คนทำงานเงินเดือน 40,000 ป่วยครั้งเดียว ทำไมเงินเก็บหายหมดบัญชี?",
+          badge: "TOFU objection-busting",
+          antivision: "ชะล่าใจคิดว่าสวัสดิการบริษัทพอ ป่วยทีเดียวโรงพยาบาลเอกชนหักเงินเก็บเกลี้ยง",
+          vision: "อุดรอยรั่วสวัสดิการเดิมด้วยงบไม่เกิน 5% ของเงินเดือน",
+          reason: "สร้างความตระหนักรู้ภัยฉุกเฉินเพื่อให้เห็นความคุ้มค่าของการอุดรอยรั่วก่อนเจ็บป่วย"
+        }
+      ],
+      mofu: [
+        {
+          title: "สวัสดิการกลุ่มของบริษัท... เพียงพอจริงไหมสำหรับสถานการณ์เจ็บป่วยหนัก?",
+          badge: "MOFU talking head",
+          antivision: "นอนใจในประกันกลุ่มบริษัท วันที่ออกงานหรือเจ็บป่วยหนักขึ้นมากลายเป็นคนไร้สวัสดิการ",
+          vision: "ประเมินช่องโหว่สวัสดิการเดิมและวางแผนเกราะป้องกันส่วนบุคคลรองรับความจริง",
+          reason: "ให้ความรู้เจาะลึกวิเคราะห์สิทธิ์ประกันสังคมและประกันกลุ่มของพนักงานออฟฟิศ"
+        },
+        {
+          title: "วิธีกางตารางเช็คลิสต์ลดหย่อนภาษี 4 กลุ่ม ฉบับอัปเดตล่าสุดของสรรพากร",
+          badge: "MOFU green screen",
+          antivision: "สับสนกับประกาศภาษีใหม่ ๆ จนทำเรื่องขอลดหย่อนตกหล่นเสียสิทธิ์ฟรี",
+          vision: "เคลียร์จบทุกจุดในภาพหน้าเดียว นำมาเช็คและกรอกข้อมูลเองได้อย่างแม่นยำ",
+          reason: "โชว์สกิลความเชี่ยวชาญสเปรดชีตลดหย่อนภาษีของ Nick ตอกย้ำ Authority"
+        },
+        {
+          title: "ทำไมที่ปรึกษาการเงินรุ่นใหม่ ถึงไม่แนะนำให้ซื้อประกันเพียงเพราะตัวแทนชวนคุย?",
+          badge: "MOFU talking head",
+          antivision: "ซื้อแบบเกรงใจคนขาย ได้กรมธรรม์ไม่ตรงเป้า แถมกลายเป็นภาระค่าใช้จ่ายระยะยาว",
+          vision: "ซื้อสิทธิ์คุ้มครองบนพื้นฐานการคำนวณตัวเลขและเช็คโจทย์ปมปัญหาชีวิตจริง",
+          reason: "สร้างจุดเด่นแบรนด์เรื่องความโปร่งใส นอกกรอบ ไร้น้ำ และเป็นที่ปรึกษาแท้จริง"
+        },
+        {
+          title: "สแกน 3 จุดบกพร่องที่พบบ่อยสุดในการวางแผนประกันสุขภาพเล่มแรก",
+          badge: "MOFU talking head",
+          antivision: "เคลมไม่ได้เพราะแถลงข้อมูลไม่ถูกต้อง หรือจ่ายเบี้ยเกินตัวจนส่งไม่ไหว",
+          vision: "วางแผนทำสัญญาถูกต้อง โปร่งใส มีตัวเลขกำกับเบี้ยที่เหมาะสมตามงบประมาณ",
+          reason: "สอนความรู้เชิงปฏิบัติเพื่ออุดจุดตายที่คนตัดสินใจทำประกันมักกลัวและสงสัย"
+        },
+        {
+          title: "พาทัวร์ 1 วันหลังบ้าน: นักวางแผนสเปรดชีตช่วยสแกนกรมธรรม์ให้ลูกค้าอย่างไร?",
+          badge: "MOFU day in life",
+          antivision: "ซื้อประกันทิ้งไว้ในตู้หลายเล่มโดยไม่รู้ว่าผลประโยชน์ทับซ้อนและช่องโหว่เพียบ",
+          vision: "จัดไฟล์สารบัญประเมินความเสี่ยงเป็นระบบชัดเจน รู้สิทธิ์ชัดเจนทุกตัวเลข",
+          reason: "เบื้องหลังชีวิตการทำงานทำงานร่วมกับทีมผู้เชี่ยวชาญสร้าง Trust Driver ทรงพลัง"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางบอร์ดวิเคราะห์ประเมินสิทธิสวัสดิการฟรี 3 นาที (Free Benefits Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "แบกความเสี่ยงชีวิตเปราะบางโดยไม่รู้ว่าค่ารักษาส่วนเกินตัวเองรั่วไหลไปจุดไหน",
+          vision: "รับสรุปตารางสิทธิ์สุขภาพของตัวเองหน้าเดียวฟรีเพื่อนำไปปิดจุดรั่วไหลได้อย่างถูกต้อง",
+          reason: "เป็น Low Friction CTA เชิญชวนให้พิมพ์ Keyword เพื่อรับการประเมินสิทธิ์สวัสดิการฟรี"
+        },
+        {
+          title: "เคสจริง: ลูกค้าเงินเดือน 80,000 ปรับโครงสร้างภาษีใหม่จนเซฟปีละ 45,000 บาททำอย่างไร?",
+          badge: "BOFU client case study",
+          antivision: "จ่ายภาษีเต็มจำนวนฐานสูงเพราะผู้แนะนำการเงินคนเดิมเสนอพอร์ตไม่เข้าเป้า",
+          vision: "เซฟเงินก้อนโตกลับเข้ากระเป๋าและนำไปทวีคูณออมด้วยพอร์ตดอกเบี้ยทบต้นพรีเมียม",
+          reason: "แสดงเคสผลลัพธ์จริง (Show Proof) ซื้อใจให้ลีดตัดสินใจนัดหมาย Zoom"
+        },
+        {
+          title: "เหตุผลที่ Financetry เลือกทำหน้าเล่มสัญญาสวัสดิการด้วยมาตรฐานระบบสองขั้น",
+          badge: "BOFU client case study",
+          antivision: "กลัวตัวแทนทิ้งเคสหรือดำเนินการอนุมัติกรมธรรม์ไม่ผ่านตามกฎหมาย",
+          vision: "มั่นใจ 100% ด้วยทีมตรวจสอบร่วมกับคุณแม่ตัวแทนแต่งตั้งอย่างเป็นทางการของบริษัท",
+          reason: "โปรโมทความน่าเชื่อถือระบบทีมงานของ Nick ปลุกเร้าความมั่นใจลูกค้าพรีเมียม"
+        },
+        {
+          title: "วิเคราะห์พอร์ตออมภาษี 1 แสนแรก: กางบอร์ด Miro ขั้นตอนต่อขั้นตอน",
+          badge: "BOFU board breakdown",
+          antivision: "เงินสดจมเพราะเลือกระยะสัญญาลดหย่อนผิดจังหวะชีวิต",
+          vision: "จัดพอร์ตกองทุนบำนาญสะสมทรัพย์ไหลลื่นตามไทม์ไลน์เงินสดหมุนเวียนคุ้มค่าสูงสุด",
+          reason: "เจาะกลุ่มลีดพรีเมียมที่กำลังเตรียมเงินก้อนใหญ่เพื่อลดหย่อนภาษีช่วงปลายปี"
+        },
+        {
+          title: "ทำไมแผนตรวจลดหย่อนภาษี 1-on-1 Discovery Zoom ของเราถึงจำกัด 5 คิวต่อเดือน?",
+          badge: "BOFU board breakdown",
+          antivision: "ได้รับการแนะนำประกันแบบทั่วไปจากบอทหรือการเสนอขายโฆษณาป๊อปอัปดาดๆ",
+          vision: "ได้รับการคัดสรรปรับแผนการเงินแบบ Tailor-made เฉพาะชีวิตจริงจากทีมที่ปรึกษา",
+          reason: "กระตุ้นความขาดแคลน (Scarcity) เร่งเร้าให้ลีดแย่งพิมพ์ Keyword เพื่อนัด Zoom"
+        }
+      ]
+    },
+    family: {
+      tofu: [
+        {
+          title: "หนี้บ้าน 5 ล้าน... ถ้าเสาหลักของบ้านเป็นอะไรไป หนี้ก้อนนี้จะปลิวหายหรือเป็นภาระใคร?",
+          badge: "TOFU comparisons",
+          antivision: "ครอบครัวถูกยึดบ้านล้มละลายทันทีหากหัวหน้าครอบครัวเกิดเหตุไม่คาดฝัน",
+          vision: "การันตีว่าหนี้บ้านจะถูกปลดทันที 100% และบ้านจะปลอดภัยเป็นของคนที่รักเสมอ",
+          reason: "เล่นกับจุดเจ็บปวดและความรับผิดชอบสูงสุดของคนเริ่มสร้างครอบครัว"
+        },
+        {
+          title: "จัดอันดับ 3 แผนการันตีทุนการศึกษาลูกจนเรียนจบปริญญาตรี (แบบไหนมั่นคงที่สุด)",
+          badge: "TOFU ratings",
+          antivision: "ออมเงินการศึกษาในบัญชีออมทรัพย์ธรรมดาแต่โดนเงินเฟ้อกัดกินมูลค่า",
+          vision: "เงินออมโตขึ้นพร้อมสัญญาสวัสดิการค้ำประกันการศึกษาจนจบแม้เกิดเหตุฉุกเฉิน",
+          reason: "สร้างความอุ่นใจและแก้ปัญหาตรงจุดความกังวลเรื่องอนาคตลูกน้อยของ Gen Y"
+        },
+        {
+          title: "พ่อแม่ยุคใหม่คำนวณเบี้ย: ประกันสุขภาพเด็กเล็กปีละ 4 หมื่น จ่ายทิ้งคุ้มไหม?",
+          badge: "TOFU comparisons",
+          antivision: "สับสนกับแผนประกันสุขภาพลูกปวดหัว และกลัวเบี้ยเพิ่มขึ้นทุกปีจนส่งไม่ไหว",
+          vision: "ได้เล่มคุ้มครองสุขภาพลูกอุ่นใจในงบที่เหมาะสมและไม่ต้องวิ่งวุ่นกู้เงินยามลูกป่วย",
+          reason: "พ่อแม่ส่วนใหญ่อินกับเรื่องสุขภาพลูกมาก เป็นคีย์เวิร์ดสร้างคลิปยอดเข้าชมสูง"
+        },
+        {
+          title: "เปรียบเทียบตรงๆ: ออมทุนประกันชีวิต 10 ล้าน VS ออมเงินในธนาคาร 20 ปี แบบไหนส่งต่อมรดกดีกว่า?",
+          badge: "TOFU comparisons",
+          antivision: "เงินมรดกโดนหักภาษีอ่วมและถูกแช่แข็งในชั้นศาลใช้เวลานานเป็นปี",
+          vision: "ส่งต่อมรดกแบบปลอดภาษี 100% ถึงมือครอบครัวทันทีใน 14 วันยามฉุกเฉิน",
+          reason: "ใช้สเปรดชีตวิเคราะห์ตัวเลขความเร็วการส่งมอบเงินเพื่อตอกย้ำแบรนด์ที่ปรึกษา"
+        },
+        {
+          title: "ทำไมครอบครัว Gen Y ถึงยอมแบกค่ารักษาพยาบาลเอกชนปีละแสน โดยไม่มีเกราะป้องกัน?",
+          badge: "TOFU objection-busting",
+          antivision: "ต้องเอาเงินเก็บฉุกเฉินครอบครัวทั้งหมดไปเคลียร์บิลค่ารักษาเอกชนยามด่วน",
+          vision: "นอนโรงพยาบาลเอกชนหรูได้อุ่นใจโดยมีสวัสดิการเล่มสุขภาพช่วยจ่ายแทนให้เกือบทั้งหมด",
+          reason: "ชี้ข้อกังวลเรื่องเงินสำรองของครอบครัวเพื่อให้ตระหนักถึงความจำเป็นการป้องกัน"
+        }
+      ],
+      mofu: [
+        {
+          title: "ความกังวลของหัวหน้าครอบครัว: ประกันชีวิตและแผนการปกป้องรายได้ทำงานอย่างไร?",
+          badge: "MOFU talking head",
+          antivision: "จากไปก่อนวัยอันควรทิ้งภาระและหนี้สินทั้งหมดให้ภรรยาและลูกสู้ชีวิตเพียงลำพัง",
+          vision: "วางแผนโครงข่ายความปลอดภัยทิ้งทุนสำรองก้อนใหญ่ค้ำประกันชีวิตคนข้างหลัง",
+          reason: "เล่าเรื่องเชิงลึกบิ้วด์อารมณ์ความรับผิดชอบและความรักอย่างสุภาพน่าเชื่อถือ"
+        },
+        {
+          title: "วิธีกางแผนภูมิคำนวณ 'มูลค่าความสามารถของเสาหลักครอบครัว' (Human Value)",
+          badge: "MOFU green screen",
+          antivision: "คิดว่ามีประกันเล่มเล็กๆ พอแล้ว แต่ไม่รู้ว่าทุนประกันจริงไม่พอกลบหนี้บ้านด้วยซ้ำ",
+          vision: "รู้ตัวเลขทุนสะสมที่ถูกต้องสมบูรณ์เพื่อป้องกันความล้มละลายของบ้านได้อย่างระบบ",
+          reason: "นำตารางคำนวณมาอธิบายหน้าจอแสดงความเป็นผู้เชี่ยวชาญการวิเคราะห์ตัวเลข"
+        },
+        {
+          title: "สตอรี่ส่วนตัว: สิ่งที่คุณแม่สอนผมเกี่ยวกับการไปส่งมอบเงินสินไหมให้ครอบครัวลูกค้าจริง",
+          badge: "MOFU day in life",
+          antivision: "คิดว่าประกันเป็นเรื่องเอกสารตัวเลขไร้ชีวิตและมีแต่คำโฆษณาซื้อขาย",
+          vision: "เห็นความจริงว่าสัญญาตัวนี้คือสิ่งที่ประคองครอบครัวให้เดินต่อไปได้ยามล้มลง",
+          reason: "ดึงเอาประวัติการฝ่าฟันกับครอบครัว (Internal Outlier) มาสร้างความผูกพันและเชื่อใจ"
+        },
+        {
+          title: "เลือกแผนประกันสุขภาพเด็กเล็กอย่างไรไม่ให้กระแทกเงินเก็บของครอบครัว?",
+          badge: "MOFU talking head",
+          antivision: "ซื้อตามรีวิวกลุ่มแม่และเด็กแต่เบี้ยแพงเกินจริง แถมเคลมยากเพราะเงื่อนไขซับซ้อน",
+          vision: "คัดเลือกแผนที่มีเงื่อนไขเคลียร์ชัดเจนและคุ้มค่ากับค่ารักษาพยาบาลเด็กวัยเรียน",
+          reason: "ตอบข้อซักถาม FAQ ของพ่อแม่มือใหม่เพื่อสร้างมิตรภาพและความเชื่อมั่นแบรนด์"
+        },
+        {
+          title: "ไขข้อข้องใจ: ประกันชีวิตตลอดชีพ VS ประกันอุบัติเหตุ ป้องกันครอบครัวต่างกันยังไง?",
+          badge: "MOFU talking head",
+          antivision: "เข้าใจผิดคิดว่ามีประกันอุบัติเหตุแล้วครอบคลุมทุกการจากไป จนพลาดรอยรั่วสำคัญ",
+          vision: "จัดพอร์ตสัญญารับมือความเสี่ยงได้ตรงประเด็นและมีความยืดหยุ่นสูงงบพอดีคำ",
+          reason: "แก้ไขจุดหลงลืมทางการเงินด้วยภาษาพูดที่สุภาพ เข้าใจง่าย ไร้น้ำขายฝัน"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางบอร์ด Miro: ระบบจัดโครงสร้างทุนมรดกและป้องกันหนี้บ้านสำหรับคนสร้างครอบครัว",
+          badge: "BOFU board breakdown",
+          antivision: "มีโครงสร้างหนี้สินครอบครัวรั่วไหลโดยไม่มีแผนสินทรัพย์ปลอดภัยสลักคุมไว้",
+          vision: "มีเช็คลิสต์ปกป้องทุนมรดกส่งต่อคนที่รักเป็นระบบในภาพเดียวเสร็จสรรพ",
+          reason: "ใช้กระดาน Miro โชว์หลักการวางโครงสร้างทุนให้ลีดพรีเมียมเห็นระบบงาน"
+        },
+        {
+          title: "เคสจริง: ครอบครัว Gen Y วางทุนการศึกษาลูก 10 ล้านส่งจบต่างประเทศได้อย่างปลอดภัยได้อย่างไร?",
+          badge: "BOFU client case study",
+          antivision: "กลัวว่าวันหนึ่งเสาหลักล้มลงแล้วลูกจะหมดโอกาสเรียนโรงเรียนดีๆ ตามฝัน",
+          vision: "นอนหลับสบายใจเพราะทุนการศึกษาลูกปลอดภัย 100% มีกรมธรรม์ค้ำชูเสร็จสิ้น",
+          reason: "แชร์ผลลัพธ์ Case Study โน้มน้าวคนรักครอบครัวให้ทักอินบ็อกซ์เข้ามาปรึกษา"
+        },
+        {
+          title: "รับแบบฟอร์มวิเคราะห์แผนความเสี่ยงและหนี้สินครอบครัวฟรี (Family Wealth Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "แบกความกังวลเรื่องหนี้บ้านค้างคาโดยไม่มีทิศทางการจัดการคุ้มครองเด่นชัด",
+          vision: "ได้รับคู่มือวิเคราะห์โครงสร้างคุ้มกันความเสี่ยงครอบครัวฟรีทางข้อความทันที",
+          reason: "สร้าง Low Friction CTA ดึงคนคอมเมนต์ Keyword ใต้คลิปเพื่อโยนลีดเข้า DM Funnel"
+        },
+        {
+          title: "ทำไมเราถึงจัดโครงสร้างทุนคุ้มครองครอบครัว Nick.Financetry แบบโปร่งใสไม่มีบังคับซื้อ?",
+          badge: "BOFU client case study",
+          antivision: "เบื่อหน่ายระบบเสนอขายประกันแบบดั้งเดิมที่คอยจี้และกดดันลูกค้าให้จ่ายเงินก้อนโต",
+          vision: "ได้รับการดูแลแบบที่ปรึกษาที่ให้เกียรติและนำเสนอแผนที่ดีคุ้มค่าที่สุดของครอบครัว",
+          reason: "ตอกย้ำจุดแข็งแบรนด์นอบน้อม ตรงไปตรงมา Non-Pushy ซื้อความเชื่อใจขั้นสุดท้าย"
+        },
+        {
+          title: "คิวประเมินพอร์ตสิทธิสวัสดิการครอบครัวฟรีผ่าน Zoom 5 ท่านของเดือนนี้",
+          badge: "BOFU board breakdown",
+          antivision: "ปล่อยปละละเลยสิทธิคุ้มครองครอบครัวเพราะไม่มีเวลาศึกษาทฤษฎีการเงินยาวๆ",
+          vision: "ได้รับคำสรุปแผนส่วนตัวผ่าน Zoom 1-on-1 เข้าใจง่ายเสร็จสรรพใน 15 นาที",
+          reason: "เร่งเร้าให้ลีดครอบครัวที่มีกำลังซื้อสูงทักทาย DM เพื่อจับจองสิทธิ์นัดคุย Zoom"
+        }
+      ]
+    },
+    business: {
+      tofu: [
+        {
+          title: "เจ้าของธุรกิจใหม่: เงินส่วนตัวกับเงินบริษัทปนกันมั่ว... โดนภาษีบุคคลฐานสูงสุดอ่วมทำยังไง?",
+          badge: "TOFU comparisons",
+          antivision: "หาเงินเก่งแต่โดนสรรพากรประเมินภาษีบุคคลธรรมดาย้อนหลังฐานสูงสุดขาดทุนกระแสเงินสด",
+          vision: "แยกบัญชีเป็นระบบชัดเจนและประหยัดเงินภาษีกลับเข้ากระเป๋าธุรกิจได้สูงสุด",
+          reason: "เจาะปมเจ็บปวดสูงสุดของฟรีแลนซ์รายได้สูงและเจ้าของธุรกิจป้ายแดง"
+        },
+        {
+          title: "จัดเรตติ้ง 3 สิทธิ์สวัสดิการบริษัทลดหย่อนภาษีที่สรรพากรยอมรับ 100%",
+          badge: "TOFU ratings",
+          antivision: "พยายามหักค่าใช้จ่ายนิติบุคคลแบบเสี่ยงๆ จนโดนสรรพากรเรียกเก็บเบี้ยปรับย้อนหลัง",
+          vision: "ใช้สิทธิ์ลดหย่อนภาษีแบบโปร่งใส ถูกกฎหมาย และช่วยลดงบรายจ่ายได้จริง",
+          reason: "ดึงดูดเจ้าของกิจการด้วยเรื่องวิธีลดหย่อนภาษีที่ถูกต้องตามกฎหมายพรีเมียม"
+        },
+        {
+          title: "เปรียบเทียบชัดๆ: เจ้าของบริษัทจ่ายภาษีเงินได้บุคคลธรรมดา VS จ่ายภาษีนิติบุคคล แบบไหนคุ้มกว่ากัน?",
+          badge: "TOFU comparisons",
+          antivision: "เหนื่อยจัดการบัญชีนิติบุคคลเลยยอมเสียภาษีบุคคลเรทสูงเพราะกลัวความยุ่งยาก",
+          vision: "ปรับโครงสร้างการรับรายได้ในรูปแบบที่ประหยัดและถูกต้องตามกฎหมายคุ้มสุด",
+          reason: "ใช้ตรรกะเปรียบเทียบสเปรดชีตสองด้านกระตุ้นความสนใจสายลุยธุรกิจ"
+        },
+        {
+          title: "จัดเทียร์ S-D: 5 ค่าใช้จ่ายนิติบุคคลที่สรรพากรโปรดปรานและถูกกฎหมายที่สุด",
+          badge: "TOFU tier list",
+          antivision: "พยายามเมคบิลซื้อของส่วนตัวมาหักบริษัทจนเสี่ยงโดนตรวจสอบพอร์ตบัญชี",
+          vision: "ใช้แผนคุ้มครองสวัสดิการพนักงานและกรรมการบริษัทลดหย่อนได้เต็มพิกัดระดับ S-Tier",
+          reason: "สไตล์ Tier List ได้ยอด Reach วงกว้างและสะสมลีดผู้ประกอบการเป้าหมายสูง"
+        },
+        {
+          title: "ทำไมฟรีแลนซ์รายได้หลักล้านถึงเลือกเสียภาษีเหมา แทนที่จะวางแผนจัดพอร์ต?",
+          badge: "TOFU objection-busting",
+          antivision: "เสียเงินภาษีปลายปีหลังแทบทรุดเพราะคิดว่าการหักตามจริงยุ่งยากเลือกแผนไม่ถูก",
+          vision: "มีตารางเปรียบเทียบหักค่าใช้จ่ายจริงที่ช่วยประหยัดเงินออมกลับมาได้มหาศาล",
+          reason: "ขยี้ความขี้เกียจของฟรีแลนซ์รายได้สูงเพื่อให้ตระหนักถึงเงินที่สูญเสียไป"
+        }
+      ],
+      mofu: [
+        {
+          title: "กลยุทธ์วางแผนการเงินสำหรับผู้ประกอบการป้ายแดง: แยกเงินส่วนตัว VS เงินธุรกิจ",
+          badge: "MOFU talking head",
+          antivision: "กระแสเงินสดบริษัทช็อตเพราะดึงเงินก้อนไปเคลียร์ปัญหาสุขภาพส่วนตัวไร้สวัสดิการสลักไว้",
+          vision: "มีเกราะความปลอดภัยและสวัสดิการคุ้มครองแยกจากเงินหมุนเวียนธุรกิจอย่างปลอดภัย",
+          reason: "ให้คำแนะนำเชิงกลยุทธ์ที่ลึกซึ้งและน่าเชื่อถือเพื่อซื้อใจเจ้าของกิจการ Gen Y"
+        },
+        {
+          title: "วิธีกางตารางเช็คเปรียบเทียบ 'สวัสดิการลดหย่อนภาษีนิติบุคคล' สำหรับบอร์ดกรรมการ",
+          badge: "MOFU green screen",
+          antivision: "ไม่รู้เงื่อนไขการนำค่าเบี้ยประกันชีวิตกรรมการมาหักเป็นรายจ่ายบริษัทแบบถูกสรรพากรยอมรับ",
+          vision: "รู้วิธีเซ็ตพอร์ตและใช้สิทธิ์ลดหย่อนนิติบุคคลได้อย่างถูกต้องตามหลักกฎหมาย 100%",
+          reason: "แสดงความรู้ขั้นสูงเรื่องระบบภาษีนิติบุคคลของ Nick ตอกย้ำช่องว่าง Authority Gap"
+        },
+        {
+          title: "ทำไมเจ้าของธุรกิจถึงต้องการ 'แผนประกัน Keyman' ป้องกันความเสี่ยงของกระแสเงินสด?",
+          badge: "MOFU talking head",
+          antivision: "เสาหลักผู้ขับเคลื่อนธุรกิจคนสำคัญจากไปกะทันหันจนพาร์ทเนอร์และบริษัทต้องชะงักล้มละลาย",
+          vision: "มีทุนคุ้มครองเสาหลักผู้ทำเงินปกป้องกระแสเงินสดของกิจการให้เดินหน้าต่อไปได้",
+          reason: "ให้ความรู้การเงินเฉพาะทางระดับ High-Ticket แสดงวิสัยทัศน์ที่เหนือกว่าตัวแทนทั่วไป"
+        },
+        {
+          title: "ไขข้อข้องใจเจ้าของร้านค้า: วางระบบลดหย่อนภาษีแบบหักค่าใช้จ่ายตามจริงคุ้มค่าแค่ไหน?",
+          badge: "MOFU talking head",
+          antivision: "แบกรับค่าภาษีฐานบุคคลธรรมดาสูงลิ่วเพราะบัญชีห้างหุ้นส่วนไม่เป็นระบบ",
+          vision: "จัดสรรเช็คลิสต์ลดหย่อนและอุดรอยรั่วได้อย่างถูกต้องช่วยกำไรสุทธิโตวันโตคืน",
+          reason: "ตอบข้อซักถามเชิงบัญชีการวางแผนของฟรีแลนซ์และพ่อค้าแม่ค้าออนไลน์"
+        },
+        {
+          title: "เบื้องหลังการวางพอร์ต: Nick.Financetry จัดสรรโครงสร้างบัญชีนิติบุคคลให้กรรมการบริษัทอย่างไร?",
+          badge: "MOFU day in life",
+          antivision: "คิดว่าการวางแผนการเงินผู้ประกอบการต้องอาศัยทฤษฎีเอกสารที่ดูรกและยากหัวใจ",
+          vision: "เห็นความเรียบง่ายเรียบหรูของสเปรดชีตวิเคราะห์โครงสร้างกระแสเงินสดกรรมการนิ่งสนิท",
+          reason: "ใช้ภาพเบื้องหลังโต๊ะคอม All-White Setup ตอกย้ำภาพลักษณ์ความเนี้ยบพรีเมียม"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางบอร์ด Miro: พิมพ์เขียวจัดสรรสิทธิสวัสดิการลดหย่อนภาษีบริษัทกรรมการ 100% ถูกต้องตามกฎหมาย",
+          badge: "BOFU board breakdown",
+          antivision: "แบกความกังวลเรื่องภาษีนิติบุคคลโดยไม่มีโครงสร้างหักรายจ่ายคุ้มค่าช่วยพยุง",
+          vision: "ได้เห็นแผนภูมิการเงินระบบ Keyman คุ้มกันกระแสเงินสดเข้าใจง่ายหน้าเดียวเสร็จสิ้น",
+          reason: "ใช้ Miro โชว์แผนภาพภาษีระดับพรีเมียมกระตุ้นลีดบริษัทหรูให้ทัก DM"
+        },
+        {
+          title: "เคสจริง: ช่วยผู้ประกอบการใหม่จัดระเบียบบัญชีส่วนตัวจนเซฟภาษีไป 120,000 บาทต่อปีทำอย่างไร?",
+          badge: "BOFU client case study",
+          antivision: "เงินสดรั่วไหลจากการบริหารภาษีปนกันมั่วซั่วของบัญชีกรรมการคนเดิม",
+          vision: "เงินไหลกลับเข้ากระเป๋าธุรกิจงอกงามและมีพอร์ตคุ้มครองนิติบุคคลรองรับเรียบร้อย",
+          reason: "แสดง Case Study ผลลัพธ์จริง ดึงดูดเจ้าของกิจการกำลังซื้อสูงให้นัด Zoom"
+        },
+        {
+          title: "รับแบบฟอร์มวิเคราะห์ลดหย่อนภาษีและประเมินงบการเงินนิติบุคคลฟรี (Corporate Benefits Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "เสียภาษีฐานกรรมการเกินตัวโดยไร้พอร์ตประกันป้องกันกระแสเงินสดรองรับปลอดภัย",
+          vision: "ได้รับไฟล์วิเคราะห์จุดรั่วไหลภาษีกรรมการฟรีทันทีทางอินบ็อกซ์หลังพิมพ์ Keyword",
+          reason: "สร้าง Low Friction CTA ดึงผู้ประกอบการทักคอมเมนต์เพื่อโยนเข้า ManyChat"
+        },
+        {
+          title: "วิธีลงทะเบียนจองสิทธิ์ 1-on-1 Discovery Zoom วางแผน Keyman ภาษีกรรมการ 5 คิวสัปดาห์นี้",
+          badge: "BOFU board breakdown",
+          antivision: "ได้รับการแนะนำประกันนิติบุคคลจากช่องทางอื่นที่เน้นแต่จะขายโดยไม่เข้าใจตัวเลขบัญชี",
+          vision: "ได้รับการวิเคราะห์แบบเจาะลึกเฉพาะธุรกิจตัวเองบนตัวเลขจริงจากที่ปรึกษาพรีเมียม",
+          reason: "กระตุ้น Scarcity เร่งรัดเจ้าของกิจการรายใหญ่ให้พิมพ์ Keyword จับจองนัดคุยทันที"
+        },
+        {
+          title: "เหตุผลที่แบรนด์ Financetry โฟกัสการดูแลกระแสเงินสดของเจ้าของนิติบุคคลใหม่เป็นพิเศษ",
+          badge: "BOFU client case study",
+          antivision: "เบื่อหน่ายระบบขายประกันจ้องแต่จะดึงเงินเก็บของผู้ประกอบการไปอุดพอร์ตสะสมทรัพย์นานปี",
+          vision: "ได้รับทางเลือกการออมสวัสดิการและย้ายเงินเข้ากระเป๋าคุ้มครองนิติบุคคลมีระดับคุ้มค่าจริง",
+          reason: "ขยี้จุดยืนแบรนด์โปร่งใส ตรงไปตรงมา Advisor Role ปิดกระบวนการตัดสินใจลีดใหญ่"
+        }
+      ]
+    }
+  };
 
-  const canvas=document.getElementById('canvas');
-  let panning=false,startX,startY,scrollLeft,scrollTop;
-  canvas.addEventListener('mousedown',(e)=>{if(e.target.closest('.card'))return;panning=true;startX=e.pageX;startY=e.pageY;scrollLeft=canvas.scrollLeft;scrollTop=canvas.scrollTop;canvas.style.cursor='grabbing';});
-  document.addEventListener('mousemove',(e)=>{if(!panning)return;canvas.scrollLeft=scrollLeft-(e.pageX-startX);canvas.scrollTop=scrollTop-(e.pageY-startY);});
-  document.addEventListener('mouseup',()=>{panning=false;canvas.style.cursor='grab';});
+  // State Variables
+  let currentICP = 'salaryman';
+  let currentFunnel = 'tofu';
+  let selectedIdea = null;
 
-  document.querySelectorAll('.card-head').forEach(head=>{
-    let dragging=false,ox,oy;
-    head.addEventListener('mousedown',(e)=>{
-      if(e.target.closest('button'))return;
-      const card=head.closest('.card');dragging=true;card.classList.add('dragging');card.style.zIndex=9000;
-      const r=card.getBoundingClientRect();const cr=document.getElementById('canvasInner').getBoundingClientRect();
-      ox=e.clientX-r.left;oy=e.clientY-r.top;
-      document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
-      function onMove(ev){if(!dragging)return;const nx=ev.clientX-cr.left-ox;const ny=ev.clientY-cr.top-oy;card.style.left=Math.max(0,nx)+'px';card.style.top=Math.max(0,ny)+'px';}
-      function onUp(){dragging=false;card.classList.remove('dragging');card.style.zIndex='';document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);}
+  // Select ICP
+  window.selectICP = function(icp, btn) {
+    // Reset active buttons
+    const btns = btn.parentElement.querySelectorAll('.opt-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    currentICP = icp;
+    generateIdeas();
+    resetSelection();
+  };
+
+  // Select Funnel Stage
+  window.selectFunnel = function(funnel, btn) {
+    // Reset active buttons
+    const btns = btn.parentElement.querySelectorAll('.opt-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    currentFunnel = funnel;
+    generateIdeas();
+    resetSelection();
+  };
+
+  // Reset selected state
+  function resetSelection() {
+    selectedIdea = null;
+    const lockBtn = document.getElementById('lock-btn');
+    lockBtn.disabled = true;
+    document.getElementById('lock-summary-text').innerHTML = 'กรุณาเลือกไอเดียเพื่อนำไปวางแผนสคริปต์';
+  }
+
+  // Generate and Display Ideas based on filters
+  function generateIdeas() {
+    const container = document.getElementById('idea-list-container');
+    container.innerHTML = '';
+    
+    const ideas = contentMatrix[currentICP][currentFunnel];
+    
+    ideas.forEach((idea, index) => {
+      const card = document.createElement('div');
+      card.className = 'idea-card';
+      card.onclick = () => selectIdeaCard(card, idea);
+      
+      const badgeClass = `ib-${currentFunnel}`;
+      
+      card.innerHTML = `
+        <div class="idea-card-header">
+          <span class="idea-badge ${badgeClass}">${idea.badge}</span>
+          <div class="idea-selector"></div>
+        </div>
+        <div class="idea-title">🔥 ไอเดียที่ ${index + 1}: ${idea.title}</div>
+        <div class="idea-details">
+          <div class="details-box">
+            <strong>🔴 Anti-Vision (สิ่งที่ลูกค้าอยากหนี)</strong>
+            <span>${idea.antivision}</span>
+          </div>
+          <div class="details-box">
+            <strong>🟢 Vision (สิ่งที่ลูกค้าอยากได้)</strong>
+            <span>${idea.vision}</span>
+          </div>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--gold); margin-top: 10px; font-family: 'Sarabun', sans-serif;">
+          💡 <strong>เหตุผลที่แนะนำ:</strong> ${idea.reason}
+        </div>
+      `;
+      
+      container.appendChild(card);
     });
-  });
+  }
 
-  function resetView(){canvas.scrollLeft=0;canvas.scrollTop=0;scale=1;inner.style.transform='';zl.textContent='100%';}
+  // Highlight selected card
+  function selectIdeaCard(card, idea) {
+    // Remove previous selection
+    const cards = document.querySelectorAll('.idea-card');
+    cards.forEach(c => c.classList.remove('selected'));
+    
+    card.classList.add('selected');
+    selectedIdea = idea;
+    
+    const lockBtn = document.getElementById('lock-btn');
+    lockBtn.disabled = false;
+    
+    document.getElementById('lock-summary-text').innerHTML = `
+      คุณเลือก: <strong>"ไอเดียเรื่อง ${idea.title.substring(0, 30)}..."</strong> พร้อมสำหรับขั้นถัดไปแล้ว
+    `;
+  }
+
+  // Lock In and Save to Workspace Action
+  window.lockInIdea = function() {
+    if (!selectedIdea) return;
+    
+    // Show visual feedback
+    const toast = document.getElementById('toast');
+    toast.textContent = `🔒 บันทึกผลสำเร็จ! คุณเลือกไอเดีย "${selectedIdea.title}" แล้ว`;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2500);
+
+    // Call API / System save (we'll notify in system response)
+    console.log("LOCKIN_SELECT_EVENT:", selectedIdea);
+  };
+
+  // Initialize
+  generateIdeas();
 </script>
 </body>
 </html>
