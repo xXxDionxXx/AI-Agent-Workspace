@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financetry Interactive Studio · Nick | Financetry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05080E;
+      --panel: #0B111E;
+      --panel-light: #121A2E;
+      --panel-glow: rgba(16, 185, 129, 0.05);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: #10B981;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --gold: #10B981;
+      --gold-gradient: linear-gradient(135deg, #059669, #34D399);
+      --blue: #3B82F6;
+      --blue-glow: rgba(16, 185, 129, 0.25);
+      --green: #10B981;
+      --purple: #8B5CF6;
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', 'Sarabun', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header Nav */
+    header {
+      background: rgba(11, 17, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+    .brand-logo span {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gold-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 1.2rem;
+    }
+    .nav-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+      display: inline-block;
+    }
+
+    /* Layout Main */
+    main {
+      max-width: 1400px;
+      margin: 30px auto 80px auto;
+      padding: 0 24px;
+    }
+
+    /* Workflow Nav Tabs */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .step-tab {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .step-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      transition: var(--transition);
+    }
+    .step-tab:hover {
+      border-color: rgba(16, 185, 129, 0.2);
+      transform: translateY(-2px);
+    }
+    .step-tab.active {
+      background: var(--panel-light);
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .step-tab.active::after {
+      background: var(--gold);
+    }
+    .step-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* Content Panels */
+    .workflow-panel {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .workflow-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Split Layout Grid */
+    .workspace-split {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    /* Side Selection Pane */
+    .selection-pane {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .selection-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .option-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .opt-btn {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .opt-btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .opt-btn.active {
+      border-color: var(--gold);
+      background: rgba(16, 185, 129, 0.1);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+    }
+    .opt-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .opt-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* Main Results Area */
+    .results-pane {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .results-title-group h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .results-title-group p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Card List */
+    .idea-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .idea-card {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .idea-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+    .idea-card.selected {
+      border-color: var(--gold);
+      background: rgba(16, 185, 129, 0.05);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+    }
+    .idea-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .idea-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .ib-tofu { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+    .ib-mofu { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
+    .ib-bofu { background: rgba(139, 93, 246, 0.15); color: var(--purple); }
+    
+    .idea-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.45;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .idea-selector {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .idea-card.selected .idea-selector {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+    .idea-card.selected .idea-selector::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #000;
+    }
+
+    .idea-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.78rem;
+    }
+    .details-box strong {
+      color: var(--gold);
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .details-box span {
+      color: var(--text-muted);
+      font-family: 'Sarabun', sans-serif;
+      line-height: 1.4;
+    }
+
+    .reason-box {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      border-left: 3px solid var(--gold);
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    /* Music Selector Panel */
+    .music-section {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .music-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .music-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--gold);
+    }
+    .music-vibe-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.25);
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .vibe-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .vibe-slider {
+      -webkit-appearance: none;
+      width: 120px;
+      height: 4px;
+      border-radius: 2px;
+      background: #1e293b;
+      outline: none;
+    }
+    .vibe-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--gold);
+      transition: var(--transition);
+    }
+    .vibe-value {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold);
+      width: 80px;
+    }
+
+    .music-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+    .music-track {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .music-track:hover {
+      border-color: rgba(16, 185, 129, 0.2);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .music-track.selected {
+      border-color: var(--gold);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    .track-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .track-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .track-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .track-link-btn {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .track-link-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Wave visualizer */
+    .wave-visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+      width: 30px;
+    }
+    .wave-bar {
+      width: 2px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 1px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.6s; }
+
+    @keyframes wave {
+      0%, 100% { height: 2px; }
+      50% { height: 12px; }
+    }
+
+    /* Footer Lock-In Control */
+    .lock-control {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lock-summary {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 60%;
+      line-height: 1.4;
+    }
+    .lock-summary strong {
+      color: var(--text);
+    }
+    .action-btn {
+      background: var(--gold-gradient);
+      color: #05080E;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .action-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
+    .action-btn:disabled {
+      background: var(--panel-light);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Step 2: Scripting Hub Custom Layout */
+    .script-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+    }
+    .script-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .script-section-block {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .script-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .script-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .script-section-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .script-textarea {
+      width: 100%;
+      min-height: 90px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text);
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      transition: var(--transition);
+    }
+    .script-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+    }
+    
+    .cue-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .cue-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .cue-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .cue-btn.visual-badge { color: #facc15; }
+    .cue-btn.audio-badge { color: #38bdf8; }
+
+    /* Script Info / Sidebar Panel */
+    .script-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .tool-box {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .tool-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .hook-option-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .hook-pill {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      line-height: 1.35;
+      font-family: 'Sarabun', sans-serif;
+      transition: var(--transition);
+    }
+    .hook-pill:hover {
+      border-color: var(--gold);
+      background: rgba(16, 185, 129, 0.03);
+    }
+
+    /* Live Script Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stat-card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .stat-lbl {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Perfect Loop Widget */
+    .perfect-loop-widget {
+      border: 1px dashed rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.02);
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+    .loop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .loop-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .loop-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .loop-box {
+      font-size: 0.72rem;
+      font-family: 'Sarabun', sans-serif;
+      line-height: 1.4;
+      background: rgba(0,0,0,0.3);
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      border-left: 2px solid #34d399;
+    }
+
+    /* Step 3: Production Desk Custom Layout */
+    .prod-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .prod-box {
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .prod-box-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .prod-box-title span {
+      font-size: 1.2rem;
+    }
+
+    /* Checklist Style */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: 'Sarabun', sans-serif;
+      line-height: 1.4;
+    }
+    .check-item input {
+      margin-top: 3px;
+      accent-color: var(--gold);
+    }
+    .check-text {
+      color: var(--text);
+      transition: var(--transition);
+    }
+    .check-item input:checked + .check-text {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    .check-sub {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* LUT Intensity Interactive Simulator */
+    .lut-preview-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .lut-canvas-mock {
+      height: 120px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      background: linear-gradient(to right, #e2e8f0, #cbd5e1); /* Simulating raw skin tone */
+    }
+    .lut-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f59e0b; /* Amber WARM lut tint */
+      opacity: 0.4;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    .lut-preview-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      z-index: 1;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.5);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .lut-slide-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .lut-slider-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+    /* Interactive CapCut Timeline Guide */
+    .timeline-mock {
+      background: #090e17;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .timeline-header-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 4px;
+    }
+    .timeline-track-layer {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .track-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .track-blocks {
+      height: 18px;
+      border-radius: 4px;
+      position: relative;
+    }
+    .tb-video { background: #3b82f6; width: 90%; }
+    .tb-sub { background: #facc15; width: 85%; }
+    .tb-sfx { background: #ec4899; width: 60%; left: 15%; }
+    .tb-bgm { background: #10b981; width: 95%; }
+
+    /* Audio Level Meter Sliders */
+    .audio-faders {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .fader-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 50px;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .fader-label {
+      font-weight: 600;
+    }
+    .fader-input {
+      -webkit-appearance: none;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 3px;
+      outline: none;
+    }
+    .fader-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: pointer;
+    }
+    .fader-val {
+      font-weight: 700;
+      text-align: right;
+    }
+    .fader-val.alert-high { color: #ef4444; }
+    .fader-val.alert-sweet { color: #10b981; }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--gold);
+      color: #05080E;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Modal dialog */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-header {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--gold);
+    }
+    .modal-body {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .modal-body textarea {
+      width: 100%;
+      height: 180px;
+      background: #05080E;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      outline: none;
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand-logo">
+    <div class="brand-logo-icon">👑</div>
+    Financetry <span>Interactive Studio</span>
+  </div>
+  <div class="nav-meta">
+    <span class="status-dot"></span>
+    Creator: Nick | Nothing Phone 2a Rec.709 Engine
+  </div>
+</header>
+
+<main>
+  <!-- Step Navigation Tabs (Redesigned 3-Step Workstation) -->
+  <div class="flow-steps">
+    <div class="step-tab active" id="tab-step-1" onclick="switchStep(1)">
+      <div class="step-num">ขั้นตอนที่ 1</div>
+      <div class="step-title">💡 Ideation & Music</div>
+      <div class="step-desc">เลือกเป้าหมาย, ระดับกรวยคลิป และสกัดไอเดียพร้อมเพลงไวรัล</div>
+    </div>
+    <div class="step-tab" id="tab-step-2" onclick="switchStep(2)">
+      <div class="step-num">ขั้นตอนที่ 2</div>
+      <div class="step-title">📝 Scripting & Cues</div>
+      <div class="step-desc">ร่างสคริปต์คำพูดจริง, Hook หยุดตา พร้อมใส่ Cue พิเศษ</div>
+    </div>
+    <div class="step-tab" id="tab-step-3" onclick="switchStep(3)">
+      <div class="step-num">ขั้นตอนที่ 3</div>
+      <div class="step-title">📸 Production & Editing</div>
+      <div class="step-desc">ตั้งกล้อง Nothing, Simulator สี WARM 40% และคุม Timeline CapCut</div>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 1 PANEL ==================== -->
+  <div class="workflow-panel active" id="panel-step-1">
+    <div class="workspace-split">
+      <!-- Left Selection Panel -->
+      <div class="selection-pane">
+        <!-- ICP Selector -->
+        <div>
+          <div class="selection-title">🎯 1. กลุ่มเป้าหมาย (ICP)</div>
+          <div class="option-grid">
+            <button class="opt-btn active" onclick="selectICP('salaryman', this)">
+              <div class="opt-name">มนุษย์เงินเดือน Gen Y / First-Jobber</div>
+              <div class="opt-desc">เสียภาษีฐานสูง / ต้องการวางโครงสร้างลดหย่อนภาษี & ตาข่ายความปลอดภัย</div>
+            </button>
+            <button class="opt-btn" onclick="selectICP('family', this)">
+              <div class="opt-name">คนสร้างครอบครัว (Family Builders)</div>
+              <div class="opt-desc">หนี้บ้านก้อนโต / วางระบบป้องกันสินทรัพย์ครอบครัว & ทุนการศึกษาลูก</div>
+            </button>
+            <button class="opt-btn" onclick="selectICP('business', this)">
+              <div class="opt-name">เจ้าของธุรกิจใหม่ & ฟรีแลนซ์</div>
+              <div class="opt-desc">กระแสเงินสดปนกันมั่ว / โยกย้ายกำไรสะสมมาเป็นสินทรัพย์กรรมการอย่างคุ้มค่า</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Funnel Stage Selector -->
+        <div>
+          <div class="selection-title">📐 2. ระดับเป้าหมายกรวย (Funnel Stage)</div>
+          <div class="option-grid">
+            <button class="opt-btn active" onclick="selectFunnel('tofu', this)">
+              <div class="opt-name">TOFU (ดึงคนใหม่วงกว้าง)</div>
+              <div class="opt-desc">Ratings, Comparisons, Tier Lists, Myth Buster</div>
+            </button>
+            <button class="opt-btn" onclick="selectFunnel('mofu', this)">
+              <div class="opt-name">MOFU (บ่มเพาะความเชื่อใจ)</div>
+              <div class="opt-desc">Expert Talking Head, Green Screen, Tutorial, Day in life</div>
+            </button>
+            <button class="opt-btn" onclick="selectFunnel('bofu', this)">
+              <div class="opt-name">BOFU (ปิดนัดหมายเข้าระบบ)</div>
+              <div class="opt-desc">Miro System Breakdown, Client Case Study, Call Pitch</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Results Pane -->
+      <div class="results-pane">
+        <div>
+          <div class="results-header">
+            <div class="results-title-group">
+              <h2 id="matrix-heading">ไอเดียวิเคราะห์ตามเป้าหมาย</h2>
+              <p>กรองคลังคอนเทนต์ที่มีประสิทธิภาพสูงสุดของแบรนด์คุณ</p>
+            </div>
+            <div class="idea-badge ib-tofu" id="stage-badge">TOFU</div>
+          </div>
+
+          <div class="idea-list" id="idea-list-container">
+            <!-- Dynamically Rendered Cards -->
+          </div>
+
+          <!-- Music Selector Panel -->
+          <div class="music-section">
+            <div class="music-header">
+              <div class="music-title">🎵 คลังเพลงประกอบ Calico Index & BGM</div>
+              <div class="music-vibe-control">
+                <span class="vibe-label">ฟิลลิ่ง:</span>
+                <input type="range" min="1" max="5" value="3" class="vibe-slider" id="vibeRange" oninput="updateVibe(this.value)">
+                <span class="vibe-value" id="vibeDisplay">Normal Beats</span>
+              </div>
+            </div>
+            
+            <div class="music-list" id="music-track-container">
+              <!-- Dynamically Filtered BGM Tracks -->
+            </div>
+          </div>
+        </div>
+
+        <div class="lock-control">
+          <div class="lock-summary" id="lock-summary-text">
+            กรุณาเลือกไอเดียและเพลงด้านบนเพื่อล็อคเข้าสู่บทเขียน
+          </div>
+          <button class="action-btn" id="lock-btn" onclick="lockInSelection()" disabled>
+            <span>🔒 ล็อคเป้าหมาย & เขียนสคริปต์</span> ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 2 PANEL ==================== -->
+  <div class="workflow-panel" id="panel-step-2">
+    <div class="script-grid">
+      <!-- Left side: Text Editors -->
+      <div class="script-left">
+        <!-- Part 1: Hook -->
+        <div class="script-section-block">
+          <div class="script-section-header">
+            <div class="script-section-title">🪝 ส่วนที่ 1: Hook (3-5 วินาทีแรกหยุดสายตา)</div>
+            <div class="script-section-meta" id="hook-char-count">0 อักษร</div>
+          </div>
+          <textarea class="script-textarea" id="script-hook" placeholder="ร่างพาดหัวเปิดคลิปแบบหยุดนิ้วที่นี่..." oninput="updateScriptStats()"></textarea>
+          <div class="cue-buttons">
+            <button class="cue-btn visual-badge" onclick="insertTag('script-hook', '[VISUAL: Zoom In 15% + Sound Effect]')">🎬 ซูมหน้ากล้อง</button>
+            <button class="cue-btn visual-badge" onclick="insertTag('script-hook', '[VISUAL: ขึ้นหัวข้อข้อความกระพริบสีแดง]')">💬 ขึ้นหัวข้อคำดัก</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-hook', '[AUDIO: SFX Whoosh]')">🔊 SFX สะบัดลม</button>
+          </div>
+        </div>
+
+        <!-- Part 2: Body & Re-Hooks -->
+        <div class="script-section-block">
+          <div class="script-section-header">
+            <div class="script-section-title">📖 ส่วนที่ 2: เนื้อหา และ Re-Hook ดึงสายตาวินาทีที่ 15</div>
+            <div class="script-section-meta" id="body-char-count">0 อักษร</div>
+          </div>
+          <textarea class="script-textarea" id="script-body" style="min-height: 180px;" placeholder="เนื้อความหลัก: ชี้ปัญหา (Anti-Vision) และแนวทางแก้ (Vision)..." oninput="updateScriptStats()"></textarea>
+          <div class="cue-buttons">
+            <button class="cue-btn visual-badge" onclick="insertTag('script-body', '[VISUAL: Green Screen ชี้ตารางงบเปรียบเทียบ]')">🎬 ชี้ตารางกรีนสกรีน</button>
+            <button class="cue-btn visual-badge" onclick="insertTag('script-body', '[VISUAL: วาดแผนภาพบอร์ด Miro อธิบายการเงิน]')">🎬 วาดกระดาน Miro</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-body', '[AUDIO: BGM เคลียร์คลอเบาลงสำหรับจุดสำคัญ]')">🔊 ลดเสียงเพลง</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-body', '[AUDIO: SFX Pop Up ตอนขึ้นกราฟฟิก]')">🔊 SFX เด้งข้อความ</button>
+          </div>
+        </div>
+
+        <!-- Part 3: CTA -->
+        <div class="script-section-block">
+          <div class="script-section-header">
+            <div class="script-section-title">🎯 ส่วนที่ 3: ปิดท้าย Call To Action & ดักเข้า DM</div>
+            <div class="script-section-meta" id="cta-char-count">0 อักษร</div>
+          </div>
+          <textarea class="script-textarea" id="script-cta" placeholder="คำชวนปิดท้ายให้ทักอินบ็อกซ์หรือคอมเมนต์คำสำคัญ..." oninput="updateScriptStats()"></textarea>
+          <div class="cue-buttons">
+            <button class="cue-btn visual-badge" onclick="insertTag('script-cta', '[VISUAL: ชี้ไปที่ปุ่มคอมเมนต์ / คำที่จะให้พิมพ์]')">🎬 ชี้คำสำคัญ</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-cta', '[AUDIO: SFX Bell Bell กระดิ่ง]')">🔊 SFX สั่นกระดิ่ง</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side: Template Helper & Live stats -->
+      <div class="script-sidebar">
+        <!-- Live Script Stats -->
+        <div class="tool-box">
+          <div class="tool-title">⚡ ข้อมูลสถิติของบทพูดสด</div>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-num" id="stat-words">0</div>
+              <div class="stat-lbl">จำนวนคำ</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="stat-time">0s</div>
+              <div class="stat-lbl">ความยาวคลิป</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="stat-cues">0</div>
+              <div class="stat-lbl">จำนวนคิว</div>
+            </div>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; font-family: 'Sarabun';">
+            💡 คำนวณจากการพูดธรรมดาเฉลี่ย 2.5 คำต่อวินาที โดยดึงจุดเด่นของ <span style="color:var(--gold);">Nothing Rec.709</span> มาประกอบ
+          </div>
+        </div>
+
+        <!-- Perfect Loop Generator -->
+        <div class="tool-box perfect-loop-widget">
+          <div class="loop-header">
+            <span class="loop-badge">🔄 Infinite Perfect Loop</span>
+            <label class="loop-toggle">
+              <input type="checkbox" id="perfectLoopToggle" onchange="generatePerfectLoop()">
+              <span style="font-size:0.75rem; font-weight:700;">เปิดระบบลูป</span>
+            </label>
+          </div>
+          <div class="loop-box" id="loop-box-content">
+            เปิดระบบเพื่อให้บทท่อนปิด CTA เชื่อมโยงประโยคเปิดของ Hook อย่างสมบูรณ์แบบไร้รอยสะดุดของวิดีโอ
+          </div>
+        </div>
+
+        <!-- Hook Library Helper -->
+        <div class="tool-box">
+          <div class="tool-title">💡 ไอเดียคำเปิดคลิปและพาดหัวหยุดนิ้ว</div>
+          <div class="hook-option-list" id="hook-library-list">
+            <!-- Dynamic Hooks based on Funnel -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 Navigation Footer -->
+    <div class="lock-control" style="margin-top:40px;">
+      <div class="lock-summary">
+        บทพูดของคุณจะถูกบันทึกเข้าระบบชาร์ตอัตโนมัติ พร้อมก้าวไปสู่การถ่ายทำและตัดต่อ
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="action-btn" style="background:#1e293b; color:var(--text); box-shadow:none;" onclick="switchStep(1)">
+          ย้อนกลับ
+        </button>
+        <button class="action-btn" onclick="saveScriptAndGoToStep3()">
+          <span>📸 ถ่ายทำ & ตั้งค่าสี/เสียง</span> ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 3 PANEL ==================== -->
+  <div class="workflow-panel" id="panel-step-3">
+    <div class="prod-grid">
+      <!-- Left side: Nothing Phone 2a Camera checklist -->
+      <div class="prod-box">
+        <div class="prod-box-title">
+          <span>📸</span> การตั้งกล้อง Nothing Phone 2a (Skin Tone Sweet Spot)
+        </div>
+        <div class="checklist">
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>ความละเอียดสูงสุด 4K | 30 fps</strong>
+              <span class="check-sub">ตั้งกล้องหลังตัวหลัก เลนส์ธรรมดา (ห้ามใช้กล้องหน้าเซลฟี่ภาพจะเกรนต่ำ)</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>สกรีนและโพรไฟล์สี Rec.709 ดั้งเดิม</strong>
+              <span class="check-sub">ไม่ใช่ Log ไฟล์ผิวหน้าจะเคลียร์ นุ่มนวล เกรดสกินโทนง่ายที่สุด</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>จัดไฟนวลหลบเงาข้างจมูก</strong>
+              <span class="check-sub">ไฟ Key Light 45 องศา ลบรอยเหี่ยวย่นผิวหน้าให้ดูคมและสุขภาพดี</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- LUT Simulator -->
+        <div class="lut-preview-container">
+          <div class="lut-slide-group">
+            <div class="lut-slider-row">
+              <strong>เกรดโทนผิว: LUT WARM</strong>
+              <span id="lutDisplayVal" style="color:var(--gold); font-weight:700;">40% (Skin-Sweet Spot)</span>
+            </div>
+            <input type="range" min="0" max="100" value="40" class="vibe-slider" style="width:100%;" id="lutRange" oninput="updateLUTSim(this.value)">
+          </div>
+          <div class="lut-canvas-mock" id="lutCanvasMock">
+            <div class="lut-overlay" id="lutOverlay"></div>
+            <span class="lut-preview-label" id="lutLabel">Skin Tint: WARM 40%</span>
+          </div>
+          <div style="font-size: 0.72rem; color:var(--text-muted); line-height:1.45; font-family:'Sarabun';">
+            ⚠️ <strong>ข้อแนะนำสี:</strong> สำหรับ Nothing Phone 2a การใช้ความเข้ม **WARM ที่ 40%** จะช่วยให้สีผิวขาวเหลืองเป็นธรรมชาติ ถ้าเลื่อนไป 100% ผิวหน้าจะเหลืองติดดีซ่าน
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side: CapCut Timeline & Audio Mix -->
+      <div class="prod-box">
+        <div class="prod-box-title">
+          <span>🎬</span> แผงควบคุมไทม์ไลน์เสียง CapCut Desktop
+        </div>
+        
+        <div class="timeline-mock">
+          <div class="timeline-header-row">
+            <span>0:00</span>
+            <span>0:15 (Re-Hook)</span>
+            <span>0:30 (CTA)</span>
+          </div>
+          <div class="timeline-track-layer">
+            <span class="track-label">A-Roll</span>
+            <div class="track-blocks tb-video"></div>
+          </div>
+          <div class="timeline-track-layer">
+            <span class="track-label">Subtitles</span>
+            <div class="track-blocks tb-sub"></div>
+          </div>
+          <div class="timeline-track-layer">
+            <span class="track-label">SFX</span>
+            <div class="track-blocks tb-sfx"></div>
+          </div>
+          <div class="timeline-track-layer">
+            <span class="track-label">Music</span>
+            <div class="track-blocks tb-bgm"></div>
+          </div>
+        </div>
+
+        <!-- Audio level sliders -->
+        <div class="audio-faders">
+          <div class="fader-row">
+            <span class="fader-label">เสียงพูด:</span>
+            <input type="range" min="-30" max="0" value="-6" class="fader-input" id="fadeSpeak" oninput="updateAudioFader('Speak', this.value)">
+            <span class="fader-val" id="fadeSpeakVal">-6 dB</span>
+          </div>
+          <div class="fader-row">
+            <span class="fader-label">เพลงคลอ:</span>
+            <input type="range" min="-50" max="-10" value="-25" class="fader-input" id="fadeMusic" oninput="updateAudioFader('Music', this.value)">
+            <span class="fader-val" id="fadeMusicVal">-25 dB</span>
+          </div>
+          <div class="fader-row">
+            <span class="fader-label">เสียง SFX:</span>
+            <input type="range" min="-30" max="0" value="-12" class="fader-input" id="fadeSFX" oninput="updateAudioFader('SFX', this.value)">
+            <span class="fader-val" id="fadeSFXVal">-12 dB</span>
+          </div>
+        </div>
+
+        <div class="checklist" style="margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>เปิดใช้งาน Proxy ใน CapCut Desktop</strong>
+              <span class="check-sub">ช่วยประมวลผลวิดีโอ 4K ลื่นไหล ไม่หน่วงกระตุกตอนเรียงช็อตเร็วๆ</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>เปิดระบบ Vocal Enhancement (ปรับปรุงเสียงพูดสด)</strong>
+              <span class="check-sub">ขจัดเสียงนอยส์ห้องสะท้อน ยกระดับเสียงเบสทุ้มดุจที่ปรึกษาการเงินมืออาชีพ</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>ทำระบบ Auto Cutout (หน้าต่างซับยืดหยุ่น)</strong>
+              <span class="check-sub">มาสก์ตารางสเปรดชีตหรือตารางภาษีไว้ด้านหลังตัว Nick ได้เนียนไร้ขอบ</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 Deliver Footer -->
+    <div class="lock-control" style="margin-top:40px;">
+      <div class="lock-summary">
+        สคริปต์เสร็จสมบูรณ์พร้อมคิวโปรดักชันและตารางมิกซ์เสียง สามารถส่งออกนำไปใช้งานบน CapCut Desktop ได้เลย
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="action-btn" style="background:#1e293b; color:var(--text); box-shadow:none;" onclick="switchStep(2)">
+          ย้อนกลับ
+        </button>
+        <button class="action-btn" style="background:var(--gold-gradient); color:#000;" onclick="exportFinalDeliverable()">
+          <span>📤 ส่งออกงานบทสรุปสมบูรณ์</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span>🔒</span> <span id="toast-text">สำเร็จ! ข้อมูลถูกซิงค์แล้ว</span>
+</div>
+
+<!-- Modal Summary -->
+<div class="modal-overlay" id="summaryModal" onclick="closeModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">📤 สรุปรายละเอียดสคริปต์และงานโปรดักชั่นสมบูรณ์</div>
+    <div class="modal-body">
+      <p>คัดลอกรายละเอียดข้อมูลสคริปต์ทั้งหมดด้านล่าง เพื่อนำไปบันทึกลง Notion หรือวางใน CapCut เพื่อเขียนบท/ทำเสียงบรรยายได้ทันที:</p>
+      <textarea id="exportTextarea" readonly onclick="this.select()"></textarea>
+      <div style="margin-top: 15px; font-size: 0.72rem; color: var(--gold); text-align: center;">
+        💡 คลิกที่กล่องข้อความด้านบนเพื่อเลือกทั้งหมด (Ctrl+A) แล้วกดคัดลอก (Ctrl+C)
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="action-btn" onclick="document.getElementById('summaryModal').classList.remove('show')">ปิดหน้าต่าง</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Complete Content Matrix for Nick's Brand (Redesigned: Personal Finance & Tax-First)
+  const contentMatrix = {
+    salaryman: {
+      tofu: [
+        {
+          title: "ความจริงของคนทำงานเงินเดือน 5 หมื่นที่เสียภาษีไปเปล่าๆ ทุกปี",
+          badge: "TOFU comparisons",
+          antivision: "โดนภาษีเงินได้หัก ณ ที่จ่ายสะสมปีละหลายหมื่นอย่างไร้การวางแผน",
+          vision: "จัดพอร์ตลดหย่อนภาษีส่วนตัวคุ้มค่าสูงสุด ได้เงินสดกลับมาเติบโต",
+          reason: "ขยี้ปมความเสียดายเงินของคนรายได้สูงเพื่อกระตุ้นให้เกิดยอดคอมเมนต์ไวรัล"
+        },
+        {
+          title: "จัดเรตติ้ง 3 เครื่องมือออมเงินเพื่อลดภาษีที่คนรุ่นใหม่ซื้อบ่อยที่สุด (แบบไหนเงินจม แบบไหนเงินโต)",
+          badge: "TOFU ratings",
+          antivision: "เลือกลดหย่อนภาษีผิดประเภทจนเงินจม 10 ปี ได้ปันผลไม่ถึง 1.5%",
+          vision: "เงินลดหย่อนทำงานเต็มประสิทธิภาพ ได้ทั้งเซฟภาษีและสร้างพอร์ตออมมั่งคั่ง",
+          reason: "นำตรรกะตัวเลขจริงมาคัดกรองพอร์ตภาษีให้คนทำงานตัดสินใจง่ายใน 3 วินาที"
+        },
+        {
+          title: "เปรียบเทียบพอร์ตออมภาษี 1 แสนแรก: ฝืนซื้อกองทุนบำนาญ VS เอาส่วนต่างไปลงทุนดัชนีเอง?",
+          badge: "TOFU comparisons",
+          antivision: "หลงโฆษณาซื้อพอร์ตล็อกระยะยาวโดยไม่รู้ว่าเบียดบังกระแสเงินสดฉุกเฉิน",
+          vision: "แบ่งสัดส่วนการออมเป็นระบบ มีทั้งเงินสดคล่องตัวและเงินโตด้วยดอกเบี้ยทบต้น",
+          reason: "หัวข้อ Comparisons ปลุกต่อมถกเถียงเรื่องวินัยออมเงินปะทะการลงทุนด้วยตัวเอง"
+        },
+        {
+          title: "จัดเทียร์ S-D: 5 ช่องทางอุดรอยรั่วภาษีบุคคลธรรมดาสำหรับ First-Jobber รายได้สูง",
+          badge: "TOFU tier list",
+          antivision: "ทำเรื่องขอลดหย่อนภาษีตกหล่นเพราะสับสนกับประกาศกฎหมายสรรพากรใหม่ๆ",
+          vision: "มีตารางเช็คลิสต์ลดหย่อนระดับ S-Tier ที่เหมาะสมกับฐานรายได้จริงของตนเอง",
+          reason: "สไตล์ Tier List ย่อยง่าย ดึงดูดสายตาคนออฟฟิศระดับบนให้กดเซฟโพสต์"
+        },
+        {
+          title: "เก็บเงินในบัญชีออมทรัพย์อย่างเดียว ทำไมเงินเก็บของเราถึงเสื่อมมูลค่าลงทุกวินาที?",
+          badge: "TOFU objection-busting",
+          antivision: "แช่เงินสดไว้ในธนาคารเฉยๆ จนมูลค่าเงินออมโดนเงินเฟ้อกัดกินเสื่อมค่าสะสม",
+          vision: "ย้ายเงินเก็บเข้าสู่พอร์ตสินทรัพย์ปลอดภัยที่ให้ผลตอบแทนชนะเงินเฟ้อชัดเจน",
+          reason: "ชี้ปัญหาระดับมหภาคเรื่องพลังการซื้อที่ลดลง ดึงดูดใจให้ตระหนักเรื่องพอร์ตการเงิน"
+        }
+      ],
+      mofu: [
+        {
+          title: "สแกนช่องโหว่การเงินส่วนบุคคล: ทำไมมีเงินออมแต่ชีวิตก็ยังเสี่ยงล้มละลายยามฉุกเฉิน?",
+          badge: "MOFU talking head",
+          antivision: "มีแผนลงทุนพอร์ตเติบโตสูง แต่ลืมจัดโครงสร้างป้องกันความเสี่ยงหลังบ้าน",
+          vision: "มีระบบสวัสดิการคุ้มครองสินทรัพย์ที่มั่นคงค้ำจุนพอร์ตลงทุนหลักไว้ปลอดภัย",
+          reason: "ให้ความรู้ลึกซึ้งเกี่ยวกับการจัดกระดุมเม็ดแรก (Protection) ควบคู่กับการออม"
+        },
+        {
+          title: "วิธีกางตารางสเปรดชีตจัดสรร 'พอร์ตลดหย่อนภาษีส่วนบุคคล' ของ Nick.Financetry",
+          badge: "MOFU green screen",
+          antivision: "วางแผนสัดส่วนภาษีแบบเดาใจสรรพากรจนคำนวณพลาดปลายปีอ่วม",
+          vision: "เห็นตารางสรุปคำนวณสเปรดชีตที่สะอาด เป็นระบบ กรอกง่าย ได้ตัวเลขลดหย่อนแม่นยำ",
+          reason: "โชว์ทักษะการสแกนสเปรดชีตวิเคราะห์ตัวเลขเฉพาะตัวสร้าง Authority สูงส่ง"
+        },
+        {
+          title: "ทำไมที่ปรึกษาการเงินรุ่นใหม่ ถึงแนะนำให้มองเรื่อง 'ความคุ้มค่า' ก่อนการเลือกผลตอบแทนสูง?",
+          badge: "MOFU talking head",
+          antivision: "รีบร้อนนำเงินเก็บไปเสี่ยงในการลงทุนเก็งกำไรจนขาดกระแสเงินสดสภาพคล่อง",
+          vision: "จัดพอร์ตการเงินที่มีความมั่นคง ปลอดภัย และมีวินัยการเติบโตแบบยั่งยืน",
+          reason: "ตอกย้ำภาพลักษณ์ Non-Pushy Advisor ที่ปรึกษาการวางแผนเงินที่ตรงไปตรงมา"
+        },
+        {
+          title: "เจาะลึก 3 รูปแบบการทำ 'ดอกเบี้ยทบต้น (Compound Interest)' ให้ทำงานผลิตเงินสดแทนคุณ",
+          badge: "MOFU talking head",
+          antivision: "ไม่เข้าใจพลังของเวลา ปล่อยให้เวลาผ่านไป 10 ปีจนเสียโอกาสทวีคูณเงินต้นมหาศาล",
+          vision: "ใช้วินัยและระยะเวลาให้เกิดประโยชน์สูงสุด สร้างเงินล้านได้จากเงินต้นหลักพันต่อเดือน",
+          reason: "สอนทฤษฎีการเงินคลาสสิกที่ย่อยง่าย แปลงเป็นภาษาพูดที่สุขุมน่าเชื่อถือ"
+        },
+        {
+          title: "เบื้องหลังโต๊ะทำงาน: Nick คำนวณวิเคราะห์ 'มูลค่าสถานะการเงินส่วนบุคคล' ให้ลูกค้าจริงอย่างไร?",
+          badge: "MOFU day in life",
+          antivision: "เข้าใจผิดคิดว่าการวางแผนการเงินกับผู้เชี่ยวชาญต้องผ่านขั้นตอนเอกสารที่ปวดหัว",
+          vision: "สัมผัสความเรียบง่าย เนี้ยบ ของระบบ All-White setup สรุปงบการเงินหน้าเดียวพรีเมียม",
+          reason: "ใช้ภาพเบื้องหลังการทำงาน (Internal Outlier) สร้างความผูกพันและเชื่อใจขั้นสูง"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางแผนผังระบบการเงิน: พิมพ์เขียว 'ระบบจัดสรรงบการเงินส่วนบุคคล' ปิดทุกจุดรั่วไหลใน 15 นาที",
+          badge: "BOFU board breakdown",
+          antivision: "เงินรายได้รั่วไหลไปกับค่าใช้จ่ายไม่จำเป็นและเสียสิทธิ์ภาษีโดยไม่มีโครงสร้างกำกับ",
+          vision: "มีกระดานสรุปแผนภูมิชีวิตการเงินของตนเองที่สลักชัดเจน ปลอดภัย ไร้รอยรั่ว",
+          reason: "ใช้ภาพแผนผังการเงินกระตุ้นให้ผู้ประกอบการและลีดพรีเมียมทักคอมเมนต์ขอรับสิทธิ์"
+        },
+        {
+          title: "เคสจริง: ช่วยคนทำงาน Gen Y ปรับพอร์ตภาษีและเงินออมใหม่จนประหยัดเงินได้ปีละ 36,000 บาท",
+          badge: "BOFU client case study",
+          antivision: "จัดสัดส่วนเครื่องมือออมภาษีผิดประเภทจนเงินเย็นจมล็อกยาวแบบไร้ดอกผล",
+          vision: "ปลดปล่อยกระแสเงินสดสภาพคล่อง และสลักพอร์ตสะสมมูลค่าที่คุ้มค่าสูงสุดแทน",
+          reason: "แสดงเคสความสำเร็จจริง (Show Proof) โน้มน้าวให้ลีดอยากนัด Zoom ปรึกษาส่วนตัว"
+        },
+        {
+          title: "ลงทะเบียนจองสิทธิ์ประเมินวิเคราะห์งบการเงินและสิทธิประโยชน์ฟรี (Financial Health & Tax Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "ปล่อยปละละเลยแผนภาษีสะสมเพราะไม่มีเวลาศึกษาหรือกลัวการเจอกลุ่มขายประกันขายฝัน",
+          vision: "ได้รับคำแนะนำสแกนหาจุดออมเงินที่ดีคุ้มค่าที่สุดเฉพาะตัวฟรีในแชทแรก",
+          reason: "สร้าง Low Friction CTA ดึงคนคอมเมนต์ Keyword ใต้โพสต์เพื่อดักลีดเข้า DM"
+        },
+        {
+          title: "ทำไมแผนวางแผนพอร์ตการเงิน 1-on-1 Discovery Zoom ของ Financetry ถึงเน้นตัวเลขจริงปราศจากน้ำ?",
+          badge: "BOFU client case study",
+          antivision: "เบื่อระบบตัวแทนประกันแบบเดิมๆ ที่พยายามเข้ามาตื้อขายแผนสัญญาระยะยาวตลอดเวลา",
+          vision: "ได้รับการคัดสรรพอร์ตจากที่ปรึกษาที่ให้เกียรติและเน้นความโปร่งใสบนกระแสเงินสดจริง",
+          reason: "ตอกย้ำจุดยืนแบรนด์ ตรงไปตรงมา จริงใจ นอบน้อม ซื้อความเชื่อใจขั้นตัดสินใจนัด Zoom"
+        },
+        {
+          title: "เปิดจองคิว 1-on-1 Discovery Zoom วางโครงสร้างแผนภาษีครึ่งปีหลัง จำกัดเพียง 5 ท่านสัปดาห์นี้",
+          badge: "BOFU board breakdown",
+          antivision: "รอจนถึงปลายปีค่อยรีบหาซื้อตัวลดหย่อนจนขาดโอกาสคัดเลือกแผนที่ดีที่สุดและปลอดภัย",
+          vision: "จัดพอร์ตเสร็จสรรพแต่เนิ่นๆ ได้แผนที่ดี คุ้มค่า และเงินสดหมุนเวียนลื่นไหลที่สุด",
+          reason: "เร่งรัดการตัดสินใจลีดเป้าหมายพรีเมียมด้วย Scarcity โควตาจำกัดนัด Zoom ทันที"
+        }
+      ]
+    },
+    family: {
+      tofu: [
+        {
+          title: "หนี้สินสะสม 5 ล้าน... ทำระบบ 'ค้ำประกันสินทรัพย์ครอบครัว' อย่างไร ไม่ให้บ้านโดนยึดเมื่อเกิดเหตุไม่คาดฝัน?",
+          badge: "TOFU comparisons",
+          antivision: "ครอบครัวเสี่ยงถูกฟ้องยึดบ้านล้มละลายเพราะไม่มีกองทุนสำรองคุ้มกันหนี้ค้างคา",
+          vision: "มีโครงข่ายสินทรัพย์สำรองรองรับระบบจ่ายหนี้บ้านแทนเสาหลักทันทีปลอดภัย 100%",
+          reason: "เล่าเรื่องเชิงลึกบิ้วด์อารมณ์ความรับผิดชอบและความรักอย่างสุภาพน่าเชื่อถือ"
+        }
+      ],
+      mofu: [
+        {
+          title: "วิธีกางแผนภูมิคำนวณ 'มูลค่าเสาหลักการเงิน' (Human Asset Value) สำหรับหัวหน้าครอบครัว",
+          badge: "MOFU green screen",
+          antivision: "คิดว่ามีแผนความคุ้มครองเก่าๆ เล็กๆ พอแล้ว แต่แท้จริงพอร์ตไม่พอกลบหนี้สะสมด้วยซ้ำ",
+          vision: "คำนวณตัวเลขสินทรัพย์ค้ำจุนที่ตรงระบบ ปลอดภัย และพอดีกับค่าใช้จ่ายจริงของทุกคน",
+          reason: "นำตารางคำนวณมาอธิบายหน้าจอแสดงความเป็นผู้เชี่ยวชาญการวิเคราะห์ตัวเลข"
+        },
+        {
+          title: "สตอรี่จริง: บทเรียนที่คุณแม่สอนผมเกี่ยวกับการส่งมอบพอร์ตมรดกเพื่อประคองอนาคตครอบครัวลูกค้า",
+          badge: "MOFU day in life",
+          antivision: "มองภาพการจัดการมรดกเป็นเพียงธุรกรรมแห้งแล้งเชิงเอกสารที่ยุ่งยาก",
+          vision: "เห็นกระแสเงินสดจากพอร์ตสินทรัพย์พิเศษที่ช่วยพยุงคุณภาพชีวิตของลูกให้ก้าวต่อไปได้ไร้สะดุด",
+          reason: "ดึงเอาประวัติการฝ่าฟันกับครอบครัว (Internal Outlier) มาสร้างความผูกพันและเชื่อใจ"
+        },
+        {
+          title: "ออกแบบพอร์ต 'สวัสดิการเด็กเล็ก' (Child Healthcare Plan) อย่างไรให้คุ้มค่าและไม่สะเทือนเงินเก็บ?",
+          badge: "MOFU talking head",
+          antivision: "จัดสรรงบสะดุดเพราะค่าห้องเอกชนแพงเกินจริง และมีค่าเบี้ยจ่ายทิ้งเปล่าสูงเกินงบประมาณ",
+          vision: "ล็อกพอร์ตดูแลรักษาระดับพรีเมียมที่เคลียร์สิทธิ์ชัดเจนและกระจายงบเฉลี่ยได้พอเหมาะ",
+          reason: "ตอบข้อซักถาม FAQ ของพ่อแม่มือใหม่เพื่อสร้างมิตรภาพและความเชื่อมั่นแบรนด์"
+        },
+        {
+          title: "ไขข้อข้องใจ: พอร์ตสินทรัพย์ส่งต่อมรดก (Whole Life) VS พอร์ตอุบัติเหตุฉุกเฉิน ปกป้องครอบครัวต่างกันยังไง?",
+          badge: "MOFU talking head",
+          antivision: "สับสนระหว่างโครงสร้างสะสมความคุ้มครองกับแผนจ่ายทิ้งระยะสั้น จนพอร์ตการเงินมีรูโหว่ขนาดใหญ่",
+          vision: "จัดสรรสินทรัพย์ทั้งสองประเภทให้ทำหน้าที่คู่ขนานได้อย่างถูกจุดและงบประมาณพอดีตัว",
+          reason: "แก้ไขจุดหลงลืมทางการเงินด้วยภาษาพูดที่สุภาพ เข้าใจง่าย ไร้น้ำขายฝัน"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางแผนผังระบบการเงิน: สถาปัตยกรรม 'ระบบล็อกสินทรัพย์และค้ำประกันหนี้สินครอบครัว' (Family Wealth Preservation)",
+          badge: "BOFU board breakdown",
+          antivision: "ปล่อยให้หนี้สินครอบครัวรั่วไหลโดยไม่มีพอร์ตสินทรัพย์พิเศษค้ำประกันควบคุม",
+          vision: "มีเช็คลิสต์ปกป้องและโอนย้ายมรดกให้ลูกอย่างถูกต้อง ปลอดภัย ในแผนภาพหน้าเดียว",
+          reason: "ใช้ชาร์ตแผนผังการเงินโชว์หลักการวางโครงสร้างทุนให้ลีดพรีเมียมเห็นระบบงาน"
+        },
+        {
+          title: "เคสจริง: พาส่องโครงสร้าง 'กองทุนศึกษาบุตร 10 ล้าน' ของครอบครัวรุ่นใหม่ ส่งลูกจบนอกได้อย่างไร้ความเสี่ยง",
+          badge: "BOFU client case study",
+          antivision: "กังวลเรื่องทิศทางกระแสเงินสดในอนาคต หากเสาหลักชะงักแล้วแผนการศึกษาของลูกจะล้ม",
+          vision: "อุ่นใจ 100% ด้วยการเซ็ตระบบ Asset Lock ค้ำชูทุนการศึกษาระยะยาวเสร็จสมบูรณ์",
+          reason: "แชร์ผลลัพธ์ Case Study โน้มน้าวคนรักครอบครัวให้ทักอินบ็อกซ์เข้ามาปรึกษา"
+        },
+        {
+          title: "รับบริการสแกนจุดรั่วไหลและประเมินพอร์ตสินทรัพย์ค้ำประกันหนี้สินครอบครัวฟรี (Family Wealth & Asset Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "แบกความกังวลเรื่องหนี้บ้านค้างคาโดยไม่มีทิศทางการจัดการคุ้มครองเด่นชัด",
+          vision: "ได้รับคู่มือวิเคราะห์โครงสร้างคุ้มกันความเสี่ยงครอบครัวฟรีทางข้อความทันที",
+          reason: "สร้าง Low Friction CTA ดึงคนคอมเมนต์ Keyword ใต้คลิปเพื่อโยนลีดเข้า DM Funnel"
+        },
+        {
+          title: "เหตุผลที่การออกแบบพอร์ตความเสถียรครอบครัว (Family Safeguard) ของ Financetry ปราศจากการกดดันยัดเยียด",
+          badge: "BOFU client case study",
+          antivision: "อึดอัดกับระบบขายความเสี่ยงแบบเก่าๆ ที่พยายามยัดเยียดผลิตภัณฑ์และขอร้องแกมบังคับ",
+          vision: "ได้รับการเป็นคู่คิด วางแผนเปรียบเทียบตัวเลขที่เปิดเผยและโปร่งใสสูงสุด",
+          reason: "ตอกย้ำจุดแข็งแบรนด์นอบน้อม ตรงไปตรงมา Non-Pushy ซื้อความเชื่อใจขั้นสุดท้าย"
+        },
+        {
+          title: "จองสิทธิ์ปรึกษา 1-on-1 Discovery Zoom ออกแบบโครงสร้างทุนสำรองและสวัสดิการครอบครัว จำกัด 5 คิวสัปดาห์นี้",
+          badge: "BOFU board breakdown",
+          antivision: "ปล่อยปละละเลยสิทธิคุ้มครองครอบครัวเพราะไม่มีเวลาศึกษาทฤษฎีการเงินยาวๆ",
+          vision: "ได้รับคำสรุปแผนส่วนตัวผ่าน Zoom 1-on-1 เข้าใจง่ายเสร็จสรรพใน 15 นาที",
+          reason: "เร่งเร้าให้ลีดครอบครัวที่มีกำลังซื้อสูงทักทาย DM เพื่อจับจองสิทธิ์นัดคุย Zoom"
+        }
+      ]
+    },
+    business: {
+      tofu: [
+        {
+          title: "เจ้าของธุรกิจใหม่: เงินส่วนตัวกับเงินบริษัทปนกันมั่ว... โดนภาษีบุคคลฐานสูงสุดอ่วมทำยังไง?",
+          badge: "TOFU comparisons",
+          antivision: "หาเงินเก่งแต่โดนสรรพากรประเมินภาษีบุคคลธรรมดาย้อนหลังฐานสูงสุดขาดทุนกระแสเงินสด",
+          vision: "แยกบัญชีเป็นระบบชัดเจนและประหยัดเงินภาษีกลับเข้ากระเป๋าธุรกิจได้สูงสุด",
+          reason: "เจาะปมเจ็บปวดสูงสุดของฟรีแลนซ์รายได้สูงและเจ้าของธุรกิจป้ายแดง"
+        },
+        {
+          title: "จัดเรตติ้ง 3 สิทธิ์สวัสดิการบริษัทลดหย่อนภาษีที่สรรพากรยอมรับ 100%",
+          badge: "TOFU ratings",
+          antivision: "พยายามหักค่าใช้จ่ายนิติบุคคลแบบเสี่ยงๆ จนโดนสรรพากรเรียกเก็บเบี้ยปรับย้อนหลัง",
+          vision: "ใช้สิทธิ์ลดหย่อนภาษีแบบโปร่งใส ถูกกฎหมาย และช่วยลดงบรายจ่ายได้จริง",
+          reason: "ดึงดูดเจ้าของกิจการด้วยเรื่องวิธีลดหย่อนภาษีที่ถูกต้องตามกฎหมายพรีเมียม"
+        },
+        {
+          title: "เปรียบเทียบชัดๆ: เจ้าของบริษัทจ่ายภาษีเงินได้บุคคลธรรมดา VS จ่ายภาษีนิติบุคคล แบบไหนคุ้มกว่ากัน?",
+          badge: "TOFU comparisons",
+          antivision: "เหนื่อยจัดการบัญชีนิติบุคคลเลยยอมเสียภาษีบุคคลเรทสูงเพราะกลัวความยุ่งยาก",
+          vision: "ปรับโครงสร้างการรับรายได้ในรูปแบบที่ประหยัดและถูกต้องตามกฎหมายคุ้มสุด",
+          reason: "ใช้ตรรกะเปรียบเทียบสเปรดชีตสองด้านกระตุ้นความสนใจสายลุยธุรกิจ"
+        },
+        {
+          title: "จัดเทียร์ S-D: 5 ค่าใช้จ่ายนิติบุคคลที่สรรพากรโปรดปรานและถูกกฎหมายที่สุด",
+          badge: "TOFU tier list",
+          antivision: "พยายามเมคบิลซื้อของส่วนตัวมาหักบริษัทจนเสี่ยงโดนตรวจสอบพอร์ตบัญชี",
+          vision: "ใช้เครื่องมือจัดสรรกำไรสะสมและสวัสดิการกรรมการลดหย่อนภาษีระดับ S-Tier",
+          reason: "สไตล์ Tier List ได้ยอด Reach วงกว้างและสะสมลีดผู้ประกอบการเป้าหมายสูง"
+        },
+        {
+          title: "ทำไมฟรีแลนซ์รายได้หลักล้านถึงเลือกเสียภาษีเหมา แทนที่จะวางแผนจัดพอร์ต?",
+          badge: "TOFU objection-busting",
+          antivision: "เสียเงินภาษีปลายปีหลังแทบทรุดเพราะคิดว่าการหักตามจริงยุ่งยากเลือกแผนไม่ถูก",
+          vision: "มีตารางเปรียบเทียบหักค่าใช้จ่ายจริงที่ช่วยประหยัดเงินออมกลับมาได้มหาศาล",
+          reason: "ขยี้ความขี้เกียจของฟรีแลนซ์รายได้สูงเพื่อให้ตระหนักถึงเงินที่สูญเสียไป"
+        }
+      ],
+      mofu: [
+        {
+          title: "กลยุทธ์วางแผนการเงินสำหรับผู้ประกอบการป้ายแดง: แยกเงินส่วนตัว VS เงินธุรกิจ",
+          badge: "MOFU talking head",
+          antivision: "กระแสเงินสดส่วนตัวช็อตเพราะดึงเงินก้อนไปเคลียร์ปัญหาสุขภาพส่วนตัวอย่างไร้สิทธิประโยชน์รองรับ",
+          vision: "มีแผนคุ้มกันสินทรัพย์กรรมการที่ได้รับการดูแลโดยสวัสดิการแยกส่วนอย่างปลอดภัย",
+          reason: "ให้คำแนะนำเชิงกลยุทธ์ที่ลึกซึ้งและน่าเชื่อถือเพื่อซื้อใจเจ้าของกิจการ Gen Y"
+        },
+        {
+          title: "วิธีกางตารางเช็คเปรียบเทียบ 'พอร์ตลดหย่อนภาษีนิติบุคคลสำหรับกรรมการ' (Corporate Tax Benefit Matrix)",
+          badge: "MOFU green screen",
+          antivision: "ไม่รู้เงื่อนไขการนำค่าลดหย่อนหรือสินทรัพย์สะสมของกรรมการมาหักเป็นรายจ่ายบริษัทแบบถูกต้อง",
+          vision: "รู้วิธีเซ็ตโครงสร้างและดีไซน์พอร์ตสินทรัพย์พิเศษที่สรรพากรยอมรับ 100%",
+          reason: "แสดงความรู้ขั้นสูงเรื่องระบบภาษีนิติบุคคลของ Nick ตอกย้ำช่องว่าง Authority Gap"
+        },
+        {
+          title: "กลยุทธ์ 'Keyman Wealth Reserve' ของธุรกิจใหม่: แปลงค่าใช้จ่ายบริษัทเป็นสินทรัพย์กรรมการอย่างไรให้ถูกต้อง?",
+          badge: "MOFU talking head",
+          antivision: "บริษัทชะงักและกระแสเงินสดติดขัดเมื่อขาดบุคลากรหลักขับเคลื่อนโดยไม่มีเงินทุนสำรองสลักค้ำไว้",
+          vision: "มีระบบกองทุนคุ้มกันและโอนย้ายความมั่งคั่งคุ้มครองมูลค่าตัวบุคคลสำคัญทางธุรกิจ (Keyman Strategy)",
+          reason: "ให้ความรู้การเงินเฉพาะทางระดับ High-Ticket แสดงวิสัยทัศน์ที่เหนือกว่าตัวแทนทั่วไป"
+        },
+        {
+          title: "ไขข้อข้องใจเจ้าของร้านค้า: วางระบบลดหย่อนภาษีแบบหักค่าใช้จ่ายตามจริงคุ้มค่าแค่ไหน?",
+          badge: "MOFU talking head",
+          antivision: "แบกรับค่าภาษีฐานบุคคลธรรมดาสูงลิ่วเพราะบัญชีห้างหุ้นส่วนไม่เป็นระบบ",
+          vision: "จัดสรรเช็คลิสต์ลดหย่อนและอุดรอยรั่วได้อย่างถูกต้องช่วยกำไรสุทธิโตวันโตคืน",
+          reason: "ตอบข้อซักถามเชิงบัญชีการวางแผนของฟรีแลนซ์และพ่อค้าแม่ค้าออนไลน์"
+        },
+        {
+          title: "เบื้องหลังการวางพอร์ต: Nick.Financetry จัดสรรโครงสร้างบัญชีนิติบุคคลให้กรรมการบริษัทอย่างไร?",
+          badge: "MOFU day in life",
+          antivision: "คิดว่าการวางแผนการเงินผู้ประกอบการต้องอาศัยทฤษฎีเอกสารที่ดูรกและยากหัวใจ",
+          vision: "เห็นความเรียบง่ายเรียบหรูของสเปรดชีตวิเคราะห์โครงสร้างกระแสเงินสดกรรมการนิ่งสนิท",
+          reason: "ใช้ภาพเบื้องหลังโต๊ะคอม All-White Setup ตอกย้ำภาพลักษณ์ความเนี้ยบพรีเมียม"
+        }
+      ],
+      bofu: [
+        {
+          title: "กางแผนผังระบบการเงิน: พิมพ์เขียวกลยุทธ์ 'Keyman Wealth Reserve' เพื่อเซฟภาษีบริษัทและเพิ่มสินทรัพย์กรรมการ",
+          badge: "BOFU board breakdown",
+          antivision: "แบกรับภาระภาษีนิติบุคคลก้อนใหญ่โดยไม่มีแผนบริหารรายจ่ายพิเศษเพื่อกรรมการช่วยคุ้มกัน",
+          vision: "ได้เห็นแผนภาพสเปรดการเงินโยกย้ายเงินปันผลสะสมเข้าพอร์ตสินทรัพย์ส่วนตัวอย่างถูกกฎหมายในภาพเดียว",
+          reason: "ใช้ชาร์ตแผนผังการเงินโชว์ภาษีระดับพรีเมียมกระตุ้นลีดบริษัทหรูให้ทัก DM"
+        },
+        {
+          title: "เคสจริง: ช่วยผู้ประกอบการใหม่เซฟภาษีกรรมการปีละ 120,000 บาท ด้วยการปรับโครงสร้างท่อกระแสเงินสด",
+          badge: "BOFU client case study",
+          antivision: "กระแสเงินสดรั่วไหลจากการบริหารบัญชีเงินบริษัทปนกับบัญชีกรรมการอย่างไร้ระเบียบ",
+          vision: "เงินสุทธิไหลกลับเข้าพอร์ตส่วนตัวงอกเงยและมีพอร์ตสำรองความปลอดภัยทางการเงินรองรับพรีเมียม",
+          reason: "แสดง Case Study ผลลัพธ์จริง ดึงดูดเจ้าของกิจการกำลังซื้อสูงให้นัด Zoom"
+        },
+        {
+          title: "รับบริการสแกนหาจุดรั่วไหลภาษีนิติบุคคล และแบบฟอร์มจัดสรรสวัสดิการกรรมการฟรี (Corporate Benefits Audit)",
+          badge: "BOFU board breakdown",
+          antivision: "สูญเสียกำไรสะสมนิติบุคคลไปกับภาษีกรรมการเกินตัวโดยไม่มีระบบท่อเงินปลอดภัยคอยเซฟ",
+          vision: "ได้รับเช็คลิสต์ตรวจจุดเปราะบางภาษีบริษัทฟรีทันทีทางข้อความเพื่อนำไปวางโครงสร้างใหม่",
+          reason: "สร้าง Low Friction CTA ดึงผู้ประกอบการทักคอมเมนต์เพื่อโยนเข้า ManyChat"
+        },
+        {
+          title: "เปิดจองคิว 1-on-1 Discovery Zoom วางระบบจัดสรรพอร์ต Keyman Wealth Reserve จำกัดเพียง 5 คิวสัปดาห์นี้",
+          badge: "BOFU board breakdown",
+          antivision: "เคยได้รับคำแนะนำเสนอขายพอร์ตนิติบุคคลจากช่องทางอื่นที่เน้นยัดยอดขายโดยไม่เข้าใจงบดุลบัญชี",
+          vision: "ได้รับการคำนวณปรับแต่งพอร์ตสินทรัพย์พิเศษที่เหมาะสมกับกระแสเงินสดนิติบุคคลของคุณอย่างแท้จริง",
+          reason: "กระตุ้น Scarcity เร่งรัดเจ้าของกิจการรายใหญ่ให้พิมพ์ Keyword จับจองนัดคุยทันที"
+        },
+        {
+          title: "เหตุผลหลักที่ Financetry ออกแบบแผนการเงินเน้นปกป้องสภาพคล่องกระแสเงินสด (Liquidity Safeguard) ของธุรกิจใหม่",
+          badge: "BOFU client case study",
+          antivision: "เบื่อระบบการเสนอแนะย้ายเงินเก็บของนิติบุคคลไปจมล็อกไว้ในตราสารหนี้ระยะยาวอย่างไร้ความคุ้มค่า",
+          vision: "ได้รับทางเลือกการบริหารเงินกองกลางกรรมการที่ยืดหยุ่น สูงด้วยสภาพคล่อง และปลอดภัยสูงสุด",
+          reason: "ขยี้จุดยืนแบรนด์โปร่งใส ตรงไปตรงมา Advisor Role ปิดกระบวนการตัดสินใจลีดใหญ่"
+        }
+      ]
+    }
+  };
+
+  // Music Tracks Calico Index & BGM Library
+  const musicLibrary = [
+    { name: "Calico Chill Lofi", vibe: "Chill", val: 1, desc: "บีทลอฟายเบาๆ สุภาพนุ่มลึก ไม่ดึงความสนใจไปจากเสียงพูดสแกนสเปรดชีต", link: "https://calico-index-264.notion.site/" },
+    { name: "Ethereal Financial Plan", vibe: "Sophisticated", val: 5, desc: "เสียงเปียโนนุ่มละมุน สลับเสียงสังเคราะห์พรีเมียมระดับ High-Ticket", link: "https://creator-economy.notion.site/" },
+    { name: "Tax-Free Smooth Jazz", vibe: "Warm", val: 3, desc: "จังหวะแจ๊สลื่นหูสไตล์ฟิลอบอุ่น เป็นมิตร สุภาพ นอบน้อมเหมือนนั่งคุยกับ Nick", link: "https://lemon-turret-474.notion.site/" },
+    { name: "Nothing But Growth Beats", vibe: "Energizing", val: 4, desc: "บีทแน่น ดุดันขึ้นมาเล็กน้อย ดึงอารมณ์วัยรุ่นอยากเติบโตทางการเงินและหนีความยากจน", link: "https://calico-index-264.notion.site/" },
+    { name: "Viral Hook Accelerator", vibe: "Viral", val: 2, desc: "เสียงจังหวะเร้าที่กำลังฮิตติดเทรนด์บน IG / TikTok สำหรับเร่งอัตราหยุดดูในคลิป TOFU", link: "https://lemon-turret-474.notion.site/" }
+  ];
+
+  // Hook Templates Library
+  const hookTemplates = {
+    tofu: [
+      "หยุดทำแบบนี้ถ้าไม่อยากโดนประเมินภาษีย้อนหลังหลักแสน...",
+      "เทียบกันชัดๆ: 1 แสนแรกวางไว้ตรงไหน ให้เงินโตโดยที่สิทธิ์ภาษีไม่หลุด?",
+      "ถ้าพรุ่งนี้พอร์ตลงทุนส่วนตัวของคุณเหลือ 0 บาท... นี่คือ 3 สิ่งแรกที่คุณต้องทำด่วน",
+      "มนุษย์เงินเดือนรายได้ 5 หมื่น ซื้อกองทุนลดหย่อนแบบไหนให้เงินไม่จม 10 ปี?"
+    ],
+    mofu: [
+      "นี่คือความลับหลังโต๊ะคำนวณที่ Nick.Financetry ไม่เคยบอกที่ไหน...",
+      "เปิดวิธีกางตารางสเปรดชีตสแกนหาจุดอับกระแสเงินสดใน 3 วินาที",
+      "ทำไมที่ปรึกษาการเงินรุ่นใหม่ ถึงยอมบอกความจริงเรื่องพอร์ตลดหย่อนแบบตรงไปตรงมา?",
+      "เบื้องหลังการออกแบบพอร์ต Keyman Reserve ที่ช่วยนิติบุคคลประหยัดหลักแสนต่อปี"
+    ],
+    bofu: [
+      "มาดูกันครับว่าทำไมลูกค้าเคสนี้ถึงได้ส่วนต่างคืนภาษีสูงถึง 36,000 บาทในเดือนเดียว",
+      "กางแผนผังพิมพ์เขียวสรุปกระแสเงินนิติบุคคลเพื่อเซฟภาษีกรรมการอย่างถูกกฎหมาย 100%",
+      "ตรวจสุขภาพการเงินของคุณก่อนสิ้นปีแบบ 1-on-1 Discovery Call เพื่ออุดรอยรั่ว",
+      "ทำไมการวางแผนการเงินกับ Financetry ถึงเน้นตัวเลขจริงปราศจากน้ำยอดประกันขายฝัน?"
+    ]
+  };
+
+  // State Variables
+  let currentICP = 'salaryman';
+  let currentFunnel = 'tofu';
+  let selectedIdea = null;
+  let selectedMusic = null;
+  let activeStep = 1;
+
+  // Initialize page on load
+  document.addEventListener('DOMContentLoaded', () => {
+    generateIdeas();
+    generateMusic();
+    updateScriptStats();
+  });
+
+  // Switch Active Step
+  window.switchStep = function(stepNum) {
+    if (stepNum > 1 && !selectedIdea) {
+      showToast("⚠️ กรุณาเลือกไอเดียคอนเทนต์ในขั้นตอนที่ 1 ก่อนครับ");
+      return;
+    }
+    
+    // Manage tabs active class
+    for (let i = 1; i <= 3; i++) {
+      const tab = document.getElementById(`tab-step-${i}`);
+      const panel = document.getElementById(`panel-step-${i}`);
+      if (i === stepNum) {
+        tab.classList.add('active');
+        panel.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+        panel.classList.remove('active');
+      }
+    }
+    activeStep = stepNum;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Filter matrix by ICP
+  window.selectICP = function(icp, btn) {
+    const btns = btn.parentElement.querySelectorAll('.opt-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentICP = icp;
+    generateIdeas();
+    resetSelection();
+  };
+
+  // Filter matrix by Funnel
+  window.selectFunnel = function(funnel, btn) {
+    const btns = btn.parentElement.querySelectorAll('.opt-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFunnel = funnel;
+    
+    // Update Stage Badge
+    const badge = document.getElementById('stage-badge');
+    badge.className = `idea-badge ib-${funnel}`;
+    badge.textContent = funnel.toUpperCase();
+    
+    generateIdeas();
+    resetSelection();
+  };
+
+  function resetSelection() {
+    selectedIdea = null;
+    document.getElementById('lock-btn').disabled = true;
+    document.getElementById('lock-summary-text').innerHTML = 'กรุณาเลือกไอเดียและเพลงด้านบนเพื่อล็อคเข้าสู่บทเขียน';
+  }
+
+  // Generate Ideas list
+  function generateIdeas() {
+    const container = document.getElementById('idea-list-container');
+    container.innerHTML = '';
+    
+    const ideas = contentMatrix[currentICP][currentFunnel] || [];
+    
+    ideas.forEach((idea, index) => {
+      const card = document.createElement('div');
+      card.className = 'idea-card';
+      card.onclick = () => selectIdeaCard(card, idea);
+      
+      const badgeClass = `ib-${currentFunnel}`;
+      
+      card.innerHTML = `
+        <div class="idea-card-header">
+          <span class="idea-badge ${badgeClass}">${idea.badge || 'TOFU'}</span>
+          <div class="idea-selector"></div>
+        </div>
+        <div class="idea-title">🔥 ไอเดียที่ ${index + 1}: ${idea.title}</div>
+        <div class="idea-details">
+          <div class="details-box">
+            <strong>🔴 Anti-Vision (สิ่งที่ลูกค้าอยากหนี)</strong>
+            <span>${idea.antivision}</span>
+          </div>
+          <div class="details-box">
+            <strong>🟢 Vision (สิ่งที่ลูกค้าอยากได้)</strong>
+            <span>${idea.vision}</span>
+          </div>
+        </div>
+        <div class="reason-box">
+          💡 <strong>เหตุผลวิเคราะห์ยอดวิว:</strong> ${idea.reason}
+        </div>
+      `;
+      
+      container.appendChild(card);
+    });
+  }
+
+  function selectIdeaCard(card, idea) {
+    const cards = document.querySelectorAll('.idea-card');
+    cards.forEach(c => c.classList.remove('selected'));
+    
+    card.classList.add('selected');
+    selectedIdea = idea;
+    
+    checkLockConditions();
+  }
+
+  // Generate music list based on Vibe
+  function generateMusic(vibeVal = 3) {
+    const container = document.getElementById('music-track-container');
+    container.innerHTML = '';
+    
+    musicLibrary.forEach(track => {
+      const isSelected = selectedMusic && selectedMusic.name === track.name;
+      const trackDiv = document.createElement('div');
+      trackDiv.className = `music-track ${isSelected ? 'selected' : ''}`;
+      trackDiv.onclick = () => selectMusicTrack(trackDiv, track);
+      
+      trackDiv.innerHTML = `
+        <div class="track-info">
+          <div class="track-name">🎵 ${track.name} (${track.vibe})</div>
+          <div class="track-meta">${track.desc}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <a href="${track.link}" target="_blank" class="track-link-btn" onclick="event.stopPropagation()">เปิด Notion ➔</a>
+          ${isSelected ? `
+            <div class="wave-visualizer">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      container.appendChild(trackDiv);
+    });
+  }
+
+  function selectMusicTrack(div, track) {
+    const tracks = document.querySelectorAll('.music-track');
+    tracks.forEach(t => t.classList.remove('selected'));
+    
+    selectedMusic = track;
+    generateMusic(); // Re-render to show visualizer on active track
+    checkLockConditions();
+  }
+
+  function updateVibe(val) {
+    const display = document.getElementById('vibeDisplay');
+    const vibes = {
+      1: "Chill Lofi",
+      2: "Viral Trends",
+      3: "Normal Beats",
+      4: "Energizing Beats",
+      5: "Sophisticated Plan"
+    };
+    display.textContent = vibes[val] || "Normal Beats";
+    generateMusic(val);
+  }
+
+  function checkLockConditions() {
+    const btn = document.getElementById('lock-btn');
+    if (selectedIdea && selectedMusic) {
+      btn.disabled = false;
+      document.getElementById('lock-summary-text').innerHTML = `
+        ล็อคเรียบร้อย: <strong>"เรื่อง ${selectedIdea.title.substring(0, 24)}..."</strong> คู่กับเพลง <strong>"${selectedMusic.name}"</strong>
+      `;
+    } else if (selectedIdea) {
+      btn.disabled = true;
+      document.getElementById('lock-summary-text').innerHTML = `เลือกไอเดียสำเร็จแล้ว กรุณาเลือก<strong>ดนตรีประกอบประกอบด่วน</strong>ครับ`;
+    }
+  }
+
+  // Lock In selections and construct Step 2 workspace
+  window.lockInSelection = function() {
+    if (!selectedIdea || !selectedMusic) return;
+    
+    // Auto-populate Step 2 textareas
+    document.getElementById('script-hook').value = `🔥 [AUDIO CUE: ${selectedMusic.name} เริ่มต้นขึ้นเบาๆ]\n` + 
+      `"${selectedIdea.title}"\n` +
+      `[VISUAL CUE: Nick นั่งตัวตรง จัดโต๊ะ Setup All-White จ้องกล้องมั่นใจ]`;
+      
+    document.getElementById('script-body').value = `ทำไมเราต้องรู้เรื่องนี้? เพราะส่วนใหญ่คนมักจะติดอยู่กับ:\n` +
+      `❌ ${selectedIdea.antivision}\n\n` +
+      `[VISUAL CUE: กรีนสกรีนตารางข้อมูลชี้ขึ้นจอ]\n` +
+      `แต่ถ้าวางแผนให้ดี มีระบบเซฟพอร์ตที่ถูกต้อง สิ่งที่จะได้รับกลับมาคือ:\n` +
+      `✅ ${selectedIdea.vision}\n\n` +
+      `[AUDIO CUE: เสียงดนตรี ${selectedMusic.name} เคลียร์สลับบีท Drop เร้าหัวใจ]`;
+      
+    document.getElementById('script-cta').value = `ต้องการให้ Nick ช่วยคำนวณและสแกนหาช่องโหว่พอร์ตการเงินส่วนบุคคลฟรีผ่าน Discovery Zoom?\n` +
+      `พิมพ์คำว่า [PLAN] ใต้โพสต์นี้ทันที แล้วผมจะส่งลิงก์ตรวจสิทธิ์ให้ในข้อความส่วนตัวครับ!`;
+      
+    // Populate Hook Library helpers
+    const hookList = document.getElementById('hook-library-list');
+    hookList.innerHTML = '';
+    const templates = hookTemplates[currentFunnel] || [];
+    templates.forEach(tpl => {
+      const pill = document.createElement('div');
+      pill.className = 'hook-pill';
+      pill.textContent = tpl;
+      pill.onclick = () => {
+        // Replace current Hook text
+        const hookTextarea = document.getElementById('script-hook');
+        hookTextarea.value = `🔥 [AUDIO CUE: ${selectedMusic.name}]\n"${tpl}"\n[VISUAL CUE: จ้องกล้องตรงเข้ม]`;
+        updateScriptStats();
+        showToast("🔄 เปลี่ยนเทมเพลต Hook ตัวอย่างเรียบร้อย!");
+      };
+      hookList.appendChild(pill);
+    });
+
+    updateScriptStats();
+    showToast("🔒 ล็อคเป้าหมายเรียบร้อย! ข้อมูลถูกป้อนเข้าสู่ระบบสมุดร่างบทแล้ว");
+    
+    // Switch to step 2 automatically
+    setTimeout(() => {
+      switchStep(2);
+    }, 1000);
+  };
+
+  // Helper function to insert Tag at cursor
+  window.insertTag = function(textareaId, tag) {
+    const el = document.getElementById(textareaId);
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const text = el.value;
+    el.value = text.substring(0, start) + " " + tag + " " + text.substring(end);
+    el.focus();
+    el.selectionStart = el.selectionEnd = start + tag.length + 2;
+    updateScriptStats();
+  };
+
+  // Live Script Stats Updates
+  window.updateScriptStats = function() {
+    const hook = document.getElementById('script-hook').value;
+    const body = document.getElementById('script-body').value;
+    const cta = document.getElementById('script-cta').value;
+
+    const fullText = hook + " " + body + " " + cta;
+    
+    // Calculate Characters
+    document.getElementById('hook-char-count').textContent = `${hook.length} อักษร`;
+    document.getElementById('body-char-count').textContent = `${body.length} อักษร`;
+    document.getElementById('cta-char-count').textContent = `${cta.length} อักษร`;
+
+    // Calculate words (very rough approximation for Thai + English mix)
+    // Thai doesn't have spaces, so we divide characters by 4.5 as a standard proxy for words count
+    const cleanText = fullText.replace(/\[.*?\]/g, ""); // remove cues
+    const estimatedWords = Math.ceil(cleanText.length / 4.5);
+    document.getElementById('stat-words').textContent = estimatedWords;
+
+    // Time estimate (average speaking rate of 2.5 words per second)
+    const timeSec = Math.ceil(estimatedWords / 2.3);
+    document.getElementById('stat-time').textContent = `${timeSec}s`;
+
+    // Cues count
+    const cuesCount = (fullText.match(/\[.*?\]/g) || []).length;
+    document.getElementById('stat-cues').textContent = cuesCount;
+    
+    generatePerfectLoop();
+  };
+
+  // Generate perfect loop box
+  window.generatePerfectLoop = function() {
+    const active = document.getElementById('perfectLoopToggle').checked;
+    const loopBox = document.getElementById('loop-box-content');
+    
+    if (!active) {
+      loopBox.innerHTML = "เปิดระบบลูปเพื่อดูการเชื่อมประโยคแบบไร้รอยสะดุดของวิดีโอสั้น";
+      return;
+    }
+
+    const hook = document.getElementById('script-hook').value.replace(/\[.*?\]/g, "").trim().substring(0, 40);
+    const cta = document.getElementById('script-cta').value.replace(/\[.*?\]/g, "").trim();
+
+    loopBox.innerHTML = `<span style="color:#34d399;"><strong>ร้อยบทต่อกัน:</strong></span> "...${cta.substring(cta.length - 40)} ➔ <strong>${hook}...</strong>"`;
+  };
+
+  // Save Step 2 & Move to Step 3
+  window.saveScriptAndGoToStep3 = function() {
+    showToast("📝 บันทึกข้อมูลคิวสคริปต์และจังหวะเวลาเสร็จสิ้น!");
+    setTimeout(() => {
+      switchStep(3);
+    }, 800);
+  };
+
+  // LUT Skin Tone preview
+  window.updateLUTSim = function(val) {
+    const overlay = document.getElementById('lutOverlay');
+    const displayVal = document.getElementById('lutDisplayVal');
+    const label = document.getElementById('lutLabel');
+    const canvas = document.getElementById('lutCanvasMock');
+
+    overlay.style.opacity = val / 100;
+    displayVal.textContent = `${val}%`;
+    
+    if (val == 40) {
+      displayVal.textContent = `40% (Skin-Sweet Spot)`;
+      label.textContent = `Skin Tint: WARM 40% (นุ่มนวลธรรมชาติ)`;
+      canvas.style.filter = "none";
+    } else if (val > 70) {
+      label.textContent = `Skin Tint: WARM ${val}% (เตือน: หน้าเริ่มอมเหลือง)`;
+    } else {
+      label.textContent = `Skin Tint: WARM ${val}%`;
+    }
+  };
+
+  // Audio mix sliders
+  window.updateAudioFader = function(type, val) {
+    const valDisplay = document.getElementById(`fade${type}Val`);
+    valDisplay.textContent = `${val} dB`;
+    
+    // Sweet spot warning
+    if (type === 'Speak') {
+      if (val >= -8 && val <= -4) {
+        valDisplay.className = "fader-val alert-sweet";
+      } else {
+        valDisplay.className = "fader-val alert-high";
+      }
+    } else if (type === 'Music') {
+      if (val >= -28 && val <= -22) {
+        valDisplay.className = "fader-val alert-sweet";
+      } else {
+        valDisplay.className = "fader-val alert-high";
+      }
+    }
+  };
+
+  // Toast message
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+
+  // Export final delivery details
+  window.exportFinalDeliverable = function() {
+    const hook = document.getElementById('script-hook').value;
+    const body = document.getElementById('script-body').value;
+    const cta = document.getElementById('script-cta').value;
+    
+    const speakDb = document.getElementById('fadeSpeak').value;
+    const musicDb = document.getElementById('fadeMusic').value;
+    const sfxDb = document.getElementById('fadeSFX').value;
+    const warmLut = document.getElementById('lutRange').value;
+
+    const summaryText = `===========================================
+⚡ FINANCETRY INTERACTIVE STUDIO SUMMARY REPORT ⚡
+===========================================
+🎯 กลุ่มเป้าหมาย (ICP): ${currentICP.toUpperCase()}
+📐 กรวยคอนเทนต์ระดับ: ${currentFunnel.toUpperCase()}
+
+🎹 ดนตรีประกอบหลัก: ${selectedMusic ? selectedMusic.name : "ไม่ได้กำหนด"}
+🎨 การย้อมสีผิว Nothing: WARM LUT Intensity @ ${warmLut}%
+
+===========================================
+📝 บทวิดีโอ (COMPLETE SCRIPT & SCENE WORK)
+===========================================
+[🪝 ส่วนที่ 1: Hook]
+${hook}
+
+[📖 ส่วนที่ 2: เนื้อหาหลัก & Re-Hooks]
+${body}
+
+[🎯 ส่วนที่ 3: ปิดท้าย CTA ดักแชต]
+${cta}
+
+===========================================
+🎧 การตั้งค่ามิกซ์เสียงไทม์ไลน์ CapCut Desktop
+===========================================
+🔊 เสียงพูดบรรยายหลัก: ${speakDb} dB
+🎵 ดนตรีคลอ Calico Index: ${musicDb} dB
+💥 เสียงประกอบ SFX: ${sfxDb} dB
+
+===========================================
+🛠️ เช็คลิสต์ก่อนอัพโหลด (Nothing 2a & CapCut Setup)
+===========================================
+✅ ความละเอียดสูงสุด: 4K | 30fps
+✅ โปรไฟล์สีกล้อง: Rec.709 ธรรมดา
+✅ เปิดใช้งานฟีเจอร์ Proxy ใน CapCut Desktop เรียบร้อย
+✅ ล็อคระบบเสียงพูดเดี่ยว (Vocal Enhancement)
+✅ ป้องกันการซับบดตารางด้วย Auto Cutout Mask
+===========================================`;
+
+    document.getElementById('exportTextarea').value = summaryText;
+    document.getElementById('summaryModal').classList.add('show');
+  };
+
+  window.closeModal = function(e) {
+    document.getElementById('summaryModal').classList.remove('show');
+  };
+</script>
+</body>
+</html>

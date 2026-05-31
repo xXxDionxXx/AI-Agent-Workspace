@@ -15,11 +15,13 @@
 * 🗺️ **[Brand Evolution Roadmap](1-My-Personal-Brand/Brand_Evolution_Roadmap.md)**  
   *(แผนพัฒนาและขยายตัวตนระยะยาวของคุณเพื่อก้าวไปสู่ธุรกิจ High-Ticket Offer)*
 
-### 💡 หมวดที่ 2 & 3: การคิดไอเดียและฟอร์แมท (Ideation & Formats)
+### 💡 หมวดที่ 2: การคิดไอเดียและกรวยลูกค้า (Ideation & Funnel Stage)
 * 💡 **[Ideation Guide](2-Ideation/Ideation-guide.md)**  
-  *(คู่มือกลยุทธ์การขุดหาประเด็นคอนเทนต์ให้โดนใจและมีคนอยากฟัง)*
-* 🎬 **[Formats Guide](3-Formats/Formats-guide.md)**  
-  *(คู่มือจัดสัดส่วนวิดีโอดึงคนใหม่ TOFU, บ่มเพาะฐานแฟน MOFU, และปิดการขาย BOFU)*
+  *(คู่มือกลยุทธ์การขุดหาประเด็นคอนเทนต์การเงินให้ตรงใจและน่าสนใจ)*
+* 📐 **[Funnel Stage & Format Guide](2-Ideation/Funnel-state-&-format.md)**  
+  *(คู่มือจัดระดับคอนเทนต์ดึงคนใหม่ TOFU, บ่มเพาะฐานแฟน MOFU, และปิดการขาย BOFU)*
+* 📅 **[Monthly Planning Workbook](2-Ideation/Monthly-Planning-Workbook.md)**  
+  *(สมุดวางแผนจัดสัดส่วนแคมเปญประจำเดือน คัดกรองสัดส่วนคลิป 4:2:1 และระดมสมองหัวข้อรายถัง)*
 
 ### ✍️ หมวดที่ 4: การร่างบทและคลังคำหยุดสายตา (Scripting Hub)
 * 📝 **[Workbook.md (สมุดจดสคริปต์พูดตัวจริง)](4-Scripting/Workbook.md)**  
@@ -40,14 +42,29 @@
   *(คู่มือคุมโปรดักชันอย่างมีระดับ การจัดไฟนวลลบเงา และการตั้งค่า Nothing Phone 2a สูงสุด)*
 * 📐 **[Cinematic Framing Library](5-Production/Cinematic-Framing-library.md)**  
   *(คลังรวบรวมเทคนิค Visual Hook, ขนาดภาพการซูม และท่าทางกระตุ้นอารมณ์หน้ากล้อง)*
+* 🎬 **[Scene Transition Sequence](5-Production/Scene-Transition-Sequence.md)**  
+  *(สูตรลำดับช็อตเปลี่ยนสถานที่สลับฉากแบบไร้รอยต่อโดยไม่ขัดหูขัดตาผู้ชม)*
 * 🎨 **[LUTS Guide & Color Grading](5-Production/LUTS-Guide.md)**  
   *(วิธีเกรดโทนสีผิวและใช้งานไฟล์ย้อมสี .cube ในโฟลเดอร์ [LUTS](5-Production/LUTS) เพื่อดึงภาพ Rec.709 ให้ดูพรีเมียม)*
 
 ### ✂️ หมวดที่ 6 & 7: งานเสียง การตัดต่อ และคอนเทนต์ภาพนิ่ง (Editing & Carousels)
-* 🔊 **[Audio & Sound Design Guide](6-Editing/audio-editing-guide.md)**  
+* 🎬 **[Video Editing Cuts Guide](6-Editing/cuts-guide.md)**  
+  *(คู่มือ 10 เทคนิคการต่อเชื่อมวิดีโอแบบมืออาชีพเพื่อสร้างจังหวะและการเล่าเรื่องแบบภาพยนตร์)*
+* 📱 **[Object Behind Person Guide (วัตถุอยู่ข้างหลังคน)](6-Editing/Object-Behind-Person.md)**  
+  *(คู่มือเทคนิควางภาพ ตารางภาษี หรือกราฟิกการเงินไว้ด้านหลังตัวบุคคลด้วยแอปมือถือ)*
+* 💬 **[Custom Comment Box Guide (สร้างกล่องคอมเมนต์คำถาม)](6-Editing/Custom-Comment-Box.md)**  
+  *(คู่มือการสร้างกล่องข้อความคำถามจำลองพรีเมียม เพื่ออัปโหลดใส่ในคลิปแบบ PNG โปร่งแสง)*
+* 📝 **[Gemini SRT Subtitles (เทคนิคการเจนซับคำสั้นด้วย AI)](6-Editing/Gemini-SRT-Subtitles.md)**  
+  *(คู่มือและ Prompt ทองคำสั่ง Gemini เจนซับไตเติลภาษาไทยคำสั้นพิเศษ .srt)*
+* 🎬 **[Whip-Action Match Cut (เทคนิคสะบัดมือเปลี่ยนสิ่งของ)](6-Editing/Whip-Action-Match-Cut.md)**  
+  *(คู่มือเทคนิคถ่ายทำและตัดต่อ Unbox Effect สะบัดมือเสกแผนการเงิน B-Roll แบบไร้รอยต่อ)*
+
+* 🔊 **[Audio & Sound Design Guide](6-Editing/Audio/audio-editing-guide.md)**  
   *(ตารางคุมเดซิเบลเสียงพูด เสียงดนตรีคลอ และคู่มือหยิบเสียงเอฟเฟกต์ SFX จริงในเครื่องไปจัดมุมเสียงระดับภาพยนตร์)*
 * 🎨 **[Carousels Guide](7-Carousels/Carousels-guide.md)**  
   *(คัมภีร์เขียนคอนเทนต์รูปแบบสไลด์/ภาพนิ่ง ที่ช่วยอธิบายประเด็นการเงินยากๆ ให้อ่านง่าย)*
+
+
 
 ### 🧠 หมวดพิเศษ: คลังความรู้สะสมการเงินเชิงลึก (Creator Financial Wiki)
 * 📚 **[Creator Financial Content Wiki Portal](wiki/index.md)**  
