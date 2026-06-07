@@ -1032,7 +1032,7 @@
   </div>
   <div class="nav-meta">
     <span class="status-dot"></span>
-    Creator: Nick | Nothing Phone 2a Rec.709 Engine
+    Creator: Nick | DJI Osmo Pocket 3 (Primary) & Nothing Phone 2a (Secondary)
   </div>
 </header>
 
@@ -1264,24 +1264,31 @@
   <!-- ==================== STEP 3 PANEL ==================== -->
   <div class="workflow-panel" id="panel-step-3">
     <div class="prod-grid">
-      <!-- Left side: Nothing Phone 2a Camera checklist -->
+      <!-- Left side: Camera & Mic Production Checklist -->
       <div class="prod-box">
         <div class="prod-box-title">
-          <span>📸</span> การตั้งกล้อง Nothing Phone 2a (Skin Tone Sweet Spot)
+          <span>📸</span> การตั้งค่าอุปกรณ์ถ่ายทำ & เสียง (Primary Pocket 3 & Secondary Phone 2a)
         </div>
         <div class="checklist">
           <label class="check-item">
             <input type="checkbox" checked>
             <div class="check-text">
-              <strong>ความละเอียดสูงสุด 4K | 30 fps (Nothing Phone 2a)</strong>
-              <span class="check-sub">ตั้งกล้องหลังตัวหลัก เลนส์ธรรมดา (ห้ามใช้กล้องหน้าเซลฟี่ภาพจะเกรนต่ำ) เพื่อความเนี้ยบพรีเมียม</span>
+              <strong>กล้องหลัก DJI Osmo Pocket 3 (4K | D-Log M 10-bit)</strong>
+              <span class="check-sub">ล็อกกิมบอลเป็น Tilt Locked และ AE/AF Lock ก่อนเริ่มถ่ายวิชวลเอฟเฟกต์ เพื่อคุณภาพความละเอียดและสีที่พรีเมียม</span>
             </div>
           </label>
           <label class="check-item">
             <input type="checkbox" checked>
             <div class="check-text">
-              <strong>สกรีนและโพรไฟล์สี Rec.709 ดั้งเดิม</strong>
-              <span class="check-sub">ไม่ใช่ Log ไฟล์ผิวหน้าจะเคลียร์ นุ่มนวล เกรดสกินโทนง่ายที่สุดเมื่อเข้าสู่ CapCut</span>
+              <strong>กล้องรอง Nothing Phone 2a (4K | 30 fps Rec.709)</strong>
+              <span class="check-sub">ใช้กล้องหลังตัวหลักสำหรับถ่ายเบื้องหลัง Story หรืองานด่วนที่ต้องการความคล่องตัว</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>ไมโครโฟน DJI Mic 2 (1 ตัว) & Boya V-30 (2 ตัว)</strong>
+              <span class="check-sub">ใช้ DJI Mic 2 เป็นไมค์หลักสำหรับ A-Roll และใช้ Boya V-30 อีก 2 ตัวสำหรับการเซ็ตติ้งเก็บเสียง Q&A หลายคน/หลายร่าง</span>
             </div>
           </label>
           <label class="check-item">
@@ -1296,13 +1303,6 @@
             <div class="check-text">
               <strong>โครงสร้าง AV Script & Pre-production ลดเครียด</strong>
               <span class="check-sub">ซ้อมแบ่งบล็อกคำพูดเป็นท่อนสั้น 15 วินาที (A-Roll + B-Roll + BGM) แทนการจำบทยาวๆ ทั้งหมด เพื่อลดความตึงเครียดหน้ากล้อง</span>
-            </div>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" checked>
-            <div class="check-text">
-              <strong>ลำดับฉากเปลี่ยนผ่าน (Scene Transition Sequence)</strong>
-              <span class="check-sub">สลับมุมกล้องและ B-Roll ทุก 3-5 วินาที คู่กับ Tonal SFX เพื่อรักษาสมาธิสมองของผู้ชมทางการเงิน</span>
             </div>
           </label>
         </div>
@@ -2008,20 +2008,21 @@
   window.lockInSelection = function() {
     if (!selectedIdea || !selectedMusic) return;
     
-    // Auto-populate Step 2 textareas
+    // Auto-populate Step 2 textareas with Pocket 3 Gimbal Mode details
     document.getElementById('script-hook').value = `🔥 [AUDIO CUE: ${selectedMusic.name} เริ่มต้นขึ้นเบาๆ]\n` + 
       `"${selectedIdea.title}"\n` +
-      `[VISUAL CUE: Nick นั่งตัวตรง จัดโต๊ะ Setup All-White จ้องกล้องมั่นใจ]`;
+      `[VISUAL CUE: Pocket 3 ➔ ตั้งบนขาตั้ง, โหมด Follow, Speed: Default | Nick นั่งตรงโต๊ะ Setup จ้องกล้องมั่นใจ]`;
       
     document.getElementById('script-body').value = `ทำไมเราต้องรู้เรื่องนี้? เพราะส่วนใหญ่คนมักจะติดอยู่กับ:\n` +
       `❌ ${selectedIdea.antivision}\n\n` +
-      `[VISUAL CUE: กรีนสกรีนตารางข้อมูลชี้ขึ้นจอ]\n` +
+      `[VISUAL CUE: Pocket 3 ➔ ถือเดินช้าๆ โหมด Tilt Locked, Speed: Slow | กรีนสกรีนตารางข้อมูลชี้ขึ้นจอ]\n` +
       `แต่ถ้าวางแผนให้ดี มีระบบเซฟพอร์ตที่ถูกต้อง สิ่งที่จะได้รับกลับมาคือ:\n` +
       `✅ ${selectedIdea.vision}\n\n` +
       `[AUDIO CUE: เสียงดนตรี ${selectedMusic.name} เคลียร์สลับบีท Drop เร้าหัวใจ]`;
       
     document.getElementById('script-cta').value = `ต้องการให้ Nick ช่วยคำนวณและสแกนหาช่องโหว่พอร์ตการเงินส่วนบุคคลฟรีผ่าน Discovery Zoom?\n` +
-      `พิมพ์คำว่า [PLAN] ใต้โพสต์นี้ทันที แล้วผมจะส่งลิงก์ตรวจสิทธิ์ให้ในข้อความส่วนตัวครับ!`;
+      `พิมพ์คำว่า [PLAN] ใต้โพสต์นี้ทันที แล้วผมจะส่งลิงก์ตรวจสิทธิ์ให้ในข้อความส่วนตัวครับ!\n` +
+      `[VISUAL CUE: Pocket 3 ➔ ถือถ่ายตัวเองแบบเดินหันหลังพาทัวร์ออฟฟิศ, โหมด Follow, Speed: Default]`;
       
     // Populate Hook Library helpers
     const hookList = document.getElementById('hook-library-list');
@@ -2032,9 +2033,18 @@
       pill.className = 'hook-pill';
       pill.textContent = tpl;
       pill.onclick = () => {
-        // Replace current Hook text
+        // Replace current Hook text with camera instructions embedded in cues
         const hookTextarea = document.getElementById('script-hook');
-        hookTextarea.value = `🔥 [AUDIO CUE: ${selectedMusic.name}]\n"${tpl}"\n[VISUAL CUE: จ้องกล้องตรงเข้ม]`;
+        let gimbalHint = "Pocket 3 ➔ โหมด Follow, Speed: Default";
+        if (tpl.includes("[FPV]") || tpl.includes("[SKY DROP]") || tpl.includes("[JUMP]")) {
+          gimbalHint = "Pocket 3 ➔ ถือเอียงกล้องสลับเร็ว โหมด FPV, Speed: Fast";
+        } else if (tpl.includes("[WALKING]") || tpl.includes("[RIDE]")) {
+          gimbalHint = "Pocket 3 ➔ โหมด Follow, Speed: Default";
+        } else if (tpl.includes("[MIRROR]") || tpl.includes("[TABLET]") || tpl.includes("[MAGNIFYING]")) {
+          gimbalHint = "Pocket 3 ➔ โหมด Tilt Locked, Speed: Slow";
+        }
+        
+        hookTextarea.value = `🔥 [AUDIO CUE: ${selectedMusic.name}]\n"${tpl}"\n[VISUAL CUE: ${gimbalHint} | จ้องกล้องตรงเข้ม]`;
         updateScriptStats();
         showToast("🔄 เปลี่ยนเทมเพลต Hook ตัวอย่างเรียบร้อย!");
       };
@@ -2049,6 +2059,7 @@
       switchStep(2);
     }, 1000);
   };
+
 
   // Helper function to insert Tag at cursor
   window.insertTag = function(textareaId, tag) {
