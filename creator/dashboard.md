@@ -12,6 +12,8 @@
 ### 👥 หมวดที่ 1: ตัวตนและการวางกลยุทธ์ (My Personal Brand)
 * 🎯 **[My Personal Brand](1-My-Personal-Brand/My-Personal-Brand.md)**  
   *(แก่นแบรนด์บุคคลของคุณ Nick, Target Group สายการเงิน, และโทนการนำเสนอระดับพรีเมียม)*
+* 🧭 **[Content Strategy Framework](1-My-Personal-Brand/content_strategy_framework.md)**  
+  *(กลยุทธ์การสร้างคอนเทนต์สะกดสายตา ดึงดูดและเปลี่ยนยอดวิวเป็นความไว้วางใจ - Stop, Stay & Pay Attention)*
 * 🗺️ **[Brand Evolution Roadmap](1-My-Personal-Brand/Brand_Evolution_Roadmap.md)**  
   *(แผนพัฒนาและขยายตัวตนระยะยาวของคุณเพื่อก้าวไปสู่ธุรกิจ High-Ticket Offer)*
 
