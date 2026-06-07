@@ -1156,10 +1156,12 @@
             <div class="script-section-meta" id="hook-char-count">0 อักษร</div>
           </div>
           <textarea class="script-textarea" id="script-hook" placeholder="ร่างพาดหัวเปิดคลิปแบบหยุดนิ้วที่นี่..." oninput="updateScriptStats()"></textarea>
-          <div class="cue-buttons">
+          <div class="cue-buttons" style="flex-wrap: wrap; row-gap: 6px;">
             <button class="cue-btn visual-badge" onclick="insertTag('script-hook', '[VISUAL: Zoom In 15% + Sound Effect]')">🎬 ซูมหน้ากล้อง</button>
             <button class="cue-btn visual-badge" onclick="insertTag('script-hook', '[VISUAL: ขึ้นหัวข้อข้อความกระพริบสีแดง]')">💬 ขึ้นหัวข้อคำดัก</button>
+            <button class="cue-btn visual-badge" onclick="insertTag('script-hook', '[VISUAL: Loop Start - เดินผ่านกล้องพูดประโยคแรก]')">🔄 วิดีโอลูปเปิด</button>
             <button class="cue-btn audio-badge" onclick="insertTag('script-hook', '[AUDIO: SFX Whoosh]')">🔊 SFX สะบัดลม</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-hook', '[AUDIO: SFX Tonal D Chord]')">🎹 SFX คีย์วิเศษ (Tonal)</button>
           </div>
         </div>
 
@@ -1170,9 +1172,10 @@
             <div class="script-section-meta" id="body-char-count">0 อักษร</div>
           </div>
           <textarea class="script-textarea" id="script-body" style="min-height: 180px;" placeholder="เนื้อความหลัก: ชี้ปัญหา (Anti-Vision) และแนวทางแก้ (Vision)..." oninput="updateScriptStats()"></textarea>
-          <div class="cue-buttons">
+          <div class="cue-buttons" style="flex-wrap: wrap; row-gap: 6px;">
             <button class="cue-btn visual-badge" onclick="insertTag('script-body', '[VISUAL: Green Screen ชี้ตารางงบเปรียบเทียบ]')">🎬 ชี้ตารางกรีนสกรีน</button>
             <button class="cue-btn visual-badge" onclick="insertTag('script-body', '[VISUAL: วาดแผนภาพบอร์ด Miro อธิบายการเงิน]')">🎬 วาดกระดาน Miro</button>
+            <button class="cue-btn visual-badge" onclick="insertTag('script-body', '[VISUAL: สลับสีกระจกสแกน (Mirror Reveal) / B-Roll]')">🪞 สลับ B-Roll/สกินเกรด</button>
             <button class="cue-btn audio-badge" onclick="insertTag('script-body', '[AUDIO: BGM เคลียร์คลอเบาลงสำหรับจุดสำคัญ]')">🔊 ลดเสียงเพลง</button>
             <button class="cue-btn audio-badge" onclick="insertTag('script-body', '[AUDIO: SFX Pop Up ตอนขึ้นกราฟฟิก]')">🔊 SFX เด้งข้อความ</button>
           </div>
@@ -1185,9 +1188,11 @@
             <div class="script-section-meta" id="cta-char-count">0 อักษร</div>
           </div>
           <textarea class="script-textarea" id="script-cta" placeholder="คำชวนปิดท้ายให้ทักอินบ็อกซ์หรือคอมเมนต์คำสำคัญ..." oninput="updateScriptStats()"></textarea>
-          <div class="cue-buttons">
+          <div class="cue-buttons" style="flex-wrap: wrap; row-gap: 6px;">
             <button class="cue-btn visual-badge" onclick="insertTag('script-cta', '[VISUAL: ชี้ไปที่ปุ่มคอมเมนต์ / คำที่จะให้พิมพ์]')">🎬 ชี้คำสำคัญ</button>
+            <button class="cue-btn visual-badge" onclick="insertTag('script-cta', '[VISUAL: Loop End - เดินออกจากเฟรมทางขวา]')">🔄 วิดีโอลูปปิด</button>
             <button class="cue-btn audio-badge" onclick="insertTag('script-cta', '[AUDIO: SFX Bell Bell กระดิ่ง]')">🔊 SFX สั่นกระดิ่ง</button>
+            <button class="cue-btn audio-badge" onclick="insertTag('script-cta', '[AUDIO: SFX Tonal Resolve Chord]')">🎹 SFX ปิดเสียงทุ้มลึก</button>
           </div>
         </div>
       </div>
@@ -1268,22 +1273,36 @@
           <label class="check-item">
             <input type="checkbox" checked>
             <div class="check-text">
-              <strong>ความละเอียดสูงสุด 4K | 30 fps</strong>
-              <span class="check-sub">ตั้งกล้องหลังตัวหลัก เลนส์ธรรมดา (ห้ามใช้กล้องหน้าเซลฟี่ภาพจะเกรนต่ำ)</span>
+              <strong>ความละเอียดสูงสุด 4K | 30 fps (Nothing Phone 2a)</strong>
+              <span class="check-sub">ตั้งกล้องหลังตัวหลัก เลนส์ธรรมดา (ห้ามใช้กล้องหน้าเซลฟี่ภาพจะเกรนต่ำ) เพื่อความเนี้ยบพรีเมียม</span>
             </div>
           </label>
           <label class="check-item">
             <input type="checkbox" checked>
             <div class="check-text">
               <strong>สกรีนและโพรไฟล์สี Rec.709 ดั้งเดิม</strong>
-              <span class="check-sub">ไม่ใช่ Log ไฟล์ผิวหน้าจะเคลียร์ นุ่มนวล เกรดสกินโทนง่ายที่สุด</span>
+              <span class="check-sub">ไม่ใช่ Log ไฟล์ผิวหน้าจะเคลียร์ นุ่มนวล เกรดสกินโทนง่ายที่สุดเมื่อเข้าสู่ CapCut</span>
             </div>
           </label>
           <label class="check-item">
             <input type="checkbox" checked>
             <div class="check-text">
-              <strong>จัดไฟนวลหลบเงาข้างจมูก</strong>
-              <span class="check-sub">ไฟ Key Light 45 องศา ลบรอยเหี่ยวย่นผิวหน้าให้ดูคมและสุขภาพดี</span>
+              <strong>จัดไฟนวลหลบเงาข้างจมูก & Bounce Light</strong>
+              <span class="check-sub">ไฟ Key Light 45 องศา สะท้อนกำแพงขาวเพื่อแสงเด้งนุ่มเป็นธรรมชาติ ลบรอยเหี่ยวย่น</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>โครงสร้าง AV Script & Pre-production ลดเครียด</strong>
+              <span class="check-sub">ซ้อมแบ่งบล็อกคำพูดเป็นท่อนสั้น 15 วินาที (A-Roll + B-Roll + BGM) แทนการจำบทยาวๆ ทั้งหมด เพื่อลดความตึงเครียดหน้ากล้อง</span>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" checked>
+            <div class="check-text">
+              <strong>ลำดับฉากเปลี่ยนผ่าน (Scene Transition Sequence)</strong>
+              <span class="check-sub">สลับมุมกล้องและ B-Roll ทุก 3-5 วินาที คู่กับ Tonal SFX เพื่อรักษาสมาธิสมองของผู้ชมทางการเงิน</span>
             </div>
           </label>
         </div>
@@ -1302,7 +1321,7 @@
             <span class="lut-preview-label" id="lutLabel">Skin Tint: WARM 40%</span>
           </div>
           <div style="font-size: 0.72rem; color:var(--text-muted); line-height:1.45; font-family:'Sarabun';">
-            ⚠️ <strong>ข้อแนะนำสี:</strong> สำหรับ Nothing Phone 2a การใช้ความเข้ม **WARM ที่ 40%** จะช่วยให้สีผิวขาวเหลืองเป็นธรรมชาติ ถ้าเลื่อนไป 100% ผิวหน้าจะเหลืองติดดีซ่าน
+            ⚠️ <strong>ข้อแนะนำสี:</strong> สำหรับ Nothing Phone 2a การใช้ความเข้ม **WARM ที่ 40%** จะช่วยให้สีผิวขาวเหลืองเป็นธรรมชาติ ถ้าเลื่อนไป 100% ผิวหน้าจะเหลืองติดดีซ่าน และโปรดอ่านคู่มือ <a href="5-Production/Scene-Transition-Sequence.md" target="_blank" style="color:var(--gold); text-decoration:underline;">Scene-Transition-Sequence.md</a> เพิ่มเติมในการตัดต่อ!
           </div>
         </div>
       </div>
@@ -1739,25 +1758,64 @@
     { name: "Viral Hook Accelerator", vibe: "Viral", val: 2, desc: "เสียงจังหวะเร้าที่กำลังฮิตติดเทรนด์บน IG / TikTok สำหรับเร่งอัตราหยุดดูในคลิป TOFU", link: "https://lemon-turret-474.notion.site/" }
   ];
 
-  // Hook Templates Library
+  // Hook Templates Library (Updated with 58 Visual Hooks categorized by target funnel stages)
   const hookTemplates = {
     tofu: [
-      "หยุดทำแบบนี้ถ้าไม่อยากโดนประเมินภาษีย้อนหลังหลักแสน...",
-      "เทียบกันชัดๆ: 1 แสนแรกวางไว้ตรงไหน ให้เงินโตโดยที่สิทธิ์ภาษีไม่หลุด?",
-      "ถ้าพรุ่งนี้พอร์ตลงทุนส่วนตัวของคุณเหลือ 0 บาท... นี่คือ 3 สิ่งแรกที่คุณต้องทำด่วน",
-      "มนุษย์เงินเดือนรายได้ 5 หมื่น ซื้อกองทุนลดหย่อนแบบไหนให้เงินไม่จม 10 ปี?"
+      "[FAST CUTS] 3 ทางเลือกภาษีของมนุษย์เงินเดือน.. แบบไหนคุ้มที่สุด?",
+      "[CINEMATIC TEXT] เงินเดือน 5 หมื่น แต่เหลือเก็บ 0 บาท.. แก้ยังไง?",
+      "[WALKING & TALKING] เดินสแกนหาจุดอับการเงินส่วนบุคคลไปพร้อมกันครับ",
+      "[COUNTDOWN] 3 รูรั่วการเงินยอดฮิตที่ทำให้คนไทยเก็บเงินไม่อยู่",
+      "[POST-IT POP] (หยิบแผ่นกระดาษขึ้นมาแปะเลนส์กล้อง) 'ภาษีแฝง' ที่เราจ่ายโดยไม่รู้ตัว!",
+      "[OFF-SCREEN VOICE] (เสียงตะโกนจากหลังห้อง) 'พี่ครับ! อยากประหยัดภาษีต้องทำยังไงครับ?'",
+      "[MAGNIFYING GLASS] (ถือแว่นขยายจ่อใกล้เลนส์กล้องเพื่อส่องตารางตัวเลข)",
+      "[SKY DROP] (เอฟเฟกต์ตัวละคร Nick ร่วงหล่นดิ่งลงมาจากด้านบนของจอคอม)",
+      "[JUMP SNAP IN-OUT] (สแนปสลับตัดไวซูมหน้า Nick เข้าออกแบบรวดเร็ว)",
+      "[DEPT GESTURE] (ยืนอธิบายแผนภูมิตัวเลขพร้อมวาดมือกว้างสะท้อนถึงวิสัยทัศน์)",
+      "[RIDE IN FRAME] (เลื่อนตัวเข้ามาในเฟรมด้วยเก้าอี้สำนักงานหมุน)",
+      "[CLONE PILLAR SKIT] (ตัดต่อโคลนร่าง Nick ยืนซ้อนกันซ้าย-ขวาอธิบายปัญหา)",
+      "[DUCK UNDER TEXT] (ก้มศีรษะหลบตัวหนังสือพาดหัวที่ลอยมากลางจอ)",
+      "[APPLIANCE FACE] (โผล่หน้าออกมาจากหลังตู้หนังสือ/หลังจอมอนิเตอร์ใหญ่)",
+      "[DESK THUMP ASMR] (เคาะโต๊ะคอมไม้เสียงแน่นดึงสติคนดูทันที)",
+      "[KEYBOARD TYPING] (เอฟเฟกต์เสียงพิมพ์นิ้วรัวบน Nothing Phone 2a)",
+      "[PHONE CALL START] (ถือโทรศัพท์ทำท่าแนบหูแล้วทักว่า 'สวัสดีครับ เสียภาษีเยอะไปหรือเปล่าครับ?')",
+      "[COFFEE SIP] (จิบกาแฟร้อนจากแก้วสีขาวเนี้ยบ จ้องกล้องสุขุมและสุภาพ)",
+      "[GLASSES TAP ASMR] (ใส่แว่นตากรองแสงแล้วใช้นิ้วเคาะขอบขาแว่นเป็นจังหวะ)",
+      "[PAPER SWIPE] (สะบัดแผ่นรายงานภาษีเข้าหากล้องอย่างรวดเร็ว)",
+      "[PEN SPINNING] (ควงปากกาเนี้ยบอธิบายกระดาน Miro แนะนำเส้นทางการเงิน)",
+      "[CALCULATOR SPEED] (รัวนิ้วกดเครื่องคิดเลขเสียงดังแป๊กๆ ใกล้ไมโครโฟน)",
+      "[IPHONE NOTIFICATION] (เสียงป๊อปอัปแจ้งเตือนเงินโอนเข้าดังแทรกใน 2 วินาทีแรก)",
+      "[CANDLE LIGHTING] (จุดไฟแช็กตรงมุมมืดแล้วค่อยๆ เผยสว่างส่องสเต็ปการลงทุน)"
     ],
     mofu: [
-      "นี่คือความลับหลังโต๊ะคำนวณที่ Nick.Financetry ไม่เคยบอกที่ไหน...",
-      "เปิดวิธีกางตารางสเปรดชีตสแกนหาจุดอับกระแสเงินสดใน 3 วินาที",
-      "ทำไมที่ปรึกษาการเงินรุ่นใหม่ ถึงยอมบอกความจริงเรื่องพอร์ตลดหย่อนแบบตรงไปตรงมา?",
-      "เบื้องหลังการออกแบบพอร์ต Keyman Reserve ที่ช่วยนิติบุคคลประหยัดหลักแสนต่อปี"
+      "[SCREEN DROP] (ฉายหน้าจอจำลองคอมพิวเตอร์เล่นคลิปตัวเรายื่นแผนผังภาษีทะลุออกมา)",
+      "[IPAD SCREEN FLIP] (สะบัดหน้าจอแท็บเล็ตหันเข้าหาเลนส์กล้องตรงๆ)",
+      "[MIRROR SHOT] (ถ่ายภาพสะท้อนตัว Nick ผ่านกระจกเงาโต๊ะเครื่องแป้ง)",
+      "[GLASSES OFF REVEAL] (ถอดแว่นตาพับวางลงบนโต๊ะคอมอธิบายจริงใจ)",
+      "[TABLET DRAWING] (ก้มหน้าลากปากกาสไตลัสเขียนสูตรคำนวณภาษีสดบนหน้าจอ)",
+      "[BOOK SLIDE] (สไลด์เล่มบันทึกรายรับรายจ่ายหนาๆ มาตรงหน้ากล้อง)",
+      "[FLASHLIGHT SCAN] (ใช้ไฟฉายส่องชี้จุดรอยรั่วสำคัญบนกระดาษ)",
+      "[HANDMADE FOLDER] (เปิดแฟ้มเอกสารปกหนังพรีเมียมสีขาวสะอาดตา)",
+      "[WHITEBOARD PROGRESS] (เขียนเปรียบเทียบตารางลดหย่อนภาษีก่อน-หลังบนกระดาน)",
+      "[MAGAZINE PAGE FLIP] (เปิดพลิกหน้าคู่มือสรรพากรฉบับปรับปรุงใหม่)",
+      "[POST-IT NOTEBOOK] (เปิดฝาโน้ตบุ๊กที่มีกระดาษเขียนคีย์เวิร์ดสำคัญแปะอยู่)",
+      "[HEADPHONE PLUG] (เสียบสายหูฟังครอบหัวอธิบายลึกซึ้งเสมือนเสียงพอดแคสต์)",
+      "[NOTHING LIGHT GLOW] (เปิดแสงไฟ Glyph Interface ด้านหลังของ Nothing Phone 2a)",
+      "[SLIDE CHART VIEW] (กางชาร์ตตารางลดหย่อนภาษีเทียบสเปรดชีตให้เห็น)",
+      "[INTERNAL OUTLIER] (คลิปเบื้องหลังการทำงานหลังกล้องจัดสรรพอร์ตลูกค้า)",
+      "[OBJECTION BUSTING] (ตอบข้อสงสัยที่ว่าทำไมที่ปรึกษาถึงเลือกไม่ขายประกันออมทรัพย์)"
     ],
     bofu: [
-      "มาดูกันครับว่าทำไมลูกค้าเคสนี้ถึงได้ส่วนต่างคืนภาษีสูงถึง 36,000 บาทในเดือนเดียว",
-      "กางแผนผังพิมพ์เขียวสรุปกระแสเงินนิติบุคคลเพื่อเซฟภาษีกรรมการอย่างถูกกฎหมาย 100%",
-      "ตรวจสุขภาพการเงินของคุณก่อนสิ้นปีแบบ 1-on-1 Discovery Call เพื่ออุดรอยรั่ว",
-      "ทำไมการวางแผนการเงินกับ Financetry ถึงเน้นตัวเลขจริงปราศจากน้ำยอดประกันขายฝัน?"
+      "[IG POST PAPER PULL] (ทำท่าดึงเอกสารแผ่นจริงทะลุออกมาจากกรอบโพสต์ของไอจี)",
+      "[ZOOM INTERVIEW PITCH] (แคปหน้าจอการสนทนา Discovery Call ร่วมกับลูกค้าจริง)",
+      "[BOARD GRAPHIC DECK] (ชี้อธิบาย Blueprint แผนภูมิตัวเลขพรีเมียมสีเขียวมรกต)",
+      "[CASE STUDY TIMELINE] (แสดงไทม์ไลน์ความสำเร็จประหยัดเงินแสนในสเปรดชีต)",
+      "[DM CODE SIGN] (ยกแผ่นกระดาษขึ้นมาระบุโค้ดสัญลักษณ์พิเศษสำหรับทักแชต)",
+      "[SCARCITY QUOTA ALERT] (ยกกระดานขาวจิ๋วเขียนว่า 'เต็มแล้ว 3/5 คิวสัปดาห์นี้')",
+      "[BOOKING SCHEDULER] (สไลด์หน้าจอปฏิทินจองเวลา Zoom Meeting 1-on-1)",
+      "[CLIENT SCREENSHOT] (โชว์ข้อความแชตฟีดแบกขอบคุณการวางพอร์ตของ Nick)",
+      "[SPREADSHEET TEMPLATE] (แชร์หน้าจอแจกตารางสเปรดชีตภาษีและออมเงินฟรี)",
+      "[NON-PUSHY WARRANTY] ( Nick ชูมืออธิบายความโปร่งใสแบบตรงไปตรงมา)",
+      "[CALL ACTION SPELL] (กระซิบเงียบๆ ข้างไมค์: 'สิทธิ์พิเศษเฉพาะท่านที่พิมพ์คำนี้...')"
     ]
   };
 
