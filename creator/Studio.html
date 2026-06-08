@@ -1,43 +1,83 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financetry Interactive Studio · Nick | Financetry</title>
+  <title>Financetry Studio · Nick | Financetry</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #05080E;
-      --panel: #0B111E;
-      --panel-light: #121A2E;
-      --panel-glow: rgba(16, 185, 129, 0.05);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-focus: #10B981;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
-      --gold: #10B981;
-      --gold-gradient: linear-gradient(135deg, #059669, #34D399);
-      --blue: #3B82F6;
-      --blue-glow: rgba(16, 185, 129, 0.25);
+      --bg: #F8FAFC;
+      --panel: rgba(255, 255, 255, 0.65);
+      --panel-light: rgba(255, 255, 255, 0.85);
+      --panel-glow: rgba(1, 31, 123, 0.02);
+      --border: rgba(1, 31, 123, 0.08);
+      --border-focus: #011F7B;
+      --text: #0F172A;
+      --text-muted: #475569;
+      --gold: #FFBA09;
+      --gold-gradient: linear-gradient(135deg, #011F7B, #173BBA);
+      --blue: #011F7B;
+      --blue-glow: rgba(1, 31, 123, 0.12);
       --green: #10B981;
       --purple: #8B5CF6;
       --radius: 16px;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --glass-shadow: 0 8px 32px rgba(1, 31, 123, 0.04);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Outfit', 'Sarabun', sans-serif;
+      font-family: 'Outfit', 'IBM Plex Sans Thai', sans-serif;
       background-color: var(--bg);
+      background-image: radial-gradient(at 0% 0%, rgba(1, 31, 123, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(255, 186, 9, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1) 30%, rgba(236, 242, 249, 0.1) 70%, rgba(255, 255, 255, 0.25));
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .clear-draft-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.02);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .clear-draft-btn:hover {
+      background: rgba(1, 31, 123, 0.05);
+      border-color: rgba(1, 31, 123, 0.15);
+      color: var(--border-focus);
+    }
+    @media print {
+      body * { visibility: hidden; }
+      #print-area, #print-area * { visibility: visible; }
+      #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+      .no-print { display: none !important; }
     }
 
     /* Header Nav */
     header {
-      background: rgba(11, 17, 30, 0.85);
+      background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       padding: 16px 32px;
@@ -229,9 +269,9 @@
       border-color: rgba(255, 255, 255, 0.12);
     }
     .opt-btn.active {
-      border-color: var(--gold);
-      background: rgba(16, 185, 129, 0.1);
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+      border-color: var(--border-focus);
+      background: rgba(1, 31, 123, 0.05);
+      box-shadow: 0 4px 12px rgba(1, 31, 123, 0.08);
     }
     .opt-name {
       font-size: 0.9rem;
@@ -294,9 +334,9 @@
       transform: translateY(-2px);
     }
     .idea-card.selected {
-      border-color: var(--gold);
-      background: rgba(16, 185, 129, 0.05);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+      border-color: var(--border-focus);
+      background: rgba(1, 31, 123, 0.04);
+      box-shadow: 0 4px 16px rgba(1, 31, 123, 0.08);
     }
     .idea-card-header {
       display: flex;
@@ -312,9 +352,9 @@
       border-radius: 4px;
       letter-spacing: 0.5px;
     }
-    .ib-tofu { background: rgba(16, 185, 129, 0.15); color: var(--green); }
-    .ib-mofu { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
-    .ib-bofu { background: rgba(139, 93, 246, 0.15); color: var(--purple); }
+    .ib-tofu { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+    .ib-mofu { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+    .ib-bofu { background: rgba(139, 93, 246, 0.1); color: var(--purple); }
     
     .idea-title {
       font-size: 0.98rem;
@@ -463,7 +503,7 @@
     }
     .music-track.selected {
       border-color: var(--gold);
-      background: rgba(16, 185, 129, 0.05);
+      background: rgba(1, 31, 123, 0.05);
     }
     .track-info {
       display: flex;
@@ -534,7 +574,7 @@
     }
     .action-btn {
       background: var(--gold-gradient);
-      color: #05080E;
+      color: #FFF;
       border: none;
       padding: 12px 24px;
       border-radius: 12px;
@@ -542,7 +582,7 @@
       font-weight: 800;
       cursor: pointer;
       font-family: inherit;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+      box-shadow: 0 4px 15px rgba(1, 31, 123, 0.15);
       transition: var(--transition);
       display: flex;
       align-items: center;
@@ -550,7 +590,7 @@
     }
     .action-btn:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 8px 25px rgba(1, 31, 123, 0.25);
     }
     .action-btn:disabled {
       background: var(--panel-light);
@@ -635,8 +675,8 @@
       color: var(--text);
       border-color: rgba(255,255,255,0.2);
     }
-    .cue-btn.visual-badge { color: #facc15; }
-    .cue-btn.audio-badge { color: #38bdf8; }
+    .cue-btn.visual-badge { color: #d97706; }
+    .cue-btn.audio-badge { color: #0284c7; }
 
     /* Script Info / Sidebar Panel */
     .script-sidebar {
@@ -709,8 +749,8 @@
 
     /* Perfect Loop Widget */
     .perfect-loop-widget {
-      border: 1px dashed rgba(16, 185, 129, 0.3);
-      background: rgba(16, 185, 129, 0.02);
+      border: 1px dashed rgba(1, 31, 123, 0.2);
+      background: rgba(1, 31, 123, 0.02);
       padding: 14px;
       border-radius: 8px;
       margin-top: 14px;
@@ -724,8 +764,8 @@
     .loop-badge {
       font-size: 0.65rem;
       font-weight: 800;
-      color: #34d399;
-      background: rgba(52, 211, 153, 0.1);
+      color: var(--blue);
+      background: rgba(1, 31, 123, 0.08);
       padding: 2px 6px;
       border-radius: 4px;
     }
@@ -739,11 +779,14 @@
       font-size: 0.72rem;
       font-family: 'Sarabun', sans-serif;
       line-height: 1.4;
-      background: rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.45);
       padding: 8px 10px;
       border-radius: 6px;
       color: var(--text-muted);
-      border-left: 2px solid #34d399;
+      border-left: 2px solid var(--blue);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     /* Step 3: Production Desk Custom Layout */
@@ -1028,12 +1071,9 @@
 <header>
   <div class="brand-logo">
     <div class="brand-logo-icon">👑</div>
-    Financetry <span>Interactive Studio</span>
+    Financetry <span>Studio</span>
   </div>
-  <div class="nav-meta">
-    <span class="status-dot"></span>
-    Creator: Nick | DJI Osmo Pocket 3 (Primary) & Nothing Phone 2a (Secondary)
-  </div>
+  <button class="clear-draft-btn" onclick="clearDraft()">ล้างแบบร่าง 🧹</button>
 </header>
 
 <main>
@@ -1761,80 +1801,282 @@
   // Hook Templates Library (Updated with 58 Visual Hooks categorized by target funnel stages)
   const hookTemplates = {
     tofu: [
-      "[FAST CUTS] 3 ทางเลือกภาษีของมนุษย์เงินเดือน.. แบบไหนคุ้มที่สุด?",
-      "[CINEMATIC TEXT] เงินเดือน 5 หมื่น แต่เหลือเก็บ 0 บาท.. แก้ยังไง?",
-      "[WALKING & TALKING] เดินสแกนหาจุดอับการเงินส่วนบุคคลไปพร้อมกันครับ",
-      "[COUNTDOWN] 3 รูรั่วการเงินยอดฮิตที่ทำให้คนไทยเก็บเงินไม่อยู่",
-      "[POST-IT POP] (หยิบแผ่นกระดาษขึ้นมาแปะเลนส์กล้อง) 'ภาษีแฝง' ที่เราจ่ายโดยไม่รู้ตัว!",
-      "[OFF-SCREEN VOICE] (เสียงตะโกนจากหลังห้อง) 'พี่ครับ! อยากประหยัดภาษีต้องทำยังไงครับ?'",
-      "[MAGNIFYING GLASS] (ถือแว่นขยายจ่อใกล้เลนส์กล้องเพื่อส่องตารางตัวเลข)",
-      "[SKY DROP] (เอฟเฟกต์ตัวละคร Nick ร่วงหล่นดิ่งลงมาจากด้านบนของจอคอม)",
-      "[JUMP SNAP IN-OUT] (สแนปสลับตัดไวซูมหน้า Nick เข้าออกแบบรวดเร็ว)",
-      "[DEPT GESTURE] (ยืนอธิบายแผนภูมิตัวเลขพร้อมวาดมือกว้างสะท้อนถึงวิสัยทัศน์)",
-      "[RIDE IN FRAME] (เลื่อนตัวเข้ามาในเฟรมด้วยเก้าอี้สำนักงานหมุน)",
-      "[CLONE PILLAR SKIT] (ตัดต่อโคลนร่าง Nick ยืนซ้อนกันซ้าย-ขวาอธิบายปัญหา)",
-      "[DUCK UNDER TEXT] (ก้มศีรษะหลบตัวหนังสือพาดหัวที่ลอยมากลางจอ)",
-      "[APPLIANCE FACE] (โผล่หน้าออกมาจากหลังตู้หนังสือ/หลังจอมอนิเตอร์ใหญ่)",
-      "[DESK THUMP ASMR] (เคาะโต๊ะคอมไม้เสียงแน่นดึงสติคนดูทันที)",
-      "[KEYBOARD TYPING] (เอฟเฟกต์เสียงพิมพ์นิ้วรัวบน Nothing Phone 2a)",
-      "[PHONE CALL START] (ถือโทรศัพท์ทำท่าแนบหูแล้วทักว่า 'สวัสดีครับ เสียภาษีเยอะไปหรือเปล่าครับ?')",
-      "[COFFEE SIP] (จิบกาแฟร้อนจากแก้วสีขาวเนี้ยบ จ้องกล้องสุขุมและสุภาพ)",
-      "[GLASSES TAP ASMR] (ใส่แว่นตากรองแสงแล้วใช้นิ้วเคาะขอบขาแว่นเป็นจังหวะ)",
-      "[PAPER SWIPE] (สะบัดแผ่นรายงานภาษีเข้าหากล้องอย่างรวดเร็ว)",
-      "[PEN SPINNING] (ควงปากกาเนี้ยบอธิบายกระดาน Miro แนะนำเส้นทางการเงิน)",
-      "[CALCULATOR SPEED] (รัวนิ้วกดเครื่องคิดเลขเสียงดังแป๊กๆ ใกล้ไมโครโฟน)",
-      "[IPHONE NOTIFICATION] (เสียงป๊อปอัปแจ้งเตือนเงินโอนเข้าดังแทรกใน 2 วินาทีแรก)",
-      "[CANDLE LIGHTING] (จุดไฟแช็กตรงมุมมืดแล้วค่อยๆ เผยสว่างส่องสเต็ปการลงทุน)"
+      "[WALKING] (หยิบแก้วน้ำดื่มอธิบายสบายๆ) \"รู้ไหมครับว่าคนส่วนใหญ่ที่จ่ายภาษีแพง...\"",
+      "[MIRROR] (แพนสลับสะท้อนเงากระจกบานหรูบนโต๊ะทำงาน) \"นี่คือข้อแตกต่างระหว่างคนประหยัดเงินแสนกับคนเสียโอกาส...\"",
+      "[NOTHING GLOW] (เปิดไฟ Nothing Glow สว่างสะท้อนสมุดบันทึกเล่มหนัง) \"ความลับของการเติบโตทางการเงินที่ปรึกษาส่วนใหญ่ไม่ยอมบอก...\""
     ],
     mofu: [
-      "[SCREEN DROP] (ฉายหน้าจอจำลองคอมพิวเตอร์เล่นคลิปตัวเรายื่นแผนผังภาษีทะลุออกมา)",
-      "[IPAD SCREEN FLIP] (สะบัดหน้าจอแท็บเล็ตหันเข้าหาเลนส์กล้องตรงๆ)",
-      "[MIRROR SHOT] (ถ่ายภาพสะท้อนตัว Nick ผ่านกระจกเงาโต๊ะเครื่องแป้ง)",
-      "[GLASSES OFF REVEAL] (ถอดแว่นตาพับวางลงบนโต๊ะคอมอธิบายจริงใจ)",
-      "[TABLET DRAWING] (ก้มหน้าลากปากกาสไตลัสเขียนสูตรคำนวณภาษีสดบนหน้าจอ)",
-      "[BOOK SLIDE] (สไลด์เล่มบันทึกรายรับรายจ่ายหนาๆ มาตรงหน้ากล้อง)",
-      "[FLASHLIGHT SCAN] (ใช้ไฟฉายส่องชี้จุดรอยรั่วสำคัญบนกระดาษ)",
-      "[HANDMADE FOLDER] (เปิดแฟ้มเอกสารปกหนังพรีเมียมสีขาวสะอาดตา)",
-      "[WHITEBOARD PROGRESS] (เขียนเปรียบเทียบตารางลดหย่อนภาษีก่อน-หลังบนกระดาน)",
-      "[MAGAZINE PAGE FLIP] (เปิดพลิกหน้าคู่มือสรรพากรฉบับปรับปรุงใหม่)",
-      "[POST-IT NOTEBOOK] (เปิดฝาโน้ตบุ๊กที่มีกระดาษเขียนคีย์เวิร์ดสำคัญแปะอยู่)",
-      "[HEADPHONE PLUG] (เสียบสายหูฟังครอบหัวอธิบายลึกซึ้งเสมือนเสียงพอดแคสต์)",
-      "[NOTHING LIGHT GLOW] (เปิดแสงไฟ Glyph Interface ด้านหลังของ Nothing Phone 2a)",
-      "[SLIDE CHART VIEW] (กางชาร์ตตารางลดหย่อนภาษีเทียบสเปรดชีตให้เห็น)",
-      "[INTERNAL OUTLIER] (คลิปเบื้องหลังการทำงานหลังกล้องจัดสรรพอร์ตลูกค้า)",
-      "[OBJECTION BUSTING] (ตอบข้อสงสัยที่ว่าทำไมที่ปรึกษาถึงเลือกไม่ขายประกันออมทรัพย์)"
+      "[TABLET] (แพนข้ามขอบสมุดสีขาวหน้าชัดหลังเบลอ) \"เจาะลึก 3 ช่องโหว่ภาษีที่พบบ่อยที่สุดในกลุ่มพนักงานเงินเดือน...\"",
+      "[WHITEBOARD] (เขียนโครงสร้างทุนลงบนกระดานไม้หนาพรีเมียมด้วยชอล์กขาวสะดุดตา) \"วิธีจัดพอร์ตแบบกระจายความเสี่ยงฉบับลงรายละเอียด...\"",
+      "[HANDMADE FOLDER] (เปิดปกแฟ้มกระดาษทำมือหนาเรียบหรู) \"เปรียบเทียบแผนภาษีรายปีแบบเห็นความต่างชัดเจน...\""
     ],
     bofu: [
-      "[IG POST PAPER PULL] (ทำท่าดึงเอกสารแผ่นจริงทะลุออกมาจากกรอบโพสต์ของไอจี)",
-      "[ZOOM INTERVIEW PITCH] (แคปหน้าจอการสนทนา Discovery Call ร่วมกับลูกค้าจริง)",
-      "[BOARD GRAPHIC DECK] (ชี้อธิบาย Blueprint แผนภูมิตัวเลขพรีเมียมสีเขียวมรกต)",
-      "[CASE STUDY TIMELINE] (แสดงไทม์ไลน์ความสำเร็จประหยัดเงินแสนในสเปรดชีต)",
-      "[DM CODE SIGN] (ยกแผ่นกระดาษขึ้นมาระบุโค้ดสัญลักษณ์พิเศษสำหรับทักแชต)",
-      "[SCARCITY QUOTA ALERT] (ยกกระดานขาวจิ๋วเขียนว่า 'เต็มแล้ว 3/5 คิวสัปดาห์นี้')",
-      "[BOOKING SCHEDULER] (สไลด์หน้าจอปฏิทินจองเวลา Zoom Meeting 1-on-1)",
-      "[CLIENT SCREENSHOT] (โชว์ข้อความแชตฟีดแบกขอบคุณการวางพอร์ตของ Nick)",
-      "[SPREADSHEET TEMPLATE] (แชร์หน้าจอแจกตารางสเปรดชีตภาษีและออมเงินฟรี)",
-      "[NON-PUSHY WARRANTY] ( Nick ชูมืออธิบายความโปร่งใสแบบตรงไปตรงมา)",
-      "[CALL ACTION SPELL] (กระซิบเงียบๆ ข้างไมค์: 'สิทธิ์พิเศษเฉพาะท่านที่พิมพ์คำนี้...')"
+      "[SCARCITY QUOTA] (ยกสมุดบันทึกเล็กจิ๋วสีขาวเขียนตัวเลข 'จองแล้ว 3/5 คิว') \"สำหรับสัปดาห์นี้ ผมรับออกแบบแผนฟรีอีกเพียง 2 ท่านสุดท้ายเท่านั้น...\"",
+      "[NON-PUSHY WARRANTY] (สบตาตรงเข้ากล้องอย่างเปิดเผย วางสมุดและปากกาลงอย่างสงบ) \"แผนงานนี้ไม่มีข้อผูกมัดใดๆ ถ้าข้อมูลไม่ชัดเจน ยินดีลบให้ทันที...\"",
+      "[DM CODE SIGN] (ชี้ปากกาขาวไปที่กระดาษเขียนโค้ดพิเศษ) \"ส่งข้อความคำว่า [PLAN] ตอนนี้เพื่อรับตารางคำนวณส่วนตัวฟรี...\""
     ]
   };
 
   // State Variables
   let currentICP = 'salaryman';
   let currentFunnel = 'tofu';
-  let selectedIdea = null;
-  let selectedMusic = null;
-  let activeStep = 1;
+  let isStep1Completed = false;
+  let isStep2Completed = false;
+
+  // Save and Load Draft persistence using localStorage
+  function saveDraft() {
+    const draftData = {
+      currentICP,
+      currentFunnel,
+      selectedIdea,
+      selectedMusic,
+      activeStep,
+      isStep1Completed,
+      isStep2Completed,
+      hookText: document.getElementById('script-hook').value,
+      bodyText: document.getElementById('script-body').value,
+      ctaText: document.getElementById('script-cta').value,
+      perfectLoop: document.getElementById('perfectLoopToggle').checked,
+      lutVal: document.getElementById('lutRange').value,
+      speakDb: document.getElementById('fadeSpeak').value,
+      musicDb: document.getElementById('fadeMusic').value,
+      sfxDb: document.getElementById('fadeSFX').value
+    };
+    localStorage.setItem('financetry_studio_draft', JSON.stringify(draftData));
+  }
+
+  function loadDraft() {
+    const rawData = localStorage.getItem('financetry_studio_draft');
+    if (!rawData) {
+      generateIdeas();
+      generateMusic();
+      updateScriptStats();
+      return;
+    }
+    try {
+      const data = JSON.parse(rawData);
+      currentICP = data.currentICP || 'salaryman';
+      currentFunnel = data.currentFunnel || 'tofu';
+      selectedIdea = data.selectedIdea || null;
+      selectedMusic = data.selectedMusic || null;
+      activeStep = data.activeStep || 1;
+      isStep1Completed = !!data.isStep1Completed;
+      isStep2Completed = !!data.isStep2Completed;
+
+      // Update ICP option buttons active classes
+      const icpContainer = document.querySelector('.selection-pane').firstElementChild.querySelector('.option-grid');
+      const icpBtns = icpContainer.querySelectorAll('.opt-btn');
+      icpBtns.forEach(btn => {
+        if (btn.getAttribute('onclick').includes(currentICP)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Funnel option buttons active classes
+      const funnelContainer = document.querySelector('.selection-pane').children[1].querySelector('.option-grid');
+      const funnelBtns = funnelContainer.querySelectorAll('.opt-btn');
+      funnelBtns.forEach(btn => {
+        if (btn.getAttribute('onclick').includes(currentFunnel)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Funnel Badge
+      const badge = document.getElementById('stage-badge');
+      badge.className = `idea-badge ib-${currentFunnel}`;
+      badge.textContent = currentFunnel.toUpperCase();
+
+      // Render Ideas and Music
+      generateIdeas();
+      generateMusic();
+
+      // Reselect idea card
+      if (selectedIdea) {
+        setTimeout(() => {
+          const cards = document.querySelectorAll('.idea-card');
+          cards.forEach((card) => {
+            if (card.querySelector('.idea-title').textContent.includes(selectedIdea.title)) {
+              card.classList.add('selected');
+            }
+          });
+        }, 100);
+      }
+
+      // Restore Textareas
+      document.getElementById('script-hook').value = data.hookText || '';
+      document.getElementById('script-body').value = data.bodyText || '';
+      document.getElementById('script-cta').value = data.ctaText || '';
+
+      // Restore Perfect Loop
+      document.getElementById('perfectLoopToggle').checked = !!data.perfectLoop;
+
+      // Restore LUT Simulator
+      const lutVal = data.lutVal !== undefined ? data.lutVal : 40;
+      document.getElementById('lutRange').value = lutVal;
+      updateLUTSim(lutVal);
+
+      // Restore Faders
+      const speakDb = data.speakDb !== undefined ? data.speakDb : -6;
+      const musicDb = data.musicDb !== undefined ? data.musicDb : -24;
+      const sfxDb = data.sfxDb !== undefined ? data.sfxDb : -12;
+      
+      document.getElementById('fadeSpeak').value = speakDb;
+      document.getElementById('fadeMusic').value = musicDb;
+      document.getElementById('fadeSFX').value = sfxDb;
+      
+      updateAudioFader('Speak', speakDb);
+      updateAudioFader('Music', musicDb);
+      updateAudioFader('SFX', sfxDb);
+
+      // Restore lock condition view
+      checkLockConditions();
+
+      // Update script stats & loop
+      updateScriptStats();
+
+      // Switch to saved step
+      switchStep(activeStep);
+    } catch (e) {
+      console.error("Error loading draft", e);
+      generateIdeas();
+      generateMusic();
+      updateScriptStats();
+    }
+  }
+
+  window.clearDraft = function() {
+    if (confirm("คุณต้องการล้างแบบร่างทั้งหมดเพื่อเริ่มเขียนบทใหม่ใช่หรือไม่?")) {
+      localStorage.removeItem('financetry_studio_draft');
+      selectedIdea = null;
+      selectedMusic = null;
+      currentICP = 'salaryman';
+      currentFunnel = 'tofu';
+      isStep1Completed = false;
+      isStep2Completed = false;
+      activeStep = 1;
+      
+      // Reset textareas
+      document.getElementById('script-hook').value = '';
+      document.getElementById('script-body').value = '';
+      document.getElementById('script-cta').value = '';
+      document.getElementById('perfectLoopToggle').checked = false;
+      
+      // Reset LUT & faders
+      document.getElementById('lutRange').value = 40;
+      updateLUTSim(40);
+      document.getElementById('fadeSpeak').value = -6;
+      document.getElementById('fadeMusic').value = -24;
+      document.getElementById('fadeSFX').value = -12;
+      updateAudioFader('Speak', -6);
+      updateAudioFader('Music', -24);
+      updateAudioFader('SFX', -12);
+
+      // Re-trigger defaults
+      const icpContainer = document.querySelector('.selection-pane').firstElementChild.querySelector('.option-grid');
+      const icpBtns = icpContainer.querySelectorAll('.opt-btn');
+      icpBtns.forEach((btn, idx) => {
+        if (idx === 0) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      const funnelContainer = document.querySelector('.selection-pane').children[1].querySelector('.option-grid');
+      const funnelBtns = funnelContainer.querySelectorAll('.opt-btn');
+      funnelBtns.forEach((btn, idx) => {
+        if (idx === 0) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      const badge = document.getElementById('stage-badge');
+      badge.className = `idea-badge ib-tofu`;
+      badge.textContent = 'TOFU';
+
+      generateIdeas();
+      generateMusic();
+      updateScriptStats();
+      checkLockConditions();
+      switchStep(1);
+      
+      showToast("🧹 ล้างข้อมูลแบบร่างเรียบร้อยแล้ว!");
+    }
+  }
+
+  window.printShotList = function() {
+    const hookVal = document.getElementById('script-hook').value;
+    const bodyVal = document.getElementById('script-body').value;
+    const ctaVal = document.getElementById('script-cta').value;
+
+    const parseBlock = (text) => {
+      const audioLines = [];
+      const visualCues = [];
+      const lines = text.split('\n');
+      lines.forEach(line => {
+        if (line.includes('[VISUAL') || line.includes('[AUDIO')) {
+          visualCues.push(line);
+        } else if (line.trim().length > 0) {
+          audioLines.push(line);
+        }
+      });
+      return {
+        audio: audioLines.join('<br>'),
+        visual: visualCues.join('<br>')
+      };
+    };
+
+    const hookBlock = parseBlock(hookVal);
+    const bodyBlock = parseBlock(bodyVal);
+    const ctaBlock = parseBlock(ctaVal);
+
+    document.getElementById('print-icp').innerText = currentICP.toUpperCase();
+    document.getElementById('print-funnel').innerText = currentFunnel.toUpperCase();
+    document.getElementById('print-music').innerText = selectedMusic ? selectedMusic.name : '-';
+
+    const tbody = document.getElementById('print-table-body');
+    tbody.innerHTML = `
+      <tr>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center;"><input type="checkbox" style="transform: scale(1.3);"></td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; font-weight: 700;">Hook (เปิดหัวคลิป)</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; line-height: 1.5;">\${hookBlock.audio}</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a; font-size: 13px;">\${hookBlock.visual}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center;"><input type="checkbox" style="transform: scale(1.3);"></td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; font-weight: 700;">Body & Analogy (เนื้อความ)</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; line-height: 1.5;">\${bodyBlock.audio}</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a; font-size: 13px;">\${bodyBlock.visual}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; text-align: center;"><input type="checkbox" style="transform: scale(1.3);"></td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; font-weight: 700;">CTA (ชวนแชทจองคิว)</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; line-height: 1.5;">\${ctaBlock.audio}</td>
+        <td style="padding: 10px; border: 1px solid #cbd5e1; color: #0f172a; font-size: 13px;">\${ctaBlock.visual}</td>
+      </tr>
+    `;
+
+    const printArea = document.getElementById('print-area');
+    printArea.style.display = 'block';
+    window.print();
+    printArea.style.display = 'none';
+  };
 
   // Initialize page on load
   document.addEventListener('DOMContentLoaded', () => {
-    generateIdeas();
-    generateMusic();
-    updateScriptStats();
+    loadDraft();
   });
 
   // Switch Active Step
   window.switchStep = function(stepNum) {
+    if (stepNum === 2 && !isStep1Completed) {
+      showToast("⚠️ กรุณากดปุ่มล็อคเป้าหมายในขั้นตอนที่ 1 ก่อนครับ");
+      return;
+    }
+    if (stepNum === 3 && !isStep2Completed) {
+      showToast("⚠️ กรุณากดปุ่มบันทึกสคริปต์ในขั้นตอนที่ 2 ก่อนครับ");
+      return;
+    }
     if (stepNum > 1 && !selectedIdea) {
       showToast("⚠️ กรุณาเลือกไอเดียคอนเทนต์ในขั้นตอนที่ 1 ก่อนครับ");
       return;
@@ -1853,6 +2095,7 @@
       }
     }
     activeStep = stepNum;
+    saveDraft();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -1864,6 +2107,7 @@
     currentICP = icp;
     generateIdeas();
     resetSelection();
+    saveDraft();
   };
 
   // Filter matrix by Funnel
@@ -1872,6 +2116,7 @@
     btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFunnel = funnel;
+    saveDraft();
     
     // Update Stage Badge
     const badge = document.getElementById('stage-badge');
@@ -1935,6 +2180,7 @@
     selectedIdea = idea;
     
     checkLockConditions();
+    saveDraft();
   }
 
   // Generate music list based on Vibe
@@ -1976,6 +2222,7 @@
     selectedMusic = track;
     generateMusic(); // Re-render to show visualizer on active track
     checkLockConditions();
+    saveDraft();
   }
 
   function updateVibe(val) {
@@ -2011,18 +2258,18 @@
     // Auto-populate Step 2 textareas with Pocket 3 Gimbal Mode details
     document.getElementById('script-hook').value = `🔥 [AUDIO CUE: ${selectedMusic.name} เริ่มต้นขึ้นเบาๆ]\n` + 
       `"${selectedIdea.title}"\n` +
-      `[VISUAL CUE: Pocket 3 ➔ ตั้งบนขาตั้ง, โหมด Follow, Speed: Default | Nick นั่งตรงโต๊ะ Setup จ้องกล้องมั่นใจ]`;
+      `[VISUAL CUE: Pocket 3 ➔ โหมด Follow, Speed: Default | นิคเปิดสมุดพรีเมียมเขียนชาร์ตด้วยปากกาสีขาว เผยความ Cinematic]`;
       
     document.getElementById('script-body').value = `ทำไมเราต้องรู้เรื่องนี้? เพราะส่วนใหญ่คนมักจะติดอยู่กับ:\n` +
       `❌ ${selectedIdea.antivision}\n\n` +
-      `[VISUAL CUE: Pocket 3 ➔ ถือเดินช้าๆ โหมด Tilt Locked, Speed: Slow | กรีนสกรีนตารางข้อมูลชี้ขึ้นจอ]\n` +
+      `[VISUAL CUE: Pocket 3 ➔ โหมด Tilt Locked, Speed: Slow | ค่อยๆ แพนเล็งกล้องผ่านหนังสือหรูหน้าชัดหลังเบลอ เห็นกระดาษจดตัวเลขจริง]\n` +
       `แต่ถ้าวางแผนให้ดี มีระบบเซฟพอร์ตที่ถูกต้อง สิ่งที่จะได้รับกลับมาคือ:\n` +
       `✅ ${selectedIdea.vision}\n\n` +
       `[AUDIO CUE: เสียงดนตรี ${selectedMusic.name} เคลียร์สลับบีท Drop เร้าหัวใจ]`;
       
     document.getElementById('script-cta').value = `ต้องการให้ Nick ช่วยคำนวณและสแกนหาช่องโหว่พอร์ตการเงินส่วนบุคคลฟรีผ่าน Discovery Zoom?\n` +
       `พิมพ์คำว่า [PLAN] ใต้โพสต์นี้ทันที แล้วผมจะส่งลิงก์ตรวจสิทธิ์ให้ในข้อความส่วนตัวครับ!\n` +
-      `[VISUAL CUE: Pocket 3 ➔ ถือถ่ายตัวเองแบบเดินหันหลังพาทัวร์ออฟฟิศ, โหมด Follow, Speed: Default]`;
+      `[VISUAL CUE: Pocket 3 ➔ ปิดหน้าสมุดปกหนังขาวอย่างแผ่วเบาแล้วแพนกล้องขึ้นสบสายตาจ้องมองอย่างน่าเชื่อถือ]`;
       
     // Populate Hook Library helpers
     const hookList = document.getElementById('hook-library-list');
@@ -2052,6 +2299,7 @@
     });
 
     updateScriptStats();
+    saveDraft();
     showToast("🔒 ล็อคเป้าหมายเรียบร้อย! ข้อมูลถูกป้อนเข้าสู่ระบบสมุดร่างบทแล้ว");
     
     // Switch to step 2 automatically
@@ -2101,6 +2349,7 @@
     document.getElementById('stat-cues').textContent = cuesCount;
     
     generatePerfectLoop();
+    saveDraft();
   };
 
   // Generate perfect loop box
@@ -2121,6 +2370,8 @@
 
   // Save Step 2 & Move to Step 3
   window.saveScriptAndGoToStep3 = function() {
+    isStep2Completed = true;
+    saveDraft();
     showToast("📝 บันทึกข้อมูลคิวสคริปต์และจังหวะเวลาเสร็จสิ้น!");
     setTimeout(() => {
       switchStep(3);
@@ -2136,6 +2387,7 @@
 
     overlay.style.opacity = val / 100;
     displayVal.textContent = `${val}%`;
+    saveDraft();
     
     if (val == 40) {
       displayVal.textContent = `40% (Skin-Sweet Spot)`;
@@ -2167,6 +2419,7 @@
         valDisplay.className = "fader-val alert-high";
       }
     }
+    saveDraft();
   };
 
   // Toast message
@@ -2236,5 +2489,23 @@ ${cta}
     document.getElementById('summaryModal').classList.remove('show');
   };
 </script>
+<div id="print-area" style="display: none; padding: 40px; font-family: 'Sarabun', sans-serif;">
+  <h1 style="font-size: 24px; font-weight: 800; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">🎬 FINANCETRY SHOT LIST & AV SCRIPT</h1>
+  <div style="font-size: 14px; margin-bottom: 20px; line-height: 1.6;">
+    <strong>🎯 ICP:</strong> <span id="print-icp">-</span> | <strong>📐 Funnel Stage:</strong> <span id="print-funnel">-</span> | <strong>🎵 Music:</strong> <span id="print-music">-</span>
+  </div>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+    <thead>
+      <tr style="background: #f1f5f9; border-bottom: 2px solid #000;">
+        <th style="padding: 10px; text-align: left; border: 1px solid #cbd5e1; width: 8%;">Done</th>
+        <th style="padding: 10px; text-align: left; border: 1px solid #cbd5e1; width: 15%;">Section</th>
+        <th style="padding: 10px; text-align: left; border: 1px solid #cbd5e1; width: 42%;">Audio (คำพูดเจาะจง 1-2 ประโยค)</th>
+        <th style="padding: 10px; text-align: left; border: 1px solid #cbd5e1; width: 35%;">Visual Cue (สไตล์ถ่ายทำ/มุมกล้อง)</th>
+      </tr>
+    </thead>
+    <tbody id="print-table-body">
+    </tbody>
+  </table>
+</div>
 </body>
 </html>
