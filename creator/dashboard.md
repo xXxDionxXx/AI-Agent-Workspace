@@ -60,6 +60,8 @@
   *(คู่มือและ Prompt ทองคำสั่ง Gemini เจนซับไตเติลภาษาไทยคำสั้นพิเศษ .srt)*
 * 🎬 **[Whip-Action Match Cut (เทคนิคสะบัดมือเปลี่ยนสิ่งของ)](6-Editing/Whip-Action-Match-Cut.md)**  
   *(คู่มือเทคนิคถ่ายทำและตัดต่อ Unbox Effect สะบัดมือเสกแผนการเงิน B-Roll แบบไร้รอยต่อ)*
+* 🎬 **[Mask Cutout Transition (เทคนิคมาสก์สไลด์เปิด 3 ช่อง)](6-Editing/Mask-Cutout-Transition.md)**  
+  *(คู่มือการสร้างรอยต่อเปิดเผยตัวเลข/ชาร์ตการเงินแบบแบ่ง 3 บล็อกสไลด์เด้งซิงก์เสียงคลิกใน CapCut)*
 * 📱 **[Mobile Visual Effects Guide (เอฟเฟกต์ Walk-By / Flash / Clone)](6-Editing/Mobile-Visual-Effects.md)**  
   *(คู่มือการตั้งค่า DJI Osmo Pocket 3 และขั้นตอนมาสก์ร่างโคลน/กระพริบเปลี่ยนชุดใน CapCut)*
 

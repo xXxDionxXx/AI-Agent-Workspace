@@ -29,27 +29,30 @@
 
 ---
 
-### ☀️ 2. ปรับแสงสว่างและรายละเอียด (Light Adjustment)
-ตั้งค่าค่าแสงสว่างโดยรวม (Global Illumination Parameters) เพื่อดึงดีเทลของวัตถุและพื้นหลังให้คมชัดขึ้น:
-* **คอนทราสต์ (Contrast):** `+5` (เพิ่มความจัดจ้านเล็กน้อย)
-* **เงา (Shadows):** `-5` (เพื่อถมเงาดำให้ลึกและมีน้ำหนักพรีเมียม)
-* **สีขาว (Whites):** `+5` (เพิ่มความผ่องใสให้ไฮไลท์สว่างคลีนตา)
-* **ความอิ่มตัวสีโดยรวม (Global Saturation):** `+30` (เพื่อดึงเนื้อสีจากกล้อง DJI Osmo Pocket 3 ให้มีความสดชื่นสดใสมีชีวิตชีวา หากถ่ายแบบ D-Log M ให้ดึงสีสันกลับมาให้สวยสดธรรมชาติก่อนเกรดสีจริง)
+### ☀️ 2. ปรับแสงสว่างและร�### 🎬 6. การประยุกต์ใช้ 3D LUT ประจำแบรนด์สำหรับ DJI Osmo Pocket 3 (LUT Application)
+ขั้นตอนสุดท้ายคือการนำไฟล์ 3D LUT (.cube) คุณภาพสูงจากโฟลเดอร์ที่จัดระเบียบใหม่ [New LUTS](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/) มาย้อมสีผิวและบรรยากาศคลิปตามโปรไฟล์การถ่ายทำของ Osmo Pocket 3 ดังนี้:
 
----
+#### 📸 กรณีที่ 1: ถ่ายด้วยโหมดภาพปกติ (Normal Profile - Rec.709)
+*   **แนวทาง:** ฟุตเทจมีสีสันปกติจากกล้องอยู่แล้ว ให้ดึงไฟล์จากโฟลเดอร์ [1-Rec709-Looks](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/1-Rec709-Looks/) มาย้อมสีผิวได้ทันที:
+    *   🌅 **อบอุ่น/เชื่อใจ (Cozy Gold):** ใช้ `Warm-Trust.cube` หรือ `Cozy-Vibe.cube`
+    *   ❄️ **สุขุม/ขยี้ปัญหารอบด้าน:** ใช้ `Cold-Drama.cube` หรือ `Deep-Cool.cube`
+    *   🎬 **สีผิวสดใส สว่างธรรมชาติ:** ใช้ `Fresh-Daily.cube` หรือ `Teal-Orange.cube`
+    *   *ระดับความเข้มที่แนะนำ:* ปรับลด Opacity / Strength ของ LUT ไว้ที่ **35% - 40%**
 
-### 🌡️ 3. ปรับอุณหภูมิสีสร้างมู้ดคลิป (Color Temperature)
-กำหนดทิศทางอารมณ์ (Mood & Tone) ของวิดีโอตามเนื้อหาของบทพูดในแต่ละท่อน:
-* **🌅 โทนอุ่นอบอุ่นเป็นมิตร (Warm Tone):** ปรับอุณหภูมิสีขึ้นเป็น `+10`
-  * *ใช้กับ:* ท่อนเล่าเรื่องส่วนตัว (Storytelling) หรือช่วงมอบคุณค่าข้อมูลที่ทำให้เกิดความสบายใจและสร้างความไว้ใจ
-* **❄️ โทนเย็นสุขุมจริงจัง (Cool Tone):** ปรับอุณหภูมิสีลงระหว่าง `-10` ถึง `-15`
-  * *ใช้กับ:* ท่อนขยี้ปัญหาการเงิน (Pain Point / Objection) หรือช่วงประเด็นดราม่าที่ต้องการอารมณ์ตึงเครียด จริงจัง
+#### 🍏 กรณีที่ 2: ถ่ายด้วยโหมด D-Log M (10-bit LOG) *[แนะนำสูงสุด]*
+*   **แนวทาง:** ฟุตเทจจะมีความจืดและคอนทราสต์แบนมากเพื่อเก็บไดนามิกแสง สามารถย้อมสีได้ 2 สูตร:
+    1.  **สูตรลัด (Direct LUT):** เลือกใช้ไฟล์จากโฟลเดอร์ [Pocket3](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/Pocket3/) ที่อยู่ภายใต้โฟลเดอร์ LOG โยนทับคลิปดิบตรง ๆ:
+        *   `Fresh-Daily.cube` (โทนสีสกินโทนธรรมชาติ ขาวใสอมชมพูสวยงาม)
+        *   `Warm-Trust.cube` (โทนอบอุ่น สร้างมวลอารมณ์บวกและความน่าเชื่อถือ)
+        *   `Cold-Drama.cube` (โทนน้ำเงิน/ Teal Shadow คุมบรรยากาศตึงเครียด ขยี้ประเด็นปัญหา)
+        *   *การปรับแต่งเพิ่มเติม:* หากโทนสียังจืด ให้ดึงค่าความอิ่มสี (Saturation) ใน CapCut/Premiere เพิ่มขึ้น **+25 ถึง +30**
+    2.  **สูตรมาตรฐานห้องสตูดิโอ (CST + Rec.709):** แปลง D-Log M เป็น Rec.709 ก่อน (ใช้เอฟเฟกต์ CST ใน Resolve หรือย้อมตัวแปลง [Base-Normalization.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/Pocket3/Base-Normalization.cube) เป็นด่านแรก) แล้วค่อยทับด้วยกลุ่ม [1-Rec709-Looks](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/1-Rec709-Looks/) ที่ความเข้ม **35% - 40%**
 
----
+#### 📱 กรณีใช้กล้องมือถือ iPhone 15/16 Pro (Apple Log)
+*   **แนวทาง:** ถ่ายด้วย Apple Log ➔ ย้อมด่านแรกด้วย [Base-Normalization.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/iPhone/Base-Normalization.cube) ➔ ทับด้วยความสวยงามของ [Fresh-Daily.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/iPhone/Fresh-Daily.cube) หรือกลุ่ม Looks Rec.709 ตามต้องการ
 
-### 🍊 4. ปรับค่า HSL เฉพาะจุดสกินโทน (HSL Orange Adjustment)
-ขั้นตอนนี้สำคัญที่สุดสำหรับผิวคนเอเชีย เพื่อให้ใบหน้าคุณ Nick ดูขาวผ่อง สุขภาพดี และไม่ติดโทนส้ม/เหลืองจนหมองคล้ำ:
-* **การปรับแต่งช่องสีส้ม (Orange Channel):** ลดความอิ่มตัวสีส้ม (Orange Saturation) ลงมาที่ `-10`
+#### 🚫 หมายเหตุสำคัญสำหรับ Sony S-Log3:
+*   ไฟล์ในโฟลเดอร์ [3-Archive-Sony](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/3-Archive-Sony/) (เช่น `SLog3-Fresh.cube` และตระกูล S-Log) ถูกปรับแต่งมาเฉพาะเซนเซอร์ของกล้อง Sony ห้ามนำมาใช้กับไฟล์ของ DJI Osmo Pocket 3 เด็ดขาด เพราะจะทำให้มิติแสงและสีผิวพังเสียหายครับ้ม (Orange Saturation) ลงมาที่ `-10`
 * **ผลลัพธ์:** สีผิวหน้าจะละมุน สว่างนวลอมชมพูอย่างเป็นธรรมชาติ แยกออกจากสีส้มหรือสีเหลืองของไฟประดับหลังห้องได้อย่างลงตัว
 
 ---
@@ -61,13 +64,27 @@
 
 ---
 
-### 🎬 6. การประยุกต์ใช้ 3D LUT ประจำแบรนด์ (LUT Application)
-ขั้นตอนสุดท้ายคือการนำไฟล์ 3D LUT (.cube) คุณภาพสูงจากโฟลเดอร์ [5-Production/LUTS/](file:///c:/AI-Agent-Workspace/creator/5-Production/LUTS/) มาย้อมสีผิวและบรรยากาศคลิปตามคู่มือวิธีใช้งาน [5-Production/LUTS-Guide.md](file:///c:/AI-Agent-Workspace/creator/5-Production/LUTS-Guide.md):
+### 🎬 6. การประยุกต์ใช้ 3D LUT ประจำแบรนด์สำหรับ DJI Osmo Pocket 3 (LUT Application)
+ขั้นตอนสุดท้ายคือการนำไฟล์ 3D LUT (.cube) คุณภาพสูงจากโฟลเดอร์ที่จัดระเบียบใหม่ [New LUTS](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/) มาย้อมสีผิวและบรรยากาศคลิปตามโปรไฟล์การถ่ายทำของ Osmo Pocket 3 ดังนี้:
 
-* **หลักการเลือกใช้ LUT ตามธีมคลิป:**
-  1. **🌅 WARM LUT (`WARM.cube`):** โทนแสงทองอบอุ่น ผิวดูอมชมพู ใช้เพื่อสร้างความน่าเชื่อถือและความสนิทสนมเป็นกันเอง
-  2. **❄️ COLD LUT (`COLD.cube`):** โทนน้ำเงิน/เงาสีคลีนตา ใช้ช่วงเปิดคลิปท้าทายประเด็นปัญหาการเงินดราม่า
-  3. **🎬 FRESH LUT (`Fresh.cube`):** คอนทราสต์จัดจ้าน สีสันสดใสเป็นธรรมชาติ ใช้สำหรับคลิป VLOG ทั่วไป
-* **⚠️ กฎเหล็กความเข้มข้นของ LUT:**
-  * **ห้ามเปิดความเข้มเต็ม 100% (Maximum Intensity) เด็ดขาด** เพราะจะทำให้สีสันจัดเกินจริงและดูปลอม
-  * **เกณฑ์ที่แนะนำ:** ปรับระดับความเข้มข้น (Opacity / Strength) ของ LUT ไว้ระหว่าง **35% ถึง 40%** เท่านั้น เพื่อให้สีสันย้อมมู้ดได้อย่างละมุน สบายตา และคงความเป็นมืออาชีพพรีเมียม
+#### 📸 กรณีที่ 1: ถ่ายด้วยโหมดภาพปกติ (Normal Profile - Rec.709)
+*   **แนวทาง:** ฟุตเทจมีสีสันปกติจากกล้องอยู่แล้ว ให้ดึงไฟล์จากโฟลเดอร์ [1-Rec709-Looks](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/1-Rec709-Looks/) มาย้อมสีผิวได้ทันที:
+    *   🌅 **อบอุ่น/เชื่อใจ (Cozy Gold):** ใช้ `Rec709-Warm-Trust.cube` หรือ `Rec709-Cozy-Vibe.cube`
+    *   ❄️ **สุขุม/ขยี้ปัญหารอบด้าน:** ใช้ `Rec709-Cold-Drama.cube` หรือ `Rec709-Deep-Cool.cube`
+    *   🎬 **สีผิวสดใส สว่างธรรมชาติ:** ใช้ `Rec709-Fresh-Daily.cube` หรือ `Rec709-Teal-Orange.cube`
+    *   *ระดับความเข้มที่แนะนำ:* ปรับลด Opacity / Strength ของ LUT ไว้ที่ **35% - 40%**
+
+#### 🍏 กรณีที่ 2: ถ่ายด้วยโหมด D-Log M (10-bit LOG) *[แนะนำสูงสุด]*
+*   **แนวทาง:** ฟุตเทจจะมีความจืดและคอนทราสต์แบนมากเพื่อเก็บไดนามิกแสง สามารถย้อมสีได้ 2 สูตร:
+    1.  **สูตรลัด (Direct LUT):** เลือกใช้ไฟล์จากโฟลเดอร์ [Pocket3](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/Pocket3/) ที่อยู่ภายใต้โฟลเดอร์ LOG โยนทับคลิปดิบตรง ๆ:
+        *   `Pocket3-LOG-Fresh-Daily.cube` (โทนสีสกินโทนธรรมชาติ ขาวใสอมชมพูสวยงาม)
+        *   `Pocket3-LOG-Warm-Trust.cube` (โทนอบอุ่น สร้างมวลอารมณ์บวกและความน่าเชื่อถือ)
+        *   `Pocket3-LOG-Cold-Drama.cube` (โทนน้ำเงิน/ Teal Shadow คุมบรรยากาศตึงเครียด ขยี้ประเด็นปัญหา)
+        *   *การปรับแต่งเพิ่มเติม:* หากโทนสียังจืด ให้ดึงค่าความอิ่มสี (Saturation) ใน CapCut/Premiere เพิ่มขึ้น **+25 ถึง +30**
+    2.  **สูตรมาตรฐานห้องสตูดิโอ (CST + Rec.709):** แปลง D-Log M เป็น Rec.709 ก่อน (ใช้เอฟเฟกต์ CST ใน Resolve หรือย้อมตัวแปลง [Pocket3-LOG-Base-Normalization.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/Pocket3/Pocket3-LOG-Base-Normalization.cube) เป็นด่านแรก) แล้วค่อยทับด้วยกลุ่ม [1-Rec709-Looks](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/1-Rec709-Looks/) ที่ความเข้ม **35% - 40%**
+
+#### 📱 กรณีใช้กล้องมือถือ iPhone 15/16 Pro (Apple Log)
+*   **แนวทาง:** ถ่ายด้วย Apple Log ➔ ย้อมด่านแรกด้วย [iPhone-LOG-Base-Normalization.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/iPhone/iPhone-LOG-Base-Normalization.cube) ➔ ทับด้วยความสวยงามของ [iPhone-LOG-Fresh-Daily.cube](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/2-LOG-Looks/iPhone/iPhone-LOG-Fresh-Daily.cube) หรือกลุ่ม Looks Rec.709 ตามต้องการ
+
+#### 🚫 หมายเหตุสำคัญสำหรับ Sony S-Log3:
+*   ไฟล์ในโฟลเดอร์ [3-Archive-Sony](file:///c:/AI-Agent-Workspace/creator/6-Editing/New%20LUTS/3-Archive-Sony/) (เช่น `Sony-SLog3-Fresh.cube` และตระกูล S-Log) ถูกปรับแต่งมาเฉพาะเซนเซอร์ของกล้อง Sony ห้ามนำมาใช้กับไฟล์ของ DJI Osmo Pocket 3 เด็ดขาด เพราะจะทำให้มิติแสงและสีผิวพังเสียหายครับ
