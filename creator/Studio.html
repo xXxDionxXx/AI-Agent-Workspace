@@ -215,12 +215,13 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Split Layout Grid */
+    /* Split Layout Grid - Realigned to single column centered flow */
     .workspace-split {
-      display: grid;
-      grid-template-columns: 420px 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 35px;
-      align-items: start;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     /* Side Selection Pane */
@@ -246,9 +247,9 @@
       gap: 6px;
     }
     .option-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
     .opt-btn {
       background: var(--panel-light);
@@ -600,17 +601,149 @@
       transform: none;
     }
 
-    /* Step 2: Scripting Hub Custom Layout */
+    /* Step 2: Scripting Hub Custom Layout - Updated to 2-column responsive layout */
     .script-grid {
-      display: grid;
-      grid-template-columns: 1fr 440px;
+      display: flex;
+      flex-direction: column;
       gap: 35px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    @media (min-width: 1024px) {
+      .script-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
     }
     .script-left {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 30px;
     }
+    .script-right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .preview-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .preview-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+    .preview-tab:hover {
+      color: var(--text);
+    }
+    .preview-tab.active {
+      background: rgba(255, 217, 53, 0.1);
+      color: var(--gold);
+    }
+    .preview-panel-content {
+      display: none;
+    }
+    .preview-panel-content.active {
+      display: block;
+    }
+    /* Teleprompter Fullscreen Modal */
+    .prompter-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0a0e17;
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      padding: 40px;
+      color: #fff;
+    }
+    .prompter-modal.active {
+      display: flex;
+    }
+    .prompter-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+    .prompter-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      font-size: 2.5rem;
+      line-height: 1.8;
+      font-family: 'Sarabun', sans-serif;
+      text-align: center;
+      padding: 40px 10%;
+      scroll-behavior: smooth;
+    }
+    .prompter-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .prompter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .prompter-btn:hover {
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
+    }
+    
+    /* Cue display styling in preview */
+    .preview-cue-item {
+      margin-bottom: 15px;
+      padding: 12px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 8px;
+      border-left: 3px solid var(--border);
+    }
+    .preview-cue-item.visual { border-left-color: #d97706; background: rgba(217, 119, 6, 0.03); }
+    .preview-cue-item.audio { border-left-color: #0284c7; background: rgba(2, 132, 199, 0.03); }
+    .preview-cue-item.speech { border-left-color: var(--gold); background: rgba(255, 217, 53, 0.03); }
+    
+    .cue-tag-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-right: 6px;
+    }
+    .cue-tag-badge.visual { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
+    .cue-tag-badge.audio { background: rgba(2, 132, 199, 0.2); color: #38bdf8; }
+    .cue-tag-badge.speech { background: rgba(255, 217, 53, 0.2); color: var(--gold); }
+
     .script-section-block {
       background: var(--panel-light);
       border: 1px solid var(--border);
@@ -1136,6 +1269,7 @@
               <div class="opt-name">BOFU (ปิดนัดหมายเข้าระบบ)</div>
               <div class="opt-desc">Miro System Breakdown, Client Case Study, Call Pitch</div>
             </button>
+          </div>
         </div>
         <!-- 📅 Creative Schedule & Anti-Burnout Helper -->
         <div style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px;">
@@ -1190,12 +1324,7 @@
           <!-- Music Selector Panel -->
           <div class="music-section">
             <div class="music-header">
-              <div class="music-title">🎵 คลังเพลงประกอบ Calico Index & BGM</div>
-              <div class="music-vibe-control">
-                <span class="vibe-label">ฟิลลิ่ง:</span>
-                <input type="range" min="1" max="5" value="3" class="vibe-slider" id="vibeRange" oninput="updateVibe(this.value)">
-                <span class="vibe-value" id="vibeDisplay">Normal Beats</span>
-              </div>
+              <div class="music-title">🎵 คลังเพลงประกอบ Calico Index & BGM (เลือกเพื่อฟังหรือล็อกใช้งาน)</div>
             </div>
             
             <div class="music-list" id="music-track-container">
@@ -1253,6 +1382,76 @@
           </div>
         </div>
 
+        <!-- 💡 Stats & Loop Helper (Spacious horizontal design) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+          <!-- Live Script Stats -->
+          <div class="tool-box" style="margin-bottom: 0;">
+            <div class="tool-title">⚡ ข้อมูลสถิติของบทพูดสด</div>
+            <div class="stats-row" style="margin-bottom: 10px;">
+              <div class="stat-card">
+                <div class="stat-num" id="stat-words">0</div>
+                <div class="stat-lbl">จำนวนคำ</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num" id="stat-time">0s</div>
+                <div class="stat-lbl">ความยาวคลิป</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num" id="stat-cues">0</div>
+                <div class="stat-lbl">จำนวนคิว</div>
+              </div>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; font-family: 'Sarabun';">
+              💡 คำนวณจากการพูดธรรมดาเฉลี่ย 2.3 คำต่อวินาที โดยอ้างอิงระดับเสียงและวิดีโอ 24 FPS
+            </div>
+          </div>
+
+          <!-- Perfect Loop Generator -->
+          <div class="tool-box perfect-loop-widget" style="margin-top: 0; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="loop-header" style="margin-bottom: 4px;">
+              <span class="loop-badge">🔄 Infinite Perfect Loop</span>
+              <label class="loop-toggle">
+                <input type="checkbox" id="perfectLoopToggle" onchange="generatePerfectLoop()">
+                <span style="font-size:0.75rem; font-weight:700;">เปิดระบบลูป</span>
+              </label>
+            </div>
+            <div class="loop-box" id="loop-box-content" style="flex:1; display:flex; align-items:center;">
+              เปิดระบบเพื่อให้บทท่อนปิด CTA เชื่อมโยงประโยคเปิดของ Hook อย่างสมบูรณ์แบบไร้รอยสะดุดของวิดีโอ
+            </div>
+          </div>
+        </div>
+
+        <!-- Collapsible Storytelling & Hook Helpers -->
+        <details style="background: var(--panel-light); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-top: 10px; cursor: pointer;">
+          <summary style="font-weight: 700; color: var(--gold); font-size: 0.9rem; outline: none; user-select: none;">
+            📖 คลิกเพื่อดู Storytelling Engine & ไอเดียพาดหัวเปิดคลิป (Hook Library)
+          </summary>
+          <div style="margin-top: 16px; cursor: default;" onclick="event.stopPropagation()">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-family: 'Sarabun';">
+              <div style="font-size: 0.76rem; line-height: 1.45;">
+                <strong style="color: var(--text); display: block;">🎬 โครงสร้างหลัก (Setup ➔ Conflict ➔ Resolution):</strong>
+                • <strong>Setup:</strong> ปูพิกัดตัวตน/สถานที่ ใน **1 ประโยค 1 ช็อต** ป้องกันคนสับสน<br>
+                • <strong>Conflict:</strong> ชี้ปัญหาท้าทาย สร้าง Tension ยั่วความตื่นเต้น<br>
+                • <strong>Resolution:</strong> เฉลยปม/ส่ง Payoff ชัดเจนช่วงท้ายคลิป (Close the loop)<br>
+                
+                <strong style="color: var(--text); display: block; margin-top: 8px;">🔥 เดิมพันและความตึงเครียด (Stakes & Tension):</strong>
+                • <strong>Stakes:</strong> สร้างจุดเสี่ยงให้คนดูตระหนัก (ถ้าข้ามคลิปนี้คุณจะสูญสิทธิ์อะไร)<br>
+                • <strong>Escalation:</strong> ดีกรีปัญหาต้องไต่ระดับความยากขึ้นไปเรื่อยๆ เพื่อดึงสายตาคนดู<br>
+                
+                <strong style="color: var(--text); display: block; margin-top: 8px;">❤️ 4 เสาหลักแรงสั่นสะเทือนอารมณ์ (Resonance):</strong>
+                • <strong>Relatability:</strong> ขยี้ปัญหาคนทำงาน/เจ้าของธุรกิจที่เหนื่อยเปล่าให้เห็นพ้องกัน<br>
+                • <strong>Educational:</strong> ปลดล็อกปัญญา สอนวิธีจัดการภาษี/เงินเก็บที่ใช้ได้จริงทันที
+              </div>
+              <div>
+                <strong style="color: var(--gold); display: block; font-size: 0.8rem; margin-bottom: 6px;">💡 ไอเดียคำเปิดคลิปและพาดหัวหยุดนิ้ว (คลิกเพื่อเลือกใช้งาน):</strong>
+                <div class="hook-option-list" id="hook-library-list" style="max-height: 180px;">
+                  <!-- Dynamic Hooks based on Funnel -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
         <!-- Part 3: CTA -->
         <div class="script-section-block">
           <div class="script-section-header">
@@ -1269,94 +1468,33 @@
         </div>
       </div>
 
-      <!-- Right side: Template Helper & Live stats -->
-      <div class="script-sidebar">
-        <!-- Live Script Stats -->
-        <div class="tool-box">
-          <div class="tool-title">⚡ ข้อมูลสถิติของบทพูดสด</div>
-          <div class="stats-row">
-            <div class="stat-card">
-              <div class="stat-num" id="stat-words">0</div>
-              <div class="stat-lbl">จำนวนคำ</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num" id="stat-time">0s</div>
-              <div class="stat-lbl">ความยาวคลิป</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-num" id="stat-cues">0</div>
-              <div class="stat-lbl">จำนวนคิว</div>
-            </div>
+      <!-- Right side: Live Preview & Teleprompter -->
+      <div class="script-right">
+        <div class="tool-box" style="position: sticky; top: 20px;">
+          <div class="tool-title" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: var(--gold);">🎬 พรีวิวบทพูด & คิว DJI Pocket 3</span>
+            <button class="cue-btn" onclick="openTeleprompterModal()" style="background: var(--gold-gradient); color: #000; font-weight: 800; border: none; padding: 4px 10px; cursor: pointer; border-radius: 6px;">⚡ เปิดตัวอ่านบท (Full Screen)</button>
           </div>
-          <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; font-family: 'Sarabun';">
-            💡 คำนวณจากการพูดธรรมดาเฉลี่ย 2.5 คำต่อวินาที โดยดึงจุดเด่นของ <span style="color:var(--gold);">Nothing Rec.709</span> มาประกอบ
+          
+          <div style="margin: 10px 0 15px 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; font-family: 'Sarabun';">
+            💡 <strong>ระบบตัวกรองอัจฉริยะ:</strong> ระบบแยกแยะคำพูดจริงออกจากคำสั่งภาพ/เสียงให้อัตโนมัติ เพื่อการบันทึกภาพที่ลื่นไหล
           </div>
-        </div>
 
-        <!-- Perfect Loop Generator -->
-        <div class="tool-box perfect-loop-widget">
-          <div class="loop-header">
-            <span class="loop-badge">🔄 Infinite Perfect Loop</span>
-            <label class="loop-toggle">
-              <input type="checkbox" id="perfectLoopToggle" onchange="generatePerfectLoop()">
-              <span style="font-size:0.75rem; font-weight:700;">เปิดระบบลูป</span>
-            </label>
+          <div class="preview-tabs">
+            <button class="preview-tab active" id="tab-pref-director" onclick="switchPreviewTab('director')">🎬 ลำดับผู้กำกับ (Director Cue Flow)</button>
+            <button class="preview-tab" id="tab-pref-prompter" onclick="switchPreviewTab('prompter')">🗣️ เฉพาะบทพูดจริง (Speech Only)</button>
           </div>
-          <div class="loop-box" id="loop-box-content">
-            เปิดระบบเพื่อให้บทท่อนปิด CTA เชื่อมโยงประโยคเปิดของ Hook อย่างสมบูรณ์แบบไร้รอยสะดุดของวิดีโอ
-          </div>
-        </div>
-        <!-- 📖 Storytelling & Emotion Helper -->
-        <div class="tool-box" style="font-family: 'Sarabun';">
-          <div class="tool-title" style="color: var(--gold); display: flex; align-items: center; gap: 6px;">
-            <span>📖</span> Storytelling & Emotion Engine
-          </div>
-          <div style="font-size: 0.76rem; line-height: 1.45;">
-            <!-- Setup, Conflict, Resolution -->
-            <strong style="color: var(--text); display: block; margin-top: 4px;">🎬 โครงสร้างหลัก (Setup ➔ Conflict ➔ Resolution):</strong>
-            • <strong>Setup:</strong> ปูพิกัดตัวตน/เวลา/สถานที่ ใน **1 ประโยค 1 ช็อต** ป้องกันผู้ชมสับสนหลงทาง<br>
-            • <strong>Conflict:</strong> ชี้ปัญหาท้าทาย/ความไม่สะดวกสบาย สร้าง Tension ยั่วความตื่นเต้น<br>
-            • <strong>Resolution:</strong> เฉลยปม/ส่ง Payoff ชัดเจนช่วงท้ายคลิป (**Close the loop**)<br>
-            
-            <!-- Stakes & Tension -->
-            <strong style="color: var(--text); display: block; margin-top: 8px;">🔥 เดิมพันและความตึงเครียด (Stakes & Tension):</strong>
-            • <strong>Stakes:</strong> สร้างจุดเสี่ยงหรือเดิมพันให้คนดูตระหนัก (เช่น หากข้ามคลิปนี้คุณจะสูญสิทธิ์อะไร)<br>
-            • <strong>Escalation:</strong> ดีกรีปัญหาต้องไต่ระดับความยากขึ้นไปเรื่อยๆ (Tension Escalation) ห้ามแบนราบ<br>
-            
-            <!-- Sell through Storytelling -->
-            <strong style="color: var(--text); display: block; margin-top: 8px;">💰 Sell Through Storytelling (การขายที่ไม่ขัดจังหวะ):</strong>
-            • <strong>Transformation:</strong> โชว์ภาพความต่างชีวิต ก่อน vs. หลัง ได้พอร์ตการเงินคุ้มค่า (Before & After)<br>
-            • <strong>Seamless Integration:</strong> แทรกข้อเสนอแนบเนียนกับ B-Roll และเรื่องเล่า ห้ามทำลายอารมณ์ร่วม<br>
-            
-            <!-- Emotion Resonance (4 Pillars) -->
-            <strong style="color: var(--text); display: block; margin-top: 8px;">❤️ 4 เสาหลักแรงสั่นสะเทือนอารมณ์ (Resonance):</strong>
-            • <strong>Relatability:</strong> ขยี้ปัญหาคนทำงาน/เจ้าของธุรกิจที่เหนื่อยเปล่าให้เห็นพ้องร่วมกัน<br>
-            • <strong>Aspirational:</strong> ชี้ภาพจำการเงินมั่นคง พรีเมียม ปลอดโปร่งในอนาคต<br>
-            • <strong>Inspirational:</strong> จุดไฟให้ลุกมาจัดสรรโครงสร้างหรือสเปรดชีตคืนนี้<br>
-            • <strong>Educational:</strong> ปลดล็อกปัญญา สอนวิธีจัดการภาษี/เงินเก็บที่ใช้ได้จริงทันที<br>
-            <span style="color: var(--gold); font-size: 0.7rem; font-weight: bold;">💡 (แตะได้อย่างน้อย 1 หัวข้อเพื่อกระจายตัว แตะตั้งแต่ 2 ข้อขึ้นไปคลิปมีโอกาสเป็นพลุแตก!)</span><br>
-            
-            <!-- 3R Community Metric -->
-            <strong style="color: var(--text); display: block; margin-top: 8px;">💬 3R Community Metric (ชวนคุยสร้างชุมชน):</strong>
-            • <strong>Reflect:</strong> ชวนผู้ฟังสะท้อนทบทวนความคิดเกี่ยวกับการเงินตนเองในคอมเมนต์<br>
-            • <strong>Respond:</strong> คอยคุยโต้ตอบกับคนที่ทักทายเข้ามาอย่างจริงใจเสมือนมิตรภาพจริง<br>
-            • <strong>Relate:</strong> แชร์แง่มุมความเรียลหรือข้อผิดพลาดส่วนตัว (Vulnerability) ดึงความเข้าถึงได้ง่าย<br>
-            
-            <!-- Skip-to-the-end Test -->
-            <strong style="color: var(--text); display: block; margin-top: 8px;">⏱️ เทส Skip-to-the-End Payoff Test:</strong>
-            • ลองสุ่มข้ามดูวินาทีแรกกับวินาทีสุดท้าย เพื่อรีเช็คว่าคุณได้แก้ปมและส่งมอบคุณค่าตามที่สัญญาไว้ตอนแรกหรือไม่ (Close the Loop Check)
-          </div>
-        </div>
 
-        <!-- Hook Library Helper -->
-        <div class="tool-box">
-          <div class="tool-title">💡 ไอเดียคำเปิดคลิปและพาดหัวหยุดนิ้ว</div>
-          <div class="hook-option-list" id="hook-library-list">
-            <!-- Dynamic Hooks based on Funnel -->
+          <div id="preview-director-content" class="preview-panel-content active" style="max-height: 480px; overflow-y: auto; padding-right: 8px;">
+            <!-- Dynamic Director Flow -->
+          </div>
+
+          <div id="preview-prompter-content" class="preview-panel-content" style="max-height: 480px; overflow-y: auto; font-family: 'Sarabun'; font-size: 1.1rem; line-height: 1.7; color: #fff; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid var(--border); padding-right: 8px;">
+            <!-- Clean Teleprompter Script -->
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- Closes script-grid -->
 
     <!-- Step 2 Navigation Footer -->
     <div class="lock-control" style="margin-top:40px;">
@@ -1593,6 +1731,29 @@
     </div>
   </div>
 </main>
+
+<!-- Fullscreen Teleprompter Modal -->
+<div class="prompter-modal" id="teleprompterModal">
+  <div class="prompter-modal-header">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 1.5rem;">🗣️</span>
+      <div>
+        <h2 style="margin:0; font-size: 1.3rem; color: var(--gold); font-family: 'Sarabun';">Teleprompter เครื่องช่วยอ่านบทกล้อง</h2>
+        <p style="margin:2px 0 0 0; font-size: 0.8rem; color: var(--text-muted); font-family: 'Sarabun';">บทพูดที่ถูกกรองคิวกล้องและดนตรีออกแล้ว เพื่อให้ออกเสียงลื่นไหล</p>
+      </div>
+    </div>
+    <button class="prompter-btn" onclick="closeTeleprompterModal()" style="background: #ef4444; border: none; color: #fff; font-family: 'Sarabun';">❌ ปิดหน้าจอ</button>
+  </div>
+  <div class="prompter-modal-body" id="prompter-modal-text">
+    <!-- Clean text populated dynamically -->
+  </div>
+  <div class="prompter-controls">
+    <button class="prompter-btn" onclick="adjustPrompterFontSize(-0.2)">A- ลดขนาดอักษร</button>
+    <button class="prompter-btn" onclick="adjustPrompterFontSize(0.2)">A+ เพิ่มขนาดอักษร</button>
+    <button class="prompter-btn" id="prompter-scroll-btn" onclick="togglePrompterAutoscroll()">▶️ เริ่มเลื่อนอัตโนมัติ</button>
+    <button class="prompter-btn" onclick="resetPrompterScroll()">🔄 เริ่มต้นใหม่</button>
+  </div>
+</div>
 
 <!-- Toast -->
 <div class="toast" id="toast">
@@ -2480,18 +2641,7 @@
     saveDraft();
   }
 
-  function updateVibe(val) {
-    const display = document.getElementById('vibeDisplay');
-    const vibes = {
-      1: "Chill Lofi",
-      2: "Viral Trends",
-      3: "Normal Beats",
-      4: "Energizing Beats",
-      5: "Sophisticated Plan"
-    };
-    display.textContent = vibes[val] || "Normal Beats";
-    generateMusic(val);
-  }
+
 
   function checkLockConditions() {
     const btn = document.getElementById('lock-btn');
@@ -2610,7 +2760,184 @@
     document.getElementById('stat-cues').textContent = cuesCount;
     
     generatePerfectLoop();
+    if (window.updateScriptPreview) {
+      window.updateScriptPreview();
+    }
     saveDraft();
+  };
+
+  // Live Script Preview Parser & Renderer
+  window.updateScriptPreview = function() {
+    const hook = document.getElementById('script-hook') ? document.getElementById('script-hook').value : '';
+    const body = document.getElementById('script-body') ? document.getElementById('script-body').value : '';
+    const cta = document.getElementById('script-cta') ? document.getElementById('script-cta').value : '';
+
+    const sections = [
+      { name: 'ส่วนที่ 1: Hook', text: hook },
+      { name: 'ส่วนที่ 2: Body & Re-Hooks', text: body },
+      { name: 'ส่วนที่ 3: Call To Action', text: cta }
+    ];
+
+    let directorHtml = '';
+    let speechHtml = '';
+
+    sections.forEach(sec => {
+      directorHtml += `<div style="font-weight:700; color:var(--gold); margin: 15px 0 8px 0; font-size:0.8rem; text-transform:uppercase;">${sec.name}</div>`;
+      
+      const lines = sec.text.split('\n');
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        const cueRegex = /\[(.*?)\]/g;
+        let processedLine = trimmed;
+        const matches = trimmed.match(cueRegex);
+        
+        if (matches) {
+          matches.forEach(m => {
+            const cueContent = m.slice(1, -1);
+            let badgeClass = 'visual';
+            if (cueContent.toLowerCase().includes('audio') || cueContent.toLowerCase().includes('bgm') || cueContent.toLowerCase().includes('sfx')) {
+              badgeClass = 'audio';
+            }
+            processedLine = processedLine.replace(m, `<span class="cue-tag-badge ${badgeClass}">${cueContent}</span>`);
+          });
+        }
+
+        if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+          const cueContent = trimmed.slice(1, -1);
+          let badgeClass = 'visual';
+          if (cueContent.toLowerCase().includes('audio') || cueContent.toLowerCase().includes('bgm') || cueContent.toLowerCase().includes('sfx')) {
+            badgeClass = 'audio';
+          }
+          directorHtml += `<div class="preview-cue-item ${badgeClass}">
+            <span class="cue-tag-badge ${badgeClass}">${badgeClass.toUpperCase()} CUE</span> ${cueContent}
+          </div>`;
+        } else {
+          const cleanSpeech = trimmed.replace(/\[.*?\]/g, "").replace(/🔥|🎬|🗣️|💬|🔄|🔊|🎹/g, "").trim();
+          directorHtml += `<div class="preview-cue-item speech">
+            <div style="margin-bottom: 6px;">${processedLine}</div>
+          </div>`;
+
+          if (cleanSpeech) {
+            speechHtml += `<p style="margin-bottom: 12px;">${cleanSpeech}</p>`;
+          }
+        }
+      });
+    });
+
+    if (!directorHtml) {
+      directorHtml = '<div style="color:var(--text-muted); text-align:center; padding:20px;">ไม่มีข้อมูลสคริปต์ ร่างบทในช่องข้อความเพื่อดูตัวอย่าง</div>';
+    }
+    if (!speechHtml) {
+      speechHtml = '<div style="color:var(--text-muted); text-align:center; padding:20px;">ไม่มีข้อมูลบทพูดจริง</div>';
+    }
+
+    const dirElem = document.getElementById('preview-director-content');
+    const prompElem = document.getElementById('preview-prompter-content');
+    const modalTextElem = document.getElementById('prompter-modal-text');
+
+    if (dirElem) dirElem.innerHTML = directorHtml;
+    if (prompElem) prompElem.innerHTML = speechHtml;
+    if (modalTextElem) modalTextElem.innerHTML = speechHtml;
+  };
+
+  // Preview panel tab switching
+  window.switchPreviewTab = function(tabName) {
+    const directorTab = document.getElementById('tab-pref-director');
+    const prompterTab = document.getElementById('tab-pref-prompter');
+    const directorContent = document.getElementById('preview-director-content');
+    const prompterContent = document.getElementById('preview-prompter-content');
+
+    if (tabName === 'director') {
+      if (directorTab) directorTab.classList.add('active');
+      if (prompterTab) prompterTab.classList.remove('active');
+      if (directorContent) {
+        directorContent.classList.add('active');
+        directorContent.style.display = 'block';
+      }
+      if (prompterContent) {
+        prompterContent.classList.remove('active');
+        prompterContent.style.display = 'none';
+      }
+    } else {
+      if (directorTab) directorTab.classList.remove('active');
+      if (prompterTab) prompterTab.classList.add('active');
+      if (directorContent) {
+        directorContent.classList.remove('active');
+        directorContent.style.display = 'none';
+      }
+      if (prompterContent) {
+        prompterContent.classList.add('active');
+        prompterContent.style.display = 'block';
+      }
+    }
+  };
+
+  // Teleprompter Modal controls
+  let prompterFontSize = 2.5; // rem
+  let prompterScrollInterval = null;
+  let isScrollActive = false;
+
+  window.openTeleprompterModal = function() {
+    window.updateScriptPreview();
+    const modal = document.getElementById('teleprompterModal');
+    if (modal) modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeTeleprompterModal = function() {
+    const modal = document.getElementById('teleprompterModal');
+    if (modal) modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    stopPrompterAutoscroll();
+  };
+
+  window.adjustPrompterFontSize = function(amount) {
+    prompterFontSize += amount;
+    if (prompterFontSize < 1.2) prompterFontSize = 1.2;
+    if (prompterFontSize > 5) prompterFontSize = 5;
+    const txt = document.getElementById('prompter-modal-text');
+    if (txt) txt.style.fontSize = `${prompterFontSize}rem`;
+  };
+
+  window.togglePrompterAutoscroll = function() {
+    if (isScrollActive) {
+      stopPrompterAutoscroll();
+    } else {
+      startPrompterAutoscroll();
+    }
+  };
+
+  function startPrompterAutoscroll() {
+    const container = document.getElementById('prompter-modal-text') ? document.getElementById('prompter-modal-text').parentElement : null;
+    if (!container) return;
+    isScrollActive = true;
+    const btn = document.getElementById('prompter-scroll-btn');
+    if (btn) btn.textContent = "⏸️ หยุดชั่วคราว";
+    
+    prompterScrollInterval = setInterval(() => {
+      container.scrollTop += 1;
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+        stopPrompterAutoscroll();
+      }
+    }, 45);
+  }
+
+  function stopPrompterAutoscroll() {
+    isScrollActive = false;
+    const btn = document.getElementById('prompter-scroll-btn');
+    if (btn) btn.textContent = "▶️ เริ่มเลื่อนอัตโนมัติ";
+    if (prompterScrollInterval) {
+      clearInterval(prompterScrollInterval);
+      prompterScrollInterval = null;
+    }
+  }
+
+  window.resetPrompterScroll = function() {
+    stopPrompterAutoscroll();
+    const container = document.getElementById('prompter-modal-text') ? document.getElementById('prompter-modal-text').parentElement : null;
+    if (container) container.scrollTop = 0;
   };
 
   // Generate perfect loop box
