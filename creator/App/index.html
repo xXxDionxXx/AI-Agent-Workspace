@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nick | Financetry — Creator Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B1024; --bg2: #182350; --bg3: #1F2D61; --bg4: #273775;
+  --card: rgba(24,35,80,0.85); --card2: #1F2D61;
+  --accent: #AFD2FA; --accent-d: #8EB8E8; --accent-glow: rgba(175,210,250,0.15);
+  --gold: #B9915E; --gold-d: #9A7649; --gold-glow: rgba(185,145,94,0.15);
+  --green: #2DD4A0; --green-glow: rgba(45,212,160,0.12);
+  --red: #FF5C7A;
+  --text: #FEFAEF; --text2: #D1CFC7; --text3: #A6A59E;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.15);
+  --radius: 12px; --radius-sm: 8px; --radius-lg: 16px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --tr: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sarabun', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+h1, h2, h3, h4 { font-family: 'Inter', sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; transition: var(--tr); }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.header { height: 64px; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; flex-shrink: 0; z-index: 100; }
+.brand { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text); display: flex; align-items: center; gap: 12px; }
+.brand-icon { width: 32px; height: 32px; background: var(--accent); color: var(--bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; }
+
+.nav-tabs { display: flex; gap: 8px; overflow-x: auto; }
+.nav-tab { padding: 8px 16px; border-radius: var(--radius); font-weight: 600; font-size: 0.9rem; color: var(--text2); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.nav-tab:hover { background: var(--bg3); color: var(--text); }
+.nav-tab.active { background: var(--accent-glow); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+.header-right { display: flex; align-items: center; gap: 16px; }
+.save-status { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text3); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+.btn-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; background: var(--bg3); color: var(--text); }
+.btn-icon:hover { background: var(--bg4); }
+
+.main-area { flex: 1; display: flex; overflow: hidden; position: relative; }
+.panel { flex: 1; display: none; flex-direction: column; overflow-y: auto; padding: 24px 32px; }
+.panel.active { display: flex; }
+.container { max-width: 1000px; margin: 0 auto; width: 100%; padding-bottom: 80px; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 24px; backdrop-filter: blur(12px); box-shadow: var(--shadow); overflow: hidden; transition: var(--tr); }
+.card-hd { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+.card-hd:hover { background: rgba(255,255,255,0.02); }
+.card-title { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; font-weight: 700; font-family: 'Inter', sans-serif; }
+.card-body { padding: 0 24px 24px 24px; display: none; }
+.card.open .card-body { display: block; }
+.card.open .card-icon { transform: rotate(180deg); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 16px; border-radius: 20px; background: var(--bg3); border: 1px solid var(--border); font-size: 0.95rem; font-weight: 500; cursor:pointer; }
+.chip:hover { background: var(--bg4); border-color: var(--border2); }
+.chip.active { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.selectable-list { display: flex; flex-direction: column; gap: 8px; }
+.selectable-item { padding: 12px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--tr); }
+.selectable-item:hover { background: var(--bg4); border-color: var(--border2); }
+.selectable-item.active { background: var(--accent-glow); border-color: var(--accent); }
+.s-icon { font-size: 1.2rem; }
+.s-content { flex: 1; }
+.s-title { font-weight: 600; margin-bottom: 2px; }
+.s-desc { font-size: 0.85rem; color: var(--text3); }
+
+input[type="text"], textarea, select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 1rem; transition: var(--tr); }
+input[type="text"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; background: var(--bg4); color: var(--text); cursor:pointer; }
+.btn:hover { background: var(--bg3); filter: brightness(1.1); }
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover { background: var(--accent-d); }
+.btn-gold { background: var(--gold); color: var(--bg); }
+.btn-gold:hover { background: var(--gold-d); }
+
+.chk-item { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.chk-item input { width:20px; height:20px; accent-color:var(--accent); }
+
+#toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--bg2); border: 1px solid var(--border); padding: 12px 20px; border-radius: var(--radius-sm); box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s cubic-bezier(0.4,0,0.2,1); }
+.toast.out { animation: slideOut 0.3s cubic-bezier(0.4,0,0.2,1) forwards; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+
+/* Player */
+.sticky-player { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,35,80,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 20px; z-index: 1000; transform: translateY(100%); transition: var(--tr); }
+.sticky-player.show { transform: translateY(0); }
+.play-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border:none; cursor:pointer;}
+.progress-container { height: 6px; background: var(--bg4); border-radius: 3px; cursor: pointer; position: relative; flex: 1; }
+.progress-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--accent); border-radius: 3px; width: 0%; pointer-events: none; }
+.time-display { font-size: 0.8rem; color: var(--text3); font-family: 'Inter', sans-serif; }
+
+</style>
+</head>
+<body>
+
+
+<div class="header">
+  <div class="brand"><div class="brand-icon">F</div>Financetry Studio</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchPanel('pre', this)">🎬 1. Pre-Production</button>
+    <button class="nav-tab" onclick="switchPanel('vis', this)">👁 2. Visualization</button>
+    <button class="nav-tab" onclick="switchPanel('audio', this)">🎵 3. Audio</button>
+    <button class="nav-tab" onclick="switchPanel('prod', this)">🎥 4. Production</button>
+    <button class="nav-tab" onclick="switchPanel('post', this)">✂️ 5. Post-Production</button>
+  </div>
+  <div class="header-right">
+    <div class="save-status"><div class="dot" id="save-dot"></div> Saved</div>
+    <button class="btn-icon" title="Clear All" onclick="clearData()" style="color:var(--text3)">🗑️</button>
+  </div>
+</div>
+
+
+<div class="main-area">
+  
+  <!-- 🎬 PRE-PRODUCTION -->
+  <div class="panel active" id="panel-pre">
+    <div class="container">
+      <h2>🎬 1. Pre-Production (Writing Script)</h2><br>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">1. Target Audience</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">กำหนดกลุ่มเป้าหมาย พฤติกรรม ความสนใจ ปัญหาหลัก</p>
+          <div class="selectable-list" id="icp-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">2. Funnel Stage</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">เลือกระดับกรวยการตลาด (TOFU, MOFU, BOFU)</p>
+          <div class="grid-3" id="funnel-grid"></div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">3. Ideation</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">คัดเลือกไอเดียสอดคล้องกับกลุ่มเป้าหมายและ Funnel Stage</p>
+          <input type="text" id="ideation-input" placeholder="พิมพ์ไอเดียตั้งต้น หรือหัวข้อคลิปที่นี่..." oninput="svS()">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">4. Content Format</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">เลือกรูปแบบการนำเสนอ</p>
+          <div class="selectable-list" id="format-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">5. Script Structure</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">กำหนดโครงสร้างการเล่าเรื่อง</p>
+          <div class="selectable-list" id="structure-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">6. Core Value (คุณค่าหลักของเนื้อหา)</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">ระบุคุณค่าหลักที่จะสื่อสาร 3 อย่าง (สามารถนำไปให้ AI ข้างนอกช่วยคิดแล้วเอามาเติมได้)</p>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <input type="text" id="cv1" placeholder="Core Value 1..." oninput="svS()">
+            <input type="text" id="cv2" placeholder="Core Value 2..." oninput="svS()">
+            <input type="text" id="cv3" placeholder="Core Value 3..." oninput="svS()">
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">7. Verbal Hook & Re-Hook</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <h4 style="margin-bottom:8px; color:var(--accent);">🗣 Verbal Hook</h4>
+          <div class="selectable-list mb-4" id="vhook-list"></div>
+          
+          <h4 style="margin-bottom:8px; color:var(--gold);">🎣 Re-Hook</h4>
+          <div class="selectable-list" id="rehook-list"></div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">8. CTA (Call to Action)</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="selectable-list" id="cta-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title" style="color:var(--gold)">9. Master Script & AI Prompter</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <p style="color:var(--text3); font-size:0.9rem; margin:0;">สรุปบทพูดและโครงสร้างทั้งหมด หรือนำข้อมูลทั้งหมดไปเจนด้วย AI ข้างนอก</p>
+            <button class="btn btn-gold" onclick="exportPrompt()">📋 Copy Prompt for AI</button>
+          </div>
+          <textarea id="master-script" style="min-height:300px;" placeholder="พิมพ์สคริปต์ที่นี่ หรือวางสคริปต์ที่ได้จาก AI..." oninput="svS()"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 👁 VISUALIZATION -->
+  <div class="panel" id="panel-vis">
+    <div class="container">
+      <h2>👁 2. Visualization</h2><br>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">1. Visual Hook (ภาพเปิด 3 วินาทีแรก)</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body"><div class="selectable-list" id="visual-hook-list"></div></div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">2. Seamless Cutting on Motion</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text2); margin-bottom:12px; font-size:0.9rem;">ใช้การเคลื่อนไหวของร่างกายหรือกล้องเป็นแกนหลักในการตัดเชื่อมฉาก</p>
+          <div class="selectable-list">
+            <div class="chk-item"><input type="checkbox" id="v-cut1" onchange="svS()"> <label for="v-cut1">ซ่อนรอยตัดด้วยจังหวะสะบัดมือ / ยกแขน / หันหน้า</label></div>
+            <div class="chk-item"><input type="checkbox" id="v-cut2" onchange="svS()"> <label for="v-cut2">เดินเข้าเฟรม (Walk-in) / เดินออกเฟรม (Walk-out)</label></div>
+            <div class="chk-item"><input type="checkbox" id="v-cut3" onchange="svS()"> <label for="v-cut3">Whip Pan (สะบัดกล้องซ้าย-ขวา)</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">3. Dynamic Shot Variation</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text2); margin-bottom:12px; font-size:0.9rem;">เปลี่ยนขนาดภาพและมุมกล้องสลับเฟรมเพื่อสร้างความต่อเนื่อง</p>
+          <div class="selectable-list">
+            <div class="chk-item"><input type="checkbox" id="v-shot1" onchange="svS()"> <label for="v-shot1">Wide Shot (เห็นสถานที่/สร้างบริบท)</label></div>
+            <div class="chk-item"><input type="checkbox" id="v-shot2" onchange="svS()"> <label for="v-shot2">Medium Shot (อธิบายรายละเอียด)</label></div>
+            <div class="chk-item"><input type="checkbox" id="v-shot3" onchange="svS()"> <label for="v-shot3">Close-up (เน้นอารมณ์ / Eye-level หรือ Low-angle เพื่อความน่าเชื่อถือ)</label></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">4. Optional Visual Enhancements</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="selectable-list" id="vfx-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎵 AUDIO -->
+  <div class="panel" id="panel-audio">
+    <div class="container">
+      <h2>🎵 3. Audio</h2><br>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">1. Audio Hook Selection</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body"><div class="chips" id="audio-hook-list"></div></div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">2. Background Music (BGM)</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="chips mb-4" id="bgm-moods"></div>
+          <div class="selectable-list" id="bgm-tracks"></div>
+        </div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">3. Conclusion Music</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body"><div class="chips" id="audio-conc-list"></div></div>
+      </div>
+
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">4. SFX Mapping</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+           <textarea id="sfx-map" style="min-height:100px;" placeholder="ระบุจุดใส่ SFX (เช่น วิ 0:05 ใส่เสียง Whoosh ตอน MGFX เด้งขึ้นมา)..." oninput="svS()"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎥 PRODUCTION -->
+  <div class="panel" id="panel-prod">
+    <div class="container">
+      <h2>🎥 4. Production</h2><br>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">1. Wardrobe Selection System (คุณ Nick)</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div>
+              <h4 style="margin-bottom:8px;">Location Setup</h4>
+              <select id="loc-select" onchange="updateWardrobe(); svS()">
+                <option value="">-- เลือกสถานที่ --</option>
+              </select>
+            </div>
+            <div>
+              <h4 style="margin-bottom:8px;">คำแนะนำสีเสื้อ (Visual Contrast)</h4>
+              <div id="wardrobe-rec" style="font-size:0.9rem; color:var(--accent); background:var(--bg3); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border);">เลือกสถานที่ก่อน</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">2. Master Shot List Generation</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+           <p style="color:var(--text3); font-size:0.9rem; margin-bottom:12px;">ระบุรายละเอียดภาพ, Shot Size, Camera Angle, Talent Movement, Action Cut, MGFX</p>
+           <textarea id="shot-list-text" style="min-height:150px;" placeholder="1. Wide Shot - โต๊ะทำงาน - นั่งพูด - มีข้อความ MGFX ขวาบน&#10;2. Close up - Low Angle..." oninput="svS()"></textarea>
+        </div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">3. Camera Settings Checklist</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body"><div class="selectable-list" id="cam-chk"></div></div>
+      </div>
+
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">4. Location Setup Management</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div id="loc-desc" style="font-size:0.9rem; color:var(--text2); background:var(--bg3); padding:12px; border-radius:var(--radius-sm);">กรุณาเลือก Location ในข้อ 1</div>
+        </div>
+      </div>
+      
+      <div class="card open">
+        <div class="card-hd" onclick="this.parentElement.classList.toggle('open')">
+          <div class="card-title">5. Audio Recording</div><div class="card-icon">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="selectable-list">
+            <div class="chk-item"><input type="checkbox" id="chk-a1" onchange="svS()"> <label for="chk-a1">DJI Mic 2 ติดปกเสื้อห่างปาก 1 ฝ่ามือ</label></div>
+            <div class="chk-item"><input type="checkbox" id="chk-a2" onchange="svS()"> <label for="chk-a2">เปิด Noise Cancellation (เมื่ออยู่ Outdoor)</label></div>
+            <div class="chk-item"><input type="checkbox" id="chk-a3" onchange="svS()"> <label for="chk-a3">ตั้ง Gain Level: -6 dB ถึง -12 dB</label></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- ✂️ POST-PRODUCTION -->
+  <div class="panel" id="panel-post">
+    <div class="container">
+      <h2>✂️ 5. Post-Production</h2><br>
+      
+      <div class="grid-3">
+        <div class="card open">
+          <div class="card-hd"><div class="card-title" style="font-size:1rem;">1. Footage & Color Pipeline</div></div>
+          <div class="card-body"><div class="selectable-list" id="post-color"></div></div>
+        </div>
+        
+        <div class="card open">
+          <div class="card-hd"><div class="card-title" style="font-size:1rem;">2. Visual Assembly</div></div>
+          <div class="card-body">
+            <div class="selectable-list">
+              <div class="chk-item"><input type="checkbox" id="chk-pa1" onchange="svS()"> <label for="chk-pa1">ร้อยเรียง A-Roll สลับ B-Roll</label></div>
+              <div class="chk-item"><input type="checkbox" id="chk-pa2" onchange="svS()"> <label for="chk-pa2">ตัดด้วย Cutting on Motion</label></div>
+              <div class="chk-item"><input type="checkbox" id="chk-pa3" onchange="svS()"> <label for="chk-pa3">ซ้อน MGFX / กราฟิก / B-Roll ตามกำหนด</label></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card open">
+          <div class="card-hd"><div class="card-title" style="font-size:1rem;">3. Audio Mixing & Effects</div></div>
+          <div class="card-body"><div class="selectable-list" id="post-audio"></div></div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="sticky-player" id="player-bar">
+  <audio id="audio-el"></audio>
+  <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+  <div style="flex:1;">
+    <div style="font-weight:600; margin-bottom:4px;" id="track-name">No track selected</div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="time-display" id="time-cur">0:00</span>
+      <div class="progress-container" id="progress-bg" onclick="seekAudio(event)"><div class="progress-fill" id="progress-fill-audio"></div></div>
+      <span class="time-display" id="time-tot">0:00</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+
+<script src="_knowledge.js"></script>
+<script src="_adb.js"></script>
+<script>
+const KB = window.KnowledgeBase;
+let S = JSON.parse(localStorage.getItem('cs_db') || '{}');
+
+function svS(){
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => { S[el.id] = el.checked; });
+  ['ideation-input','cv1','cv2','cv3','master-script','sfx-map','shot-list-text','loc-select'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) S[id] = el.value;
+  });
+  localStorage.setItem('cs_db', JSON.stringify(S));
+  showSaved();
+}
+
+function showSaved(){
+  const d = document.getElementById('save-dot');
+  if(!d) return;
+  d.style.background='white'; d.style.boxShadow='none';
+  setTimeout(()=>{ d.style.background='var(--green)'; d.style.boxShadow='0 0 8px var(--green-glow)'; }, 300);
+}
+
+function switchPanel(pid, el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+pid).classList.add('active');
+  if(el) el.classList.add('active');
+}
+
+function setVal(k,v){ S[k] = v; svS(); renderSelectable(); }
+
+function renderSelectable(){
+  // ICP
+  document.getElementById('icp-list').innerHTML = KB.ICP.map(i=>
+    `<div class="selectable-item ${S.icp===i.title?'active':''}" onclick="setVal('icp','${i.title}')">
+      <div class="s-icon">💼</div><div class="s-content"><div class="s-title">${i.title}</div><div class="s-desc">${i.desc}</div></div>
+    </div>`
+  ).join('');
+
+  // Funnel
+  document.getElementById('funnel-grid').innerHTML = KB.Funnel.map(f=>
+    `<div class="selectable-item ${S.funnel===f.id?'active':''}" onclick="setVal('funnel','${f.id}')" style="flex-direction:column; align-items:flex-start;">
+      <div class="s-title" style="color:var(--${f.id.toLowerCase()})">${f.id}</div><div class="s-desc">${f.desc}</div>
+    </div>`
+  ).join('');
+
+  // Format
+  document.getElementById('format-list').innerHTML = KB.Format.map(f=>
+    `<div class="selectable-item ${S.format===f.id?'active':''}" onclick="setVal('format','${f.id}')">
+      <div class="s-icon">${f.icon}</div><div class="s-content"><div class="s-title">${f.id}</div><div class="s-desc">${f.desc}</div></div>
+    </div>`
+  ).join('');
+
+  // Structure
+  document.getElementById('structure-list').innerHTML = KB.Structure.map(s=>
+    `<div class="selectable-item ${S.struct===s.name?'active':''}" onclick="setVal('struct','${s.name}')">
+      <div class="s-icon">🏗️</div><div class="s-content"><div class="s-title">${s.name}</div><div class="s-desc">${s.desc}</div></div>
+    </div>`
+  ).join('');
+
+  // Verbal Hook
+  let vList = S.funnel ? (KB.Hooks.Verbal[S.funnel]||KB.Hooks.Verbal.TOFU) : KB.Hooks.Verbal.TOFU;
+  document.getElementById('vhook-list').innerHTML = vList.map(h=>
+    `<div class="selectable-item ${S.vhook===h?'active':''}" onclick="setVal('vhook','${h}')">
+      <div class="s-content"><div class="s-title">${h.replace(/\[ICP\]/g, S.icp||'คุณ')}</div></div>
+    </div>`
+  ).join('');
+
+  // ReHook
+  document.getElementById('rehook-list').innerHTML = KB.Hooks.ReHook.map(h=>
+    `<div class="selectable-item ${S.rehook===h?'active':''}" onclick="setVal('rehook','${h}')">
+      <div class="s-content"><div class="s-title">${h}</div></div>
+    </div>`
+  ).join('');
+
+  // CTA
+  let cList = S.funnel ? (KB.CTA[S.funnel]||KB.CTA.TOFU) : KB.CTA.TOFU;
+  document.getElementById('cta-list').innerHTML = cList.map(c=>
+    `<div class="selectable-item ${S.cta===c?'active':''}" onclick="setVal('cta','${c}')">
+      <div class="s-content"><div class="s-title">${c}</div></div>
+    </div>`
+  ).join('');
+
+  // Vis Hook
+  document.getElementById('visual-hook-list').innerHTML = KB.Hooks.Visual.map(v=>
+    `<div class="selectable-item ${S.vishook===v?'active':''}" onclick="setVal('vishook','${v}')">
+      <div class="s-content"><div class="s-title">${v}</div></div>
+    </div>`
+  ).join('');
+}
+
+function initUI(){
+  renderSelectable();
+
+  // Vis Enhancements
+  document.getElementById('vfx-list').innerHTML = KB.VisualEnhancements.map((v,i)=>
+    `<div class="chk-item"><input type="checkbox" id="vfxchk${i}" onchange="svS()"> <label for="vfxchk${i}">${v}</label></div>`
+  ).join('');
+
+  // Audio Hooks & Conclusion
+  document.getElementById('audio-hook-list').innerHTML = KB.Audio.Hook.map(v=>`<button class="chip ${S.auhook===v?'active':''}" onclick="S.auhook='${v}';svS();initUI()">${v}</button>`).join('');
+  document.getElementById('audio-conc-list').innerHTML = KB.Audio.Conclusion.map(v=>`<button class="chip ${S.auconc===v?'active':''}" onclick="S.auconc='${v}';svS();initUI()">${v}</button>`).join('');
+
+  // Location Select
+  const locSel = document.getElementById('loc-select');
+  locSel.innerHTML = '<option value="">-- เลือกสถานที่ --</option>';
+  KB.Production.Location.forEach(l=>{
+    const o = document.createElement('option'); o.value=l.id; o.textContent=l.id;
+    if(S['loc-select']===l.id) o.selected=true;
+    locSel.appendChild(o);
+  });
+  updateWardrobe();
+
+  // Cam Checklist
+  document.getElementById('cam-chk').innerHTML = KB.Production.Camera.map((c,i)=>
+    `<div class="chk-item"><input type="checkbox" id="cam${i}" onchange="svS()"> <label for="cam${i}">${c}</label></div>`
+  ).join('');
+
+  // Post Prod
+  document.getElementById('post-color').innerHTML = KB.PostProduction.Color.map((c,i)=>
+    `<div class="chk-item"><input type="checkbox" id="pc${i}" onchange="svS()"> <label for="pc${i}">${c}</label></div>`
+  ).join('');
+  document.getElementById('post-audio').innerHTML = KB.PostProduction.AudioMix.map((c,i)=>
+    `<div class="chk-item"><input type="checkbox" id="pa${i}" onchange="svS()"> <label for="pa${i}">${c}</label></div>`
+  ).join('');
+  
+  // Restore all inputs
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => { if(S[el.id]) el.checked = true; });
+  ['ideation-input','cv1','cv2','cv3','master-script','sfx-map','shot-list-text'].forEach(id=>{
+    if(S[id]) document.getElementById(id).value = S[id];
+  });
+  
+  renderBGM();
+}
+
+function updateWardrobe(){
+  const v = document.getElementById('loc-select').value;
+  const desc = document.getElementById('loc-desc');
+  const rec = document.getElementById('wardrobe-rec');
+  if(!v) { desc.textContent='กรุณาเลือก Location ในข้อ 1'; rec.textContent='เลือกสถานที่ก่อน'; return; }
+  
+  const loc = KB.Production.Location.find(x=>x.id===v);
+  desc.textContent = loc.desc;
+  
+  if(v==='Indoor'){
+    rec.innerHTML = `<strong>Dark (สีกรมท่า/สีดำ):</strong> ${KB.Production.WardrobeLogic.Dark}<br><br><strong>Pattern:</strong> ${KB.Production.WardrobeLogic.Pattern}`;
+  } else {
+    rec.innerHTML = `<strong>White (เสื้อสีสว่าง):</strong> ${KB.Production.WardrobeLogic.White}<br><br><strong>Pattern:</strong> ${KB.Production.WardrobeLogic.Pattern}`;
+  }
+}
+
+function exportPrompt(){
+  let prompt = "ในฐานะครีเอเตอร์สายการเงิน Nick | Financetry โปรดช่วยคิดโครงสร้าง Master Script สำหรับวิดีโอคลิปนี้ โดยใช้ข้อมูลที่ฉันตัดสินใจเลือกไว้ดังนี้:\n\n";
+  prompt += "=== 🎬 1. PRE-PRODUCTION ===\n";
+  prompt += `- Target Audience: ${S.icp||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Funnel Stage: ${S.funnel||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Ideation / Topic: ${S['ideation-input']||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Content Format: ${S.format||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Script Structure: ${S.struct||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Core Values (ถ้ายังไม่มี โปรดคิดให้ 3 ข้อ):\n  1) ${S.cv1||'?'}\n  2) ${S.cv2||'?'}\n  3) ${S.cv3||'?'}\n`;
+  prompt += `- Verbal Hook: ${S.vhook||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Re-Hook: ${S.rehook||'ไม่ได้ระบุ'}\n`;
+  prompt += `- Call to Action: ${S.cta||'ไม่ได้ระบุ'}\n\n`;
+  prompt += "=== 👁 2. VISUALIZATION ===\n";
+  prompt += `- Visual Hook (3 วิแรก): ${S.vishook||'ไม่ได้ระบุ'}\n`;
+  
+  prompt += "\nโปรดสร้าง 1. Core Value 3 ข้อ (ถ้ายังไม่มี) และ 2. Master Script แบบเต็ม ที่มีทั้งบทพูดและรายละเอียดภาพ (Visual) ระบุมาให้ชัดเจน นำเสนอแบบตารางหรือลิสต์ที่อ่านง่าย";
+  
+  navigator.clipboard.writeText(prompt).then(()=>{
+    toast('📋', 'คัดลอก Prompt สำหรับนำไปให้ AI (ChatGPT/Claude) เรียบร้อย!');
+  });
+}
+
+// BGM
+let audioEl = document.getElementById('audio-el');
+function renderBGM(){
+  if(typeof window.ADB === 'undefined' || !window.ADB.bgm) return;
+  const c = document.getElementById('bgm-moods');
+  const moods = Object.keys(window.ADB.bgm);
+  c.innerHTML = moods.map(m=>`<button class="chip ${S.bgmMood===m?'active':''}" onclick="setBGMMood('${m}')">${m.replace(/^\d+-/,'').replace(/_/g,' ')}</button>`).join('');
+  if(!S.bgmMood && moods.length) setBGMMood(moods[0]);
+  else if(S.bgmMood) setBGMMood(S.bgmMood);
+}
+function setBGMMood(m){
+  S.bgmMood = m; svS();
+  document.querySelectorAll('#bgm-moods .chip').forEach(c=>{
+    c.classList.remove('active');
+    if(c.textContent.replace(/ /g,'_') === m.replace(/^\d+-/,'')) c.classList.add('active'); // approximation
+  });
+  const t = window.ADB.bgm[m] || [];
+  document.getElementById('bgm-tracks').innerHTML = t.map(tk=>
+    `<div class="selectable-item ${S.curTrack===tk?'active':''}" onclick="playT('${tk}','../3-Post-Production/Audio/Background/${m}/${tk}')">
+      <div class="s-icon">🎵</div><div class="s-content"><div class="s-title">${tk.replace(/\.(m4a|mp3)/,'')}</div></div>
+    </div>`
+  ).join('');
+}
+function playT(name, path){
+  S.curTrack = name; S.curPath = path; svS();
+  audioEl.src = path; audioEl.play().catch(e=>console.log(e));
+  document.getElementById('player-bar').classList.add('show');
+  document.getElementById('play-btn').innerHTML = '⏸';
+  document.getElementById('track-name').textContent = name;
+  setBGMMood(S.bgmMood); // refresh active
+}
+audioEl.addEventListener('timeupdate', ()=>{
+  const p = (audioEl.currentTime / audioEl.duration) * 100 || 0;
+  document.getElementById('progress-fill-audio').style.width = p + '%';
+  document.getElementById('time-cur').textContent = fmtTime(audioEl.currentTime);
+  document.getElementById('time-tot').textContent = fmtTime(audioEl.duration||0);
+});
+audioEl.addEventListener('ended', ()=>document.getElementById('play-btn').innerHTML='▶');
+function togglePlay(){ if(audioEl.paused) { audioEl.play(); document.getElementById('play-btn').innerHTML='⏸'; } else { audioEl.pause(); document.getElementById('play-btn').innerHTML='▶'; } }
+function seekAudio(e){ const r=document.getElementById('progress-bg').getBoundingClientRect(); audioEl.currentTime = ((e.clientX-r.left)/r.width)*audioEl.duration; }
+function fmtTime(s){ if(isNaN(s)) return '0:00'; return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`; }
+
+function clearData(){ if(confirm('Clear all data?')) { localStorage.removeItem('cs_db'); location.reload(); } }
+function toast(i,m){ const t=document.createElement('div'); t.className='toast'; t.innerHTML=`<span>${i}</span><span style="font-weight:500">${m}</span>`; document.getElementById('toast-container').appendChild(t); setTimeout(()=>{t.classList.add('out'); setTimeout(()=>t.remove(),300)}, 2500); }
+
+window.addEventListener('DOMContentLoaded', initUI);
+</script>
+</body>
+</html>

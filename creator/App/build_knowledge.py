@@ -1,0 +1,168 @@
+import json
+
+knowledge = {
+    "ICP": [
+        {
+            "id": "มนุษย์เงินเดือน Gen Y",
+            "title": "มนุษย์เงินเดือน / First-Jobbers รายได้สูง",
+            "desc": "หาเงินเก่งแต่เสียดายภาษี ต้องการระบบพอร์ตเงินออมและตาข่ายสวัสดิการ (Welfare Guard) ป้องกันปัญหาสุขภาพ",
+            "pain_point": "จ่ายภาษีสูงโดยไม่ได้วางแผน, Overthinking คิดเยอะกลัวเดาผิด"
+        },
+        {
+            "id": "คนเริ่มสร้างครอบครัว",
+            "title": "คนเริ่มสร้างครอบครัว (Family Builders)",
+            "desc": "กังวลเรื่องเสถียรภาพสินทรัพย์ ต้องการระบบค้ำประกันหนี้บ้านและพอร์ตทุนการศึกษาลูกที่ปลอดภัย 100%",
+            "pain_point": "กลัวความผันผวน, กังวลภาระหนี้สินระยะยาว"
+        },
+        {
+            "id": "เจ้าของธุรกิจ & ฟรีแลนซ์",
+            "title": "เจ้าของธุรกิจป้ายแดง & ฟรีแลนซ์",
+            "desc": "เจอปัญหากระแสเงินสดปนกัน แบกรับภาษีบุคคลธรรมดาฐานสูงสุดโดยไม่มีโครงสร้างโยกย้ายกำไร",
+            "pain_point": "แยกเงินส่วนตัว/ธุรกิจไม่ออก, เสียภาษีแพง"
+        }
+    ],
+    "Funnel": [
+        {
+            "id": "TOFU",
+            "title": "TOFU (Top of Funnel)",
+            "desc": "สร้างการรับรู้ ดึงดูดคนใหม่ แก้ปัญหาผิวเผิน เน้นยอดวิวและแชร์",
+            "formats": ["Skit", "POV", "Talking Head (ประเด็นกว้าง)"]
+        },
+        {
+            "id": "MOFU",
+            "title": "MOFU (Middle of Funnel)",
+            "desc": "สร้างความเชื่อมั่น ให้ความรู้ลึกซึ้ง แสดงความเป็นผู้เชี่ยวชาญ",
+            "formats": ["Talking Head", "Vlog / Behind the Scenes", "Case Study"]
+        },
+        {
+            "id": "BOFU",
+            "title": "BOFU (Bottom of Funnel)",
+            "desc": "ปิดการขาย นัดหมาย Call to Action เพื่อ Audit / Consult",
+            "formats": ["Talking Head (Hard/Soft Pitch)", "Case Study (Results)"]
+        }
+    ],
+    "Format": [
+        {"id": "Talking Head", "icon": "🎙", "desc": "พูดหน้ากล้อง นำเสนอข้อมูลชัดเจน"},
+        {"id": "Vlog", "icon": "🎥", "desc": "พาดูเบื้องหลังการทำงาน การจัดสเปรดชีต"},
+        {"id": "Skit", "icon": "🎭", "desc": "จำลองสถานการณ์ตลกหรือปัญหาที่ลูกค้าเจอ"},
+        {"id": "POV", "icon": "👁", "desc": "มุมมองบุคคลที่หนึ่ง เล่าเรื่องจากสายตาคนดู"},
+        {"id": "Case Study", "icon": "📊", "desc": "โชว์เคสจริง ตัวเลขจริง ผลลัพธ์จริง"}
+    ],
+    "Structure": [
+        {"id": "Classic 4-Part", "name": "Hook → Problem → Solution → CTA", "desc": "สูตรคลาสสิค เหมาะกับ TOFU-MOFU"},
+        {"id": "Story Lesson", "name": "Hook → Story → Lesson → CTA", "desc": "เล่าเรื่อง ดึงบทเรียน ปิดด้วยคุณค่า"},
+        {"id": "Number Insight", "name": "Hook → Numbers → Insight → CTA", "desc": "ขึ้นด้วยสถิติ/ตัวเลข น่าสนใจ น่าเชื่อถือ"}
+    ],
+    "CoreValues": {
+        "TOFU": [
+            "สร้างความตระหนักรู้ถึงภัยเงียบทางการเงิน",
+            "ปลดล็อกความกังวลจากการไม่รู้",
+            "ทำให้การเงินดูเป็นเรื่องง่าย ไม่น่าเบื่อ",
+            "กระตุ้นให้เริ่มเช็คสิทธิประโยชน์ของตัวเอง",
+            "สะท้อนปัญหาที่ทุกคนเจอ (Relatability)"
+        ],
+        "MOFU": [
+            "โชว์ระบบสเปรดชีตหน้าเดียว (System-First)",
+            "ความโปร่งใส (Transparent Shared Experience)",
+            "เรียนรู้จากความผิดพลาด (Lesson Learned)",
+            "เครื่องมือที่จับต้องได้และพร้อมใช้งาน",
+            "ชี้เป้ารอยรั่วและวิธีอุดรอยรั่วอย่างฉลาด"
+        ],
+        "BOFU": [
+            "ความอุ่นใจ (Peace of Mind) หลังจัดพอร์ต",
+            "ความเป็นมืออาชีพ (Premium & Trust)",
+            "การค้ำประกันความเสี่ยงที่จับต้องได้",
+            "การออกแบบที่ตรงจุดเฉพาะบุคคล (Custom Audit)",
+            "ลดภาระความกังวลระยะยาว (Long-term Stability)"
+        ]
+    },
+    "Hooks": {
+        "Verbal": {
+            "TOFU": [
+                "ถ้าคุณเป็น [ICP] และกำลังเจอปัญหา [Pain Point] คลิปนี้คือจุดเริ่มต้นของคุณ",
+                "3 สิ่งที่คนรายได้สูงมักพลาด แล้วทำให้เสียภาษีฟรีทุกปี",
+                "นี่คือสเปรดชีตจัดพอร์ตที่ผมสรุปทุกอย่างไว้ในภาพเดียว",
+                "หยุดทำสิ่งนี้ ถ้าไม่อยากให้เงินเก็บของคุณเสื่อมค่าไปเฉยๆ",
+                "สิ่งที่ธนาคารไม่เคยบอกคุณเกี่ยวกับการเก็บเงิน"
+            ],
+            "MOFU": [
+                "ผมลองทำ [หัวข้อ] มาแล้ว และนี่คือสิ่งที่ได้เรียนรู้",
+                "ทำไมการกางแผนภาพการเงินที่ยังไม่สมบูรณ์แบบ ถึงเปลี่ยนชีวิตผมได้",
+                "เบื้องหลังการจัดพอร์ตภาษีให้ลูกค้า ที่หลายคนไม่เคยรู้",
+                "3 ขั้นตอนง่ายๆ ในการจัดหมวดหมู่ระบบการเงินใหม่จากศูนย์",
+                "ถ้าผมต้องเริ่มต้นใหม่ในปี 2026 นี่คือแผน 3 บรรทัดที่ผมจะทำ"
+            ],
+            "BOFU": [
+                "ไม่ต้องลองผิดลองถูก นี่คือระบบสแกนความคุ้มค่าที่ผมใช้จริง",
+                "ถ้าคุณเหนื่อยกับการจัดการเงินเอง นี่คือทางออก",
+                "ทำไมลูกค้าของผมถึงประหยัดภาษีได้หลักแสน? มาดูกันครับ",
+                "บริการตรวจสุขภาพการเงินฟรี: คุณจ่ายภาษีเกินอยู่ไหม?",
+                "เครื่องมือที่ดีที่สุดสำหรับ [หัวข้อ] ที่ผมอยากแนะนำ"
+            ]
+        },
+        "Visual": [
+            "Flash Impact (สะบัดปิดพับจอ MacBook ลงมาฉับพลัน)",
+            "Flicking Reveal (กระพริบสลับร่างหน้าคอม)",
+            "POV (มือยื่นแกะเล่มรายงาน/กางสเปรดชีต)",
+            "Static Locked Tripod Shot (หน้าตรง กางเอกสาร)",
+            "Walking & Talking (เดินเข้าเฟรมแล้วพูดทันที)"
+        ],
+        "ReHook": [
+            "แต่เดี๋ยวก่อน... ความจริงมันแย่กว่านั้น",
+            "มาดูตัวเลขจริงกันชัดๆ ครับ",
+            "แล้วจุดที่พีคที่สุดคืออะไร รู้มั้ยครับ?",
+            "ลองจินตนาการดูนะครับว่า...",
+            "คำถามคือ แล้วเราจะแก้มันยังไง?"
+        ]
+    },
+    "CTA": {
+        "TOFU": ["Follow (มีเนื้อหาแบบนี้ทุกอาทิตย์)", "Save (เซฟคลิปนี้ไว้ดูทีหลัง)", "Share (ส่งให้เพื่อนที่ควรรู้เรื่องนี้)"],
+        "MOFU": ["Comment (พิมพ์ 'TAX' เพื่อรับสเปรดชีต)", "Read Caption (อ่านรายละเอียดเชิงลึก)"],
+        "BOFU": ["Chat for LEADS (ทัก DM เพื่อรับสิทธิ์ Audit ฟรี)", "Link in Bio (นัดหมายคอล 1-on-1)"]
+    },
+    "VisualEnhancements": [
+        "MGFX: ข้อความสีเหลือง #ffd935 ขีดเส้นใต้เน้นคำ",
+        "Whiteboard: วาดโครงสร้างอธิบายแบบเรียลไทม์",
+        "Graphic: แทรกรูปสเปรดชีต/Miro เต็มจอ",
+        "VFX: Custom Comment Box ป๊อปอัพคำถาม",
+        "VFX: Object Behind Person ซ้อนกราฟิกหลังตัว",
+        "Transition: Whip Action Match Cut",
+        "Transition: Mask Cutout Transition"
+    ],
+    "Audio": {
+        "Hook": ["Cinematic Riser / Whoosh", "Sub-Bass Drop (ดึงความสนใจ)", "Tonal Glitch (จังหวะ Transition)"],
+        "BGM": ["Building Tension", "Engaging", "Lofi / Chill"],
+        "Conclusion": ["Uplifting / Resolution", "Cinematic Outro"]
+    },
+    "Production": {
+        "Camera": [
+            "Frame Rate: 24 fps (Cinematic Look)",
+            "Shutter Speed: 1/50",
+            "Resolution: 4K (แนวนอน) / 3K (แนวตั้ง)",
+            "Color Profile: D-Log M 10-bit",
+            "Indoor Filter: ND2 / Black Mist 1/4",
+            "Outdoor Filter: VND 2-32"
+        ],
+        "Location": [
+            {"id": "Indoor", "desc": "โต๊ะทำงาน (เว้นระยะหลัง 1.5-2m) | Key Light 45° | Fill Light ซับเงา | Ambient ไฟส้ม"},
+            {"id": "Outdoor", "desc": "ม.เกษตรศาสตร์ บางเขน | ใช้ VND 2-32 | จัดแสงธรรมชาติ"}
+        ],
+        "WardrobeLogic": {
+            "White": "ใช้เมื่อฉากหลังเป็นสีเข้มเพื่อดึงให้ตัวเด่น หลีกเลี่ยงถ้าฉากสว่าง/จัดแสงยาก",
+            "Dark": "แนะนำที่สุด! สีดำ สีกรมท่า สีเขียวเข้ม สร้างความโปร่งและ Professional",
+            "Pattern": "ใช้ลายกราฟิกใหญ่ได้ ห้ามใช้ลายทางเส้นเล็กหรือตารางถี่ (Moire Effect)"
+        }
+    },
+    "PostProduction": {
+        "Color": ["แยก Folder A-Roll / B-Roll / Audio", "Apply Cinematic LUTs (D-Log M to Rec.709)", "ปรับ Contrast & Exposure"],
+        "AudioMix": ["Voice Cleaning (ตัด Noise)", "EQ Boost 2-4kHz (เสียงใส)", "Normalize -14 LUFS", "Audio Ducking (ลด BGM อัตโนมัติ)"]
+    }
+}
+
+js_content = f"window.KnowledgeBase = {json.dumps(knowledge, ensure_ascii=False, indent=2)};\n"
+
+out_path = r"c:\AI-Agent-Workspace\creator\App\_knowledge.js"
+with open(out_path, "w", encoding="utf-8") as f:
+    f.write(js_content)
+
+print(f"Generated {out_path}")
