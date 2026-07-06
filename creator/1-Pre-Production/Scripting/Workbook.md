@@ -1,4 +1,4 @@
-# 📝 Workbook: สมุดจดสคริปต์พูดตัวจริง (Script & Edit Workbook)
+﻿# 📝 Workbook: สมุดจดสคริปต์พูดตัวจริง (Script & Edit Workbook)
 
 สมุดเล่มนี้ใช้สำหรับร่างสคริปต์พูดของคุณ Nick | Financetry แบบคำต่อคำ (Word-for-Word) ภายใต้ปรัชญา **"Film-to-the-Edit" (คิดการตัดต่อให้เสร็จสิ้นก่อนเริ่มถ่ายทำ)** เพื่อนำทางไปสู่การผลิตชิ้นส่วนภาพ/เสียงที่เสียบเข้าไทม์ไลน์หลังบ้านได้อย่างมีประสิทธิภาพ
 
@@ -37,3 +37,72 @@
 | **[OUTRO & HOOK - ในเทคเดียว]**<br>• หน้าตรงชี้มือมาด้านหน้าจอ | ดนตรีเฟดเอ้าท์ช้า ๆ | **[OUTRO & CTA]**<br>ส่งข้อความคำว่า "TAX" ใต้คลิปนี้ แล้วผมจะส่งตัวตารางนี้ให้เปิดสแกนดูพอร์ตเองฟรีทันที เพราะนี่คือวิธี... |
 
 *(ช่องนี้ว่างไว้เพื่อให้คุณ Nick ป้อนสคริปต์คลิปถัดไป)*
+
+---
+
+
+## 🎬 รูปแบบ Screenplay Shot List (Advanced Cinematic Sequence)
+
+โครงสร้าง Shot List รูปแบบนี้ถูกออกแบบมาเพื่อแยกแยะองค์ประกอบภาพ (Visual Elements) ออกจากโครงสร้างบทพูด (Script) อย่างเด็ดขาด โดยใช้สัญลักษณ์เฉพาะทางเป็นตัวกำกับ ช่วยให้ทีมถ่ายทำและคนตัดต่อเข้าใจลำดับภาพตรงกันทันทีโดยไม่ต้องอ่านคำอธิบายยาว
+
+---
+
+### 1. SYNTAX & SPECIFICATIONS
+
+* **`<Location>` — วงเล็บสามเหลี่ยม:** ใช้ระบุสถานที่ถ่ายทำหรือพื้นที่เซ็ตฉาก (Setting) ประโยชน์คือช่วยในการจัดกลุ่มช็อตที่อยู่ในสถานที่เดียวกันเพื่อถ่ายทำพร้อมกัน (Block Shooting) โดยไม่ต้องย้ายอุปกรณ์ไปมา
+* **`[Shot Type]` — วงเล็บเหลี่ยม:** ใช้ระบุขนาดภาพ (Framing) เพื่อกำหนดขอบเขตของวัตถุเทียบกับกรอบภาพ เช่น `[Wide Shot]`, `[Medium Shot]`, หรือ `[Close-Up]` และสามารถใส่เทคนิคการถ่ายเพิ่มเข้าไปได้ เช่น `[Wide Shot - Long Take]` เพื่อกำหนดให้ลากช็อตยาวโดยไม่ตัด
+* **`{Angle}` — วงเล็บปีกกา:** ใช้ระบุทิศทางและมุมกล้องเมื่อเทียบกับวัตถุ เช่น `{High Angle}` (มุมสูง), `{Eye-Level}` (ระดับสายตา), `{Profile}` (มุมข้าง) เพื่อกำหนดมิติและทัศนคติของภาพ
+* **`(Action / Motion)` — วงเล็บโค้ง:** ใช้ระบุความเคลื่อนไหวที่เกิดขึ้นภายในเฟรม ทั้งการขยับร่างกายของนักแสดงหรือทิศทางการเคลื่อนที่ เช่น `(Walking forward)`, `(Turn head)`
+* **`"Dialog" / VO:` — บทพูดและเสียงบรรยาย:** ข้อความในเครื่องหมายคำพูดคือบทพูดหน้ากล้อง (A-Roll) ส่วนข้อความที่มี `VO:` (Voice Over) นำหน้า คือเสียงบรรยายที่ใช้เปิดทับบนภาพ B-Roll
+
+---
+
+### 2. CONTINUITY & MATCH CUT DESIGN
+
+จุดเด่นที่สุดของโครงสร้างนี้คือการใช้ภาษาบอกความเคลื่อนไหว (Verb Tense) มาควบคุมจังหวะการตัดต่อล่วงหน้าบนหน้ากระดาษ โดยเฉพาะการทำ **Match Cut (Cutting on Action)** เพื่อให้เกิด **Invisible Edit** (การตัดต่อแบบไร้รอยต่อ):
+
+```text
+[Wide Shot - Long Take] {Eye-level} (Walking towards camera)
+"And the way you make your edits invisible is by" (Turn head)
+
+[Medium Shot] {Profile} (Turning head to left)
+"Head turns."
+```
+
+* **ช็อตส่งท้าย:** ใช้คำกริยาทั่วไป `(Turn head)` กำกับท้ายช็อต เพื่อให้รู้ว่า Action ของช็อตนี้จบลงที่การเริ่มขยับหัว
+* **ช็อตเปิดต่อ:** เปลี่ยนมาใช้คำกริยาที่แสดงความต่อเนื่อง **`-ing`** `(Turning head to left)` กำกับตอนเปิดช็อตถัดไป เพื่อเตือนหน้างานว่าต้องกดบันทึกวิดีโอตอนที่วัตถุกำลังเคลื่อนไหวอยู่ ไม่ใช่ตั้งท่าอยู่นิ่ง ๆ
+* **ผลลัพธ์ในห้องตัดต่อ:** เมื่อคำกริยาระบุจังหวะไว้อย่างชัดเจน คนตัดต่อจะสามารถนำเฟรมที่กำลังเคลื่อนไหวจากทั้งสองมุมกล้องมาชนกันได้อย่างไร้รอยต่อ สายตาคนดูจะโฟกัสที่ Continuous Motion จนมองข้ามรอยตัดระหว่างภาพไปโดยปริยาย
+
+---
+
+### 📝 ตัวอย่างการนำไปใช้จริงแบบเต็ม (Full Sequence Example):
+
+```text
+<Alley>
+
+[Wide shot] {Eye-level} (walking to camera)
+"Today, we're going to break down how I film sequences to go from"
+
+[Close-up] {Low Angle} (Hand opening Car door handle)
+
+[Close-up] {High Angle} (Car wheel driving)
+
+[Close-up] {Floor level} (Step out of a car)
+
+<Park>
+
+[Wide shot] {Eye-level} (Stand talking)
+"one location"
+
+[Close-up] {Low Angle} (Palm tree + Zoom in)
+
+[Close-up] {Low Angle} (Skyscraper + Zoom in)
+
+[Close-up] {High Angle} (Car passing an overpass + Zoom in)
+
+<Street>
+
+[Medium shot] {Eye-level} (Stand aside talking)
+"to another"
+```
+
