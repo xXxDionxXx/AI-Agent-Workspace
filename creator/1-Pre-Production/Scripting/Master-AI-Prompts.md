@@ -12,7 +12,8 @@
 ```text
 @Funnel-Structure-Mapping.md 
 @My-Personal-Brand.md
-Act as my elite content strategist for my brand "Financetry" (Personal Finance, Tax, Insurance for Freelancers & Entrepreneurs). 
+Act as my elite content strategist for my brand "Financetry".
+Crucial Positioning: Position my brand primarily as a "Personal Finance & Wealth Management" expert, NOT a hardcore insurance sales channel. The content (especially TOFU and MOFU) should heavily focus on personal financial planning, cash flow, and risk awareness for Freelancers & Entrepreneurs. Only introduce "Insurance" softly as a smart financial tool or risk-management solution, rather than the main topic.
 
 Generate 15 short-form video ideas categorized strictly into the 3 Funnel Stages (TOFU, MOFU, BOFU) based on the mapping in the Funnel file. Do not use the words "Reach", "Trust", or "Sales" in your output; use only TOFU, MOFU, and BOFU.
 Ensure the ideas are specifically tailored to solve the pain points, frustrations, and desires of the Ideal Customer Profiles (ICP) listed in the attached Personal Brand file.
@@ -99,27 +100,79 @@ Requirements:
 ```
 ---
 
-## ?? Step 6: CINEMATIC SHOT LIST (??????????????????????????????????)
-**?? ???????:** ?? **???????** ????????? Step 3 ??????????????????
+## 🔵 Step 6: SCREENPLAY (บทภาพยนตร์และมุมกล้อง)
+**💡 วิธีใช้:** เติม **บทพูด** จาก Step 3 เพื่อให้ AI แตกช็อต
 
-**?? Copy Prompt:**
-``text
+**💬 Copy Prompt:**
+```text
 Convert the following video script into an Advanced Cinematic Sequence Shot List.
 
-[??????????????????? Step 3 ????????]
+[เติมบทพูดจาก Step 3 ที่นี่]
 
-Requirements for the Shot List:
-Break down the script visually using the following strict syntax:
-1. <Location/Setting> (e.g., <Office>, <Studio>)
-2. [Shot Type] (e.g., [Wide Shot], [Close-Up])
-3. {Camera Angle} (e.g., {Eye-level}, {Low Angle})
-4. (Action/Motion) (e.g., (Walking to camera), (Hand opening door))
-5. "Dialog" or VO: "Dialog" for Voice Over.
+# 🎥 Requirements for the Shot List:
+Break down the script visually using the following strict syntax constraints.
 
-Crucial Technique (Invisible Edit / Match Cut):
+### 1. Location & Setting
+- Use strictly one of our official production locations: <Indoor (โต๊ะทำงาน)> OR <Outdoor (ม.เกษตรศาสตร์)>. Do not invent new locations.
+
+### 2. Shot Type & Camera Movement
+- Select an appropriate shot size (Wide, Medium, Close-Up) and movement (Tripod, Swish Pan, Jump Cut 10%). 
+- Note: Use 'Tripod' for static shots instead of 'Static Locked Tripod' for brevity.
+- Vary the shot sizes dynamically based on the emotional weight of the scene.
+
+### 3. Camera Angle
+- Choose between {Eye-level}, {Low Angle}, {High Angle}, or {Profile}. 
+- Be highly creative and dynamic. Freely mix and match these angles in unexpected ways to build visual interest and match the emotional beats of the script.
+
+### 4. Action & Motion
+- Break down physical actions chronologically.
+- Place the (Action/Motion) tags precisely before, during, or after the dialogue where they should happen to build visual momentum and match the speaker's energy.
+
+### 5. Dialogue & VO
+- Use "Dialog" for on-screen speaking or VO: "Dialog" for Voice Over.
+
+---
+# ✂️ Crucial Editing Techniques
+
+**1. Match Cut (Invisible Edit)**
 Design the cuts to be seamless by using Verb Tenses strategically:
-- Before a cut: Use a normal verb (e.g., (Turn head))
-- After a cut (the very next shot): Use an "-ing" continuous verb (e.g., (Turning head to left)) to indicate that the action is already in motion when the shot starts.
+- Before a cut: Use a normal verb representing the start of a physical action.
+- After a cut (the very next shot): Use an "-ing" continuous verb representing the exact same action already in motion to indicate continuity.
+
+**2. Handling Graphics & B-Roll**
+- NEVER suggest filming a physical iPad or computer screen.
+- If graphics or spreadsheets need to be shown, explicitly state to use a <Full-Screen Graphic> Overlay or <Screen Recording B-Roll>.
+- Do NOT use "Graphic Match Cuts" when inserting graphics. Simply use direct cuts or standard overlays for graphics. Reserve Match Cut techniques strictly for physical actions (Movement Match Cut) or Whip-Action Match Cuts.
 
 Ensure the visual pacing matches the energy of the script. Separate the video into short, dynamic shots to maintain high retention (scroll-stopping pacing).
-``
+```
+
+---
+
+## ⚫️ Step 7: PRODUCTION BREAKDOWN & ASSET PROMPTS (จัดตารางคิวถ่ายและสั่งทำกราฟิก)
+**💡 วิธีใช้:** ก๊อปปี้ **SCREENPLAY** ที่ได้จาก Step 6 มาวางต่อท้ายคำสั่งนี้
+
+**💬 Copy Prompt:**
+```text
+Take the following Screenplay and break it down into a highly organized Production Schedule and Asset List.
+
+[เติม Screenplay จาก Step 6 ลงตรงนี้]
+
+Please output the breakdown exactly in the following 3 sections:
+
+### 🎬 1. Shot List
+Reorganize all the shots from the screenplay and group them by Location so I can film everything at one location without moving the camera setup.
+- **Location 1: <Indoor (โต๊ะทำงาน)>**
+  - List all shots (Shot type, Angle, Action, Dialog) that happen here sequentially.
+- **Location 2: <Outdoor (ม.เกษตรศาสตร์)>**
+  - List all shots (Shot type, Angle, Action, Dialog) that happen here sequentially.
+
+### 🖼️ 2. B-Roll & Screen Recording List
+Extract any mentions of <Screen Recording B-Roll> or <Full-Screen Graphic> into a checklist format. Explain briefly what needs to be shown on screen based on the dialogue.
+
+### 🤖 3. AI Prompts
+For any graphics, infographics, or visual overlays required in the video, write highly detailed image/animation generation prompts in English. 
+- Write them as if I am going to copy-paste them into an AI Generator like Midjourney or send them to a Motion Graphics Animator.
+- Include style keywords like: "Flat design, modern UI, vibrant colors, minimalist, high quality, vector style, transparent background".
+- Specify exactly what text or numbers (if any) need to appear in the graphic.
+```
